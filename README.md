@@ -69,16 +69,22 @@ library(dplyr)
 
 #### Set your working directory and load the datasets 
 
-```{r include=FALSE}
-
+```{r include=TRUE}
 
 setwd("C:/Users/gyigi/OneDrive/Documenten/dprep")
 
-title_basics <- read_tsv("title.basics.tsv.gz")
+files <- c("title.basics.tsv.gz", 
+           "title.episode.tsv.gz", 
+           "title.ratings.tsv.gz")
 
-title_episode <- read_tsv("title.episode.tsv.gz")
+# Use lapply to read in all files
+datasets <- lapply(files, read_tsv)
 
-title_ratings <- read_tsv("title.ratings.tsv.gz")
+# Access individual datasets
+
+title_basics <- datasets$title_basics
+title_episode <- datasets$title_episode
+title_ratings <- datasets$title_ratings
 
 ```
 #### To view the datasets, use the code **View()**
