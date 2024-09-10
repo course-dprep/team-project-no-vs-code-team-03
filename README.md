@@ -12,15 +12,15 @@ output:
 
 ## 1.1 Research Motivation
 
-The television industry has transformed exceptionally in the past decade with the advent of streaming platforms like Netflix, HBO, Amazon Prime, and Hulu among many others. These platforms have reformed how the audience consumes content, producing series and shows that allure millions across the world.The global video streaming market is projected to grow from USD 674.25 billion in 2024 to USD 2,660.88 billion by 2032, exhibiting a CAGR of 18.7% during the forecast period.(source: fortune business insights) 
-This dramatic growth poses the question of what factors contribute to the success (in terms of average customer rating) of these TV shows. One frequently disputed factor is the length of the TV shows. While some believe longer TV series allow for complex storytelling and intricate character development leading to higher customer satisfaction/engagement, others may argue that excessive length could cause viewer fatigue and lower customer satisfaction.
+The television industry has transformed exceptionally in the past decade with the advent of streaming platforms like Netflix, HBO, Amazon Prime, and Hulu, among many others. These platforms have reformed how the audience consumes content, producing series and shows that allure millions across the world. The global video streaming market is projected to grow from USD 674.25 billion in 2024 to USD 2,660.88 billion by 2032, exhibiting a CAGR of 18.7% during the forecast period.(source: fortune business insights) 
+This dramatic growth poses the question of what factors contribute to the success (in terms of average customer rating) of these TV shows. One frequently disputed factor is the length of the TV shows. While some believe longer TV series allow for complex storytelling and intricate character development leading to higher customer engagement and satisfaction, others may argue that excessive length could cause viewer fatigue and lower customer satisfaction.
 Understanding how the overall length of a TV series influences the average customer ratings could hold important implications for the content producers and streaming platforms. This research may help producers decide the optimal length of the TV series to maximize customer engagement.
-Our research aims to indicate the relationship between the length of the TV series in terms of number of episodes (number of years the show is running) and the average customer ratings. By establishing this relationship, the question for producers as to whether more episodes or a new season should be produced, will be made easier. The producer then has a guideline as to what amount of episodes will maximize the consumer engagement, and therefore minimize viewer fatigue causing negative reviews. 
+Our research aims to indicate the relationship between the length of the TV series in terms of number of episodes (number of years the show is running) and the average customer ratings. By establishing this relationship, the question for producers as to whether more episodes or a new season should be produced, will be made easier. The producer then has a guideline as to what amount of episodes will maximize the consumer engagement, and therefore minimize viewer fatigue which can lead to negative reviews. Thus, the research question of this assignment is: How does the length of a TV series influence its average customers ratings? In addition, the established relationship can be added and compared to existing theories. THereby, academic research could further be done by looking at the relationship between, for example, different genres, or looking if the relationship differs between different regions or countries. Therefore, this research provides a general overview, which other academics could then use to further investigate this phenomena. 
 
 ## 1.1.2 Analysis plan
 
 The first step in our analysis plan is data exploration. This step involves computing summary statistics and visualizations, so we can get an idea about the structure of our dataset. 
-After exploring the data, the next step is data preparation. In the second step, we will handle missing observations, transform variables where necessary, and ensure that our dataset is ready for analysis. After exploring and preparing the data, we will perform a regression analysis to quantify the relationship between TV series length and average customer rating. We might have to add control variables to ensure our model is not biased. A linear regression will be conducted to assess this relationship. After conducting a linear regression, we will test the hypothesis: There is a positive/negative relationship between the length of a TV series and number of episodes. The final step is to summarize the key findings. We will interpret the results of our regression analysis, and discuss the implications for TV platforms.
+After exploring the data, the next step is data preparation. In the second step, we will handle missing observations, transform variables where necessary, and ensure that our dataset is ready for analysis. After exploring and preparing the data, we will perform a regression analysis to quantify the relationship between TV series length and average customer rating. We might have to add control variables to ensure our model is not biased. A linear regression will be conducted to assess this relationship. After conducting a linear regression, we will use a t-test to test the alternative hypothesis: There is a positive/negative relationship between the length of a TV series and the rating for the series. The final step is to summarize the key findings. We will interpret the results of our regression analysis and t-test, and discuss the implications for TV platforms.
 
 ## 2. Data preparation & analysis
 
@@ -54,6 +54,7 @@ After exploring the data, the next step is data preparation. In the second step,
 #### To read tsv files, you need to load the **readr** package
 
 ```{r include=FALSE}
+install.packages('readr')
 library(readr)
 ```
 
@@ -61,6 +62,8 @@ library(readr)
 #### Load other packages that you will need to analyse the data
 
 ```{r include=FALSE}
+install.packages('tidyverse')
+install.packages('dplyr')
 library(tidyverse)
 library(dplyr)
 ```
@@ -71,7 +74,7 @@ library(dplyr)
 
 ```{r include=TRUE}
 
-setwd("C:/Users/gyigi/OneDrive/Documenten/dprep")
+setwd('C:\\Users\\silvi\\OneDrive\\Documenten\\Marketing Analytics & Marketing Management\\Skills Data Preparation & Workflow Management\\Group Assignment')
 
 files <- c("title.basics.tsv.gz", 
            "title.episode.tsv.gz", 
@@ -190,3 +193,10 @@ ggplot(tv_series_ratings_with_parent, aes(x = averageRating))+ geom_bar() +
   labs(title = "Distribution of Average Ratings for TV Series", x = "Average Rating", y = "Count") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"))
+```
+
+#### Repository Overview
+```{r}
+- README.md
+```
+
