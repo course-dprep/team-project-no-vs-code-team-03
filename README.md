@@ -17,6 +17,11 @@ This dramatic growth poses the question of what factors contribute to the succes
 Understanding how the overall length of a TV series influences the average customer ratings could hold important implications for the content producers and streaming platforms. This research may help producers decide the optimal length of the TV series to maximize customer engagement.
 Our research aims to indicate the relationship between the length of the TV series in terms of number of episodes (number of years the show is running) and the average customer ratings. By establishing this relationship, the question for producers as to whether more episodes or a new season should be produced, will be made easier. The producer then has a guideline as to what amount of episodes will maximize the consumer engagement, and therefore minimize viewer fatigue causing negative reviews. 
 
+## 1.1.2 Analysis plan
+
+The first step in our analysis plan is data exploration. This step involves computing summary statistics and visualizations, so we can get an idea about the structure of our dataset. 
+After exploring the data, the next step is data preparation. In the second step, we will handle missing observations, transform variables where necessary, and ensure that our dataset is ready for analysis. After exploring and preparing the data, we will perform a regression analysis to quantify the relationship between TV series length and average customer rating. We might have to add control variables to ensure our model is not biased. A linear regression will be conducted to assess this relationship. After conducting a linear regression, we will test the hypothesis: There is a positive/negative relationship between the length of a TV series and number of episodes. The final step is to summarize the key findings. We will interpret the results of our regression analysis, and discuss the implications for TV platforms.
+
 ## 2. Data preparation & analysis
 
 ### 2.1.1 Composition of the datasets and description of the variables
