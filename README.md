@@ -175,7 +175,7 @@ View(tv_series_ratings_with_parent)
 
 
 #### With the help of the package **ggplot2** we can make plots
-```{r}
+```{r, echo = FALSE}
 # Plotting
 library(ggplot2)
 
