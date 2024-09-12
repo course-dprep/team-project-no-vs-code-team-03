@@ -177,7 +177,7 @@ View(tv_series_ratings_with_parent)
 ```
 
 
-#### With the help of the package **ggplot2** we can make plots
+#### With the help of the package **ggplot2** we can make plots (To only show the output and hide the code, we use echo = False)
 ```{r, echo = FALSE}
 # Plotting
 library(ggplot2)
