@@ -172,7 +172,7 @@ View(tv_series_ratings_with_parent)
 ```
 
 
-#### With the help of the package **ggplot2** we can make plots (To only show the output and hide the code, we use echo = False)
+#### With the help of the package **ggplot2** we can make plots (To only show the output and hide the code, we use echo = FALSE)
 ```{r, echo = FALSE}
 # Plotting
 library(ggplot2)
@@ -189,7 +189,7 @@ ggplot(tv_series_ratings_with_parent, aes(x = averageRating))+ geom_bar() +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"))
 ```
-#### With the help of the package **ggplot2** we can make plots (To only show the output and hide the code, we use echo = False)
+#### Model free evidence
 ```{r, echo = FALSE}
 # Plotting
 library(ggplot2)
