@@ -189,7 +189,28 @@ ggplot(tv_series_ratings_with_parent, aes(x = averageRating))+ geom_bar() +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"))
 ```
+#### With the help of the package **ggplot2** we can make plots (To only show the output and hide the code, we use echo = False)
+```{r, echo = FALSE}
+# Plotting
+library(ggplot2)
+# remove NA's from the variables "StartYear" & "EndYear" from the file title_basics:
+title_basics_no_na <- title_basics %>%
+  na.exclude(title_basics$startYear) %>%
+  na.exclude(title_basics$endYear)
+#New column YearEnd-YearStart to see how long the series is:
+title_basics_no_na <- title_basics_no_na %>%
+  mutate(series_lengths = endYear - startYear)
+#merge our two datasets:
+merged_dataset<- inner_join(title_basics_no_na, title_ratings,by="tconst")
 
+#plot the scatterplot:
+library(ggplot2)
+ggplot(merged_dataset, aes(x = series_lengths, y = averageRating)) + geom_point() +  labs(title = "Relationship Between Series Length and Average Rating",
+                                                                                          x = "Series Length (Years)",
+                                                                                          y = "Average Rating",
+                                                                                          caption = "Source: IMDb") + theme_minimal()
+
+```
 #### Repository Overview
 ```{r}
 - README.md
