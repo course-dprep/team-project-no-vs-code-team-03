@@ -70,24 +70,19 @@ library(dplyr)
 
 
 
-#### Set your working directory and load the datasets 
+#### Create vectors containing the urls where the data is store, read them and load the datasets 
 
 ```{r include=TRUE}
+#create the vector
+urls = c("https://datasets.imdbws.com/title.basics.tsv.gz", "https://datasets.imdbws.com/title.episode.tsv.gz", "https://datasets.imdbws.com/title.ratings.tsv.gz")
 
-setwd('C:\\Users\\silvi\\OneDrive\\Documenten\\Marketing Analytics & Marketing Management\\Skills Data Preparation & Workflow Management\\Group Assignment')
-
-files <- c("title.basics.tsv.gz", 
-           "title.episode.tsv.gz", 
-           "title.ratings.tsv.gz")
-
-# Use lapply to read in all files
-datasets <- lapply(files, read_tsv)
+#use lapply to read in all files:
+datasets <- lapply(urls, read_delim, delim='\t', na = '\\N')
 
 # Access individual datasets
-
-title_basics <- datasets$title_basics
-title_episode <- datasets$title_episode
-title_ratings <- datasets$title_ratings
+title_basics <- datasets[[1]]
+title_episode <- datasets[[2]]
+title_ratings <- datasets[[3]]
 
 ```
 #### To view the datasets, use the code **View()**
