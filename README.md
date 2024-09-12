@@ -73,10 +73,10 @@ library(dplyr)
 #### Create vectors containing the urls where the data is store, read them and load the datasets 
 
 ```{r include=TRUE}
-#Create the vector
+# Create the vector
 urls = c("https://datasets.imdbws.com/title.basics.tsv.gz", "https://datasets.imdbws.com/title.episode.tsv.gz", "https://datasets.imdbws.com/title.ratings.tsv.gz")
 
-#Use lapply to read in all files:
+# Use lapply to read in all files:
 datasets <- lapply(urls, read_delim, delim='\t', na = '\\N')
 
 # Access individual datasets
