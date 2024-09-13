@@ -184,8 +184,6 @@ series.</td>
 
 ## Authors
 
-**Team 03**
-
 -   Gulsen Yiğit, email: <g.yigit@tilburguniversity.edu>
 -   Manju Ganesan Suresh, email:
     <m.p.y.ganesansuresh@tilburguniversity.edu>
