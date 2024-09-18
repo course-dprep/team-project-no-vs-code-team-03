@@ -177,7 +177,22 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
   )
 
 
-# Add new variable length of series
-merged_data <- merged_data %>%
-  mutate(series_lengths = endYear - startYear
+#-------------------------------Now lets try and delete the NA's in all three datasets for the branch 18/09/2024----------#
+library(tidyr)
+#remove Na's from title_basics
+title_basics_no_NAs <- drop_na(title_basics)
+View(title_basics_no_NAs)
+summary(title_basics_no_NAs) #summary shows no NA's :)! 
+
+
+#remove Na's from title_episode
+title_episode_no_NAs <- drop_na(title_episode)
+View(title_episode_no_NAs)
+summary(title_episode_no_NAs) #summary shows no NA's :)!
+
+#remove Na's from title_ratings
+title_ratings_no_NAs <- drop_na(title_ratings)
+View(title_ratings_no_NAs)
+summary(title_ratings_no_NAs) #summary shows no NA's :)!
+
 
