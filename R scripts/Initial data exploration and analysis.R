@@ -175,3 +175,14 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
     plot.title = element_text(hjust = 0.5, face = "bold"),  # Center the title and make it bold
     axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels
   )
+
+# Handling the missing data
+
+title_basics_no_NAs <- title_basics %>%
+  drop_na()
+
+title_episode_no_NAs <- title_episode %>%
+  drop_na()
+
+title_ratings_no_NAs <- title_ratings %>%
+  drop_na()
