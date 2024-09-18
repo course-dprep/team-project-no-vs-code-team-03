@@ -176,6 +176,7 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
     axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels
   )
 
+# Dropping NA's
 title_basics_no_NAs <- title_basics %>%
   drop_na()
 
@@ -185,3 +186,14 @@ title_episode_no_NAs <- title_episode %>%
 title_ratings_no_NAs <- title_ratings %>%
   drop_na()
 
+# Merging the 3 datasets
+
+# First checking for common values:
+
+common_tconst <- intersect(title_basics_no_NAs$tconst, title_ratings_no_NAs$tconst)
+common_tconst_2 <- intersect(common_tconst, title_episode_no_NAs$parentTconst)
+
+# After finding common values we can merge the datasets
+merged_data <- title_basics_no_NAs %>%
+  inner_join(title_ratings_no_NAs, by = "tconst") %>%
+  inner_join(title_episode_no_NAs, by = c("tconst" = "parentTconst"))
