@@ -182,17 +182,37 @@ library(tidyr)
 #remove Na's from title_basics
 title_basics_no_NAs <- drop_na(title_basics)
 View(title_basics_no_NAs)
-summary(title_basics_no_NAs) #summary shows no NA's :)! 
+summary(title_basics_no_NAs) #summary shows no NA's 
 
 
 #remove Na's from title_episode
 title_episode_no_NAs <- drop_na(title_episode)
 View(title_episode_no_NAs)
-summary(title_episode_no_NAs) #summary shows no NA's :)!
+summary(title_episode_no_NAs) #summary shows no NA's 
 
 #remove Na's from title_ratings
 title_ratings_no_NAs <- drop_na(title_ratings)
 View(title_ratings_no_NAs)
-summary(title_ratings_no_NAs) #summary shows no NA's :)!
+summary(title_ratings_no_NAs) #summary shows no NA's 
+
+#----------------Merging the three datasets------------------##
+
+#join title_basics_no_na & title_episode_no_na
+
+#failed attempt with 0 observations
+merged_data <- title_basics_no_NAs %>%
+  inner_join(title_ratings_no_NAs, by = "tconst") %>%
+  inner_join(title_episode_no_NAs, by = "tconst")
+
+#gulsen's code
+merged_data <- title_basics_no_NAs %>%
+  inner_join(title_ratings_no_NAs, by = "tconst") %>%
+  inner_join(title_episode_no_NAs, by = c("tconst" = "parentTconst"))
 
 
+
+#----------Create new variable years of tvseries as that is our X variable-------#
+
+#Nieuwe column YearEnd-YearStart om te kijken hoe lang die serie is..
+merged_data <- merged_data %>%
+  mutate(series_lengths = endYear - startYear)
