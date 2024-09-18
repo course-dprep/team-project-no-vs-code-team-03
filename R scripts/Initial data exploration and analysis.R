@@ -177,7 +177,10 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
   )
 
 
-# Add new variable length of series
+#----------Create new variable years of tvseries as that is our X variable-------#
+
+#Nieuwe column YearEnd-YearStart om te kijken hoe lang die serie is..
 merged_data <- merged_data %>%
-  mutate(series_lengths = endYear - startYear
+  mutate(series_lengths = endYear - startYear)
+
 

@@ -3,7 +3,7 @@
     "path": "~/dprep/drep team assignment/IMDB-Binge-Factor/R scripts/Initial data exploration and analysis.R",
     "project_path": "R scripts/Initial data exploration and analysis.R",
     "type": "r_source",
-    "hash": "2504624877",
+    "hash": "1976284447",
     "contents": "",
     "dirty": false,
     "created": 1726682219543.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "218,46",
-        "scrollLine": "200"
+        "cursorPosition": "185,0",
+        "scrollLine": "159"
     },
     "folds": "",
-    "lastKnownWriteTime": 1726684040,
+    "lastKnownWriteTime": 1726685862,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1726684041047,
+    "last_content_update": 1726685862840,
     "read_only": false,
     "read_only_alternatives": []
 }
