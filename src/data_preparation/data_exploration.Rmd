@@ -6,25 +6,268 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message= FALSE)
 ```
 
-## R Markdown
+# Data Exploration 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+### Install necessary pacakges for data exploration
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+The following libraries are required for this analysis: 
 
-```{r cars}
-summary(cars)
+-**readr**: For reading data files.
+-**tidyverse**: For data manipulation and analysis.
+-**dplyr**: For data wrangling and manipulation.
+-**ggplot2**: For data visualization.
+
+```{r install packages,include=FALSE}
+library(readr)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
 ```
 
-## Including Plots
+## Introduction
 
-You can also embed plots, for example:
+This report provides the initial data exploration of the data sets. Our goal is to provide the structure of our data set,summarize key variables,and provide some basic exploratory visualizations. The data set contains information about TV series, including customer ratings, number of episodes and series duration.
+ 
+## Overview of the Dataset and Variables
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+The dataset used in the project contains information about TV series and episodes from IMD Since we are interested in understanding the relationship between the length of the TV series and it's average customer ratings, we focus on the three datasets listed and described below.
+
+-**title.episode.tsv.gz**: Contains information about individual episodes of TV series.
+-**title.basics.tsv.gz**: Contains information about TV series titles,the start year,genres,etc.
+-**title.ratings.tsv.gz**: Contains user ratings for titles.
+
+
+## Description of Variables
+
+#### title.episode.tsv.gz
+
+```{r variables-episode,echo=FALSE}
+variables_episode <- data.frame(
+  Variables = c("`tconst`","`parentTconst`","`seasonNumber`", "`episodeNumber`"),
+  Description = c(
+    "An alphanumeric identifier unique to each episode.",
+    "An alphanumeric identifier for the parent TV series of the episode.It links the episode to the overall series.",
+    "The season number that the episode belongs to within the TV series.",
+    "The specific episode number of the `tconst` in the TV series."
+                  ),
+  Class = c("String","String","Interger","Interger")
+)
+
+# Display the table using knitr::kable()
+knitr::kable(variables_episode,col.names = c("Variables","Description","Class"))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#### title.basics.tsv.gz
+
+```{r variables-basics,echo=FALSE}
+# Create a data frame for title.basics.tsv.gz
+variables_basics <- data.frame(
+  Variables = c("`startYear`", "`endYear`"),
+  Description = c(
+    "The year the series began.",
+    "TV Series end year."
+                 ),
+  Class = c("Integer", "Integer")
+)
+
+# Display the table using knitr::kable()
+knitr::kable(variables_basics, col.names = c("Variables", "Description","Class"))
+
+```
+
+#### title.ratings.tsv.gz
+
+```{r variables-ratings, echo=FALSE}
+# Create a data frame for title.ratings.tsv.gz
+variables_ratings <- data.frame(
+  Variables = c("`tconst`", "`averageRating`"),
+  Description = c(
+    "Alphanumeric unique identifier of the title.",
+    "Weighted average of all individual user ratings."
+  ),
+  Class = c("String", "Numeric")
+)
+
+# Display the table using knitr::kable()
+knitr::kable(variables_ratings, col.names = c("Variables", "Description", "Class"))
+
+```
+
+
+### Loading the Datasets
+
+We will programmatically load the following datasets from IMDb:
+
+- **title.basics.tsv.gz**: Contains information about movie and TV series titles, their start year, genres, etc.
+- **title.episode.tsv.gz**: Contains information about individual episodes of TV series.
+- **title.ratings.tsv.gz**: Contains user ratings for titles.
+
+```{r load-datasets, echo=FALSE, warning=FALSE, message=FALSE}
+
+# URLs to the IMDb datasets
+urls <- c(
+  "https://datasets.imdbws.com/title.basics.tsv.gz",
+  "https://datasets.imdbws.com/title.episode.tsv.gz",
+  "https://datasets.imdbws.com/title.ratings.tsv.gz"
+)
+
+# Load the datasets
+datasets <- lapply(urls, read_delim, delim = '\t', na = '\\N')
+
+# Access individual datasets
+title_basics <- datasets[[1]]
+title_episode <- datasets[[2]]
+title_ratings <- datasets[[3]]
+
+```
+
+### Initial Data Exploration
+
+#### Summary Statistics 
+##### Get a quick overview of the data by using the code summary()
+
+Let's take a look at the basic summary statistics for each dataset.
+
+```{r summary-stats, echo=FALSE, warning=FALSE, message=FALSE}
+# Summary statistics for each dataset
+summary(title_basics)
+summary(title_episode)
+summary(title_ratings)
+```
+
+#### Specific summary statistics
+##### Summary statistics of title_episode
+
+```{r specific-summary-stats, echo=FALSE, warning=FALSE, message=FALSE}
+
+title_episode_summary <- title_episode %>%
+  summarise(num_rows=n(),
+            num_cols=ncol(.),
+            missing_values_tconst=sum(is.na(tconst)),
+            missing_values_parentTconst=sum(is.na(parentTconst)),
+            missing_values_seasonNumber=sum(is.na(seasonNumber)),
+            missing_values_episodeNumber=sum(is.na(episodeNumber)) 
+  )%>%
+  print()
+
+```
+
+##### Summary statistics of title_ratings
+
+```{r specific-summary-stat-2, echo=FALSE, warning=FALSE, message=FALSE}
+
+title_ratings_summary <- title_ratings %>%
+  summarise(num_rows=n(),
+            num_cols=ncol(.),
+            missing_values_tconst = sum(is.na(tconst)),
+            missing_values_averageRating = sum(is.na(averageRating)),
+            missing_values_numVotes = sum(is.na(numVotes))
+  ) %>%
+  print()
+
+```
+
+##### Summary statistics of title_basics
+
+```{r specific-summary-stat-3, echo=FALSE, warning=FALSE, message=FALSE}
+
+title_basics_summary <- title_basics %>%
+  summarise(num_rows=n(),
+            num_cols=ncol(.),
+            missing_values_tconst = sum(is.na(tconst)),
+            missing_values_titleType = sum(is.na(titleType)),
+            missing_values_startYear= sum(is.na(startYear)),
+            missing_values_endYear= sum(is.na(endYear))
+  )%>%
+  print()
+
+```
+
+
+### Visualizations
+
+#### TV Series Length vs Average Rating
+
+We will also create some visualizations to better understand the datasets.
+
+We plot for Series Length vs Average Rating. To Compute Series Length we calculate the length of each TV series based on the number of episodes and the number of years the series was telecast-ed.
+
+####  Plotting TV Series Length (total episodes) vs Average Ratings.
+
+```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE}
+
+# Compute the number of episodes for each series
+
+total_episodes <- title_episode %>%
+  group_by(parentTconst) %>%
+  summarize(total_episodes = n(), .groups = 'drop')  # Count episodes
+
+# Compute and sort the number of episodes for each series
+total_episodes_sorted <- title_episode %>%
+  group_by(parentTconst) %>%
+  summarize(total_episodes = n(), .groups = 'drop') %>%
+  arrange(desc(total_episodes))
+
+# Select and rename the columns from tv_series_ratings_with_parent
+ratings_to_merge <- tv_series_ratings_with_parent[, c("parentTconst", "averageRating")]
+names(ratings_to_merge)[names(ratings_to_merge) == "averageRating"] <- "averageRating_series_wise"
+
+# Merge the two data frames
+total_episodes_sorted <- merge(total_episodes_sorted, 
+                               ratings_to_merge, 
+                               by = "parentTconst", 
+                               all.x = TRUE)
+
+# scatter plot 
+library(ggplot2)
+
+
+ggplot(total_episodes_sorted, aes(x = total_episodes, y = averageRating_series_wise)) +
+  geom_jitter(na.rm = TRUE, alpha = 0.3, size = 1, width = 0.1) +  # Add jitter
+  labs(
+    title = "Relationship between Total Episodes and Average Customer Ratings",
+    x = "Total number of Episodes",
+    y = "Average customer Rating"
+  ) +
+  theme_minimal()
+```
+
+#### Plotting TV Series Length (total years run) vs Average Ratings.
+
+```{r total-years-vs-rating echo=FALSE, warning=FALSE, message=FALSE}
+
+# Convert endYear to character if it is numeric
+tv_series_ratings_with_parent <- tv_series_ratings_with_parent %>%
+  mutate(
+    endYear = as.character(endYear),  
+    endYear = na_if(endYear, '\\N'),  
+    endYear = as.numeric(endYear),    
+    startYear = as.numeric(startYear),
+    length = ifelse(is.na(endYear), 2024 - startYear, endYear - startYear) # Calculate length
+  )
+
+# Scatter plot for Length of TV Series (years) vs Average Ratings
+
+ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
+  geom_jitter(alpha = 0.2, size = 0.7, width = 0.1, height = 0.1) +  # Further reduce point size and opacity
+  geom_smooth(method = "lm", color = "red", se = FALSE) +  # Add a linear trend line
+  labs(
+    x = "Length of TV Series (years)",
+    y = "Average Rating",
+    title = "Length of TV Series vs. Average Rating"
+  ) +
+  theme_minimal(base_size = 15) +  # Increase text size for better readability
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),  # Center the title and make it bold
+    axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels
+  )
+```
+
+
+
+
+
+
