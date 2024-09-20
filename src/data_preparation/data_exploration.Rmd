@@ -186,6 +186,26 @@ title_basics_summary <- title_basics %>%
 
 ```
 
+```{r merging, echo=FALSE, warning=FALSE, message=FALSE}
+# filtering TV series alone using titleType(tvEpisode) from title_basics
+
+tv_series <- title_basics %>%
+  filter(titleType == "tvEpisode")
+
+# Merged with ratings using tconst
+
+tv_series_ratings <- tv_series %>%
+  inner_join(title_ratings, by = "tconst")
+print(nrow(tv_series_ratings))
+
+# Merging with title_episode using tconst to add parentTconst to tv_series_ratings
+
+tv_series_ratings_with_parent <- tv_series_ratings %>%
+  left_join(title_episode %>% 
+              select(tconst,parentTconst), by= "tconst")
+head(tv_series_ratings_with_parent)
+View(tv_series_ratings_with_parent)
+```
 
 ### Visualizations
 
@@ -237,7 +257,7 @@ ggplot(total_episodes_sorted, aes(x = total_episodes, y = averageRating_series_w
 
 #### Plotting TV Series Length (total years run) vs Average Ratings.
 
-```{r total-years-vs-rating echo=FALSE, warning=FALSE, message=FALSE}
+```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE}
 
 # Convert endYear to character if it is numeric
 tv_series_ratings_with_parent <- tv_series_ratings_with_parent %>%
@@ -267,7 +287,42 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
 ```
 
 
+## Preparation
 
+### Remove NAs from title_basics dataset and show the new summary statistics
+```{r, echo=FALSE}
+title_basics_no_NAs <- drop_na(title_basics)
+View(title_basics_no_NAs)
+summary(title_basics_no_NAs)
+```
+
+### Remove NAs from title_episode dataset and show the new summary statistics
+```{r, echo=FALSE}
+title_episode_no_NAs <- drop_na(title_episode)
+View(title_episode_no_NAs)
+summary(title_episode_no_NAs) 
+```
+
+### Remove NAs from title_ratings dataset and show the new summary statistics
+```{r, echo=FALSE}
+title_ratings_no_NAs <- drop_na(title_ratings)
+View(title_ratings_no_NAs)
+summary(title_ratings_no_NAs) 
+```
+
+### Merge the three datsets together
+```{r, echo=FALSE}
+merged_data <- title_basics_no_NAs %>%
+  inner_join(title_ratings_no_NAs, by = "tconst") %>%
+  inner_join(title_episode_no_NAs, by = c("tconst" = "parentTconst"))
+```
+
+### Create new variabel: series_length
+A new variable is created that shows how many years a series has run, called series_length. This variable will be the independent variable in our analysis, and is created by deducting the first year that the series ran from the last year. 
+```{r, echo=FALSE}
+merged_data <- merged_data %>%
+  mutate(series_lengths = endYear - startYear)
+```
 
 
 
