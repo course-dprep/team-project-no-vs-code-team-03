@@ -9,7 +9,6 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message= FALSE)
 ```
 
-# Data Exploration 
 
 ### Install necessary pacakges for data exploration
 
@@ -321,7 +320,7 @@ merged_data <- title_basics_no_NAs %>%
 A new variable is created that shows how many years a series has run, called series_length. This variable will be the independent variable in our analysis, and is created by deducting the first year that the series ran from the last year. 
 ```{r, echo=FALSE}
 merged_data <- merged_data %>%
-  mutate(series_lengths = endYear - startYear)
+  mutate(series_lengths = endYear - startYear)
 ```
 
 
