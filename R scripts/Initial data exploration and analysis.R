@@ -177,25 +177,76 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
   )
 
 
-#----Now lets try and delete the NA's in all three datasets for the branch---#
+#---Now lets count the amount of NA's per dataset---#
+
+#Amount of NA's of title_basics
+Sum_NA_title_basics <-sum(is.na(title_basics))
+
+#Amount of NA's of title_episode
+Sum_NA_title_episode <- sum(is.na(title_episode))
+
+#Amount of NA's of title_ratings
+Sum_NA_title_ratings <- sum(is.na(title_ratings))
+
+
+#---Motivation for dropping the NA's---#
+
+#Motivation for title_basics: After we have opened the title_basics datatset, we have seen a lot of NA's in the column "StartYear", "EndYear", "runtimeMinutes" and "genre". However given that our X variable for our project is series_lengths = endYear - startYear, it is highly recommended that we drop our NA's. Furthermore we do not need the columns runtimeMinutes and genres for our analysis so we drop them. The Endyear's Na is missing and theres no wya for us to get it in our dataset
+#Furthermore given that a startyear and endyear are TVSeries specific, it does not make sense to add imputed NA's
+
+#Motivation for title_episode: In this datatset we see Na's for the columns "seasonNumber" and "episodeNumber". The same applies here since the information is TVSeries contigent, we can't take values from other TV shows.the na's are missing at random.
+
+#Motivation for title_ratings: We checked if the this dataset had NA's and it shows 0 NA's for title_ratings
+
+
+#---Removing outliers---#
+
+#we are removing the outliers for series_length, averageRatings, numVotes
+
+remove_outliers_iqr <- function(column) {
+  Q1 <- quantile(column, 0.25)
+  Q3 <- quantile(column, 0.75)
+  IQR_value <- IQR(column)
+  lower_bound <- Q1 - 1.5 * IQR_value
+  upper_bound <- Q3 + 1.5 * IQR_value
+  column >= lower_bound & column <= upper_bound
+}
+
+# Columns to check for outliers
+columns_to_check <- c("series_lengths", "averageRating", "numVotes")
+
+# Apply outlier removal and combine results
+cleaned_data_Gulsen <- merged_data[
+  rowSums(sapply(merged_data[columns_to_check], remove_outliers_iqr)) == length(columns_to_check), 
+]
+
+
+
+
+
+
+
+
+#-------------------------------Now delete the NA's in all three datasets for the branch ----------#
 library(tidyr)
 #remove Na's from title_basics
 title_basics_no_NAs <- drop_na(title_basics)
 View(title_basics_no_NAs)
-summary(title_basics_no_NAs)
+summary(title_basics_no_NAs) #summary shows no NA's :)! 
 
 
 #remove Na's from title_episode
 title_episode_no_NAs <- drop_na(title_episode)
 View(title_episode_no_NAs)
-summary(title_episode_no_NAs) 
+summary(title_episode_no_NAs) #summary shows no NA's :)!
 
 #remove Na's from title_ratings
 title_ratings_no_NAs <- drop_na(title_ratings)
 View(title_ratings_no_NAs)
-summary(title_ratings_no_NAs) 
+summary(title_ratings_no_NAs) #summary shows no NA's :)!
 
-#---Merging the three datasets---#
+
+#----------------Merging the three datasets------------------##
 
 merged_data <- title_basics_no_NAs %>%
   inner_join(title_ratings_no_NAs, by = "tconst") %>%
@@ -203,8 +254,9 @@ merged_data <- title_basics_no_NAs %>%
 
 
 
-#---Create new variable years of tvseries as that is our X variable---#
+#----------Create new variable years of tvseries as that is our X variable-------#
 
-#Nieuwe column YearEnd-YearStart to look how long the series are..
+#Nieuwe column YearEnd-YearStart om te kijken hoe lang die serie is..
 merged_data <- merged_data %>%
-  mutate(series_lengths = endYear - startYear)
+  mutate(series_lengths = endYear - startYear)
+
