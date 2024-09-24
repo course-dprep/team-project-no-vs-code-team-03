@@ -1,6 +1,6 @@
 #---Removing outliers---#
 
-#we are removing the outliers for series_length, averageRatings, numVotes
+#we are removing the outliers for series_length, averageRatings and numVotes
 
 remove_outliers_iqr <- function(column) {
   Q1 <- quantile(column, 0.25)
