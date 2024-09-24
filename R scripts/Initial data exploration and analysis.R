@@ -209,6 +209,8 @@ merged_data <- title_basics_no_NAs %>%
 merged_data <- merged_data %>%
   mutate(series_lengths = endYear-startYear)
 
+#---Remove outliers---#
+
 remove_outliers_iqr <- function(column) {
   Q1 <- quantile(column, 0.25)
   Q3 <- quantile(column, 0.75)
