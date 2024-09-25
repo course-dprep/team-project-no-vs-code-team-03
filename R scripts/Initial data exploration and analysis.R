@@ -176,6 +176,19 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
     axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels
   )
 
+#---Now lets count the amount of NA's per dataset---#
+
+#Amount of NA's of title_basics
+Sum_NA_title_basics <-sum(is.na(title_basics))
+
+#Amount of NA's of title_episode
+Sum_NA_title_episode <- sum(is.na(title_episode))
+
+#Amount of NA's of title_ratings
+Sum_NA_title_ratings <- sum(is.na(title_ratings))
+
+# The title_ratings dataset has no NA's
+
 
 #----Now lets try and delete the NA's in all three datasets for the branch---#
 library(tidyr)
@@ -190,15 +203,11 @@ title_episode_no_NAs <- drop_na(title_episode)
 View(title_episode_no_NAs)
 summary(title_episode_no_NAs) 
 
-#remove Na's from title_ratings
-title_ratings_no_NAs <- drop_na(title_ratings)
-View(title_ratings_no_NAs)
-summary(title_ratings_no_NAs) 
 
 #---Merging the three datasets---#
 
 merged_data <- title_basics_no_NAs %>%
-  inner_join(title_ratings_no_NAs, by = "tconst") %>%
+  inner_join(title_ratings, by = "tconst") %>%
   inner_join(title_episode_no_NAs, by = c("tconst" = "parentTconst"))
 
 
