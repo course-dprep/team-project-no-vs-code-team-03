@@ -24,6 +24,7 @@ library(readr)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(ggcorrplot)
 ```
 
 ## Introduction
@@ -289,7 +290,9 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
 
 ## Data Preparation
 
-#### Counting the number of missing values (NA) per dataset 
+#### Counting the number of missing values (NA) per dataset
+
+To estimate amount of missing data.
 
 ```{r counting_NA, echo=FALSE, warning=FALSE, message=FALSE}
 #Amount of NA's of title_basics
@@ -357,12 +360,12 @@ merged_data <- title_basics_no_NAs %>%
 
 #### total_years
 
-A new variable is created that shows how many years a series has run, called total_years. This variable will be one of the independent variable in our analysis, and is created by deducting the first year that the series ran from the last year. 
+A new variable is created that shows how many years a series has run, called `total_years`. This variable will be one of the independent variable in our analysis, and is created by deducting the first year that the series ran from the last year. 
 
 
 #### episode_count
 
-A new variable is created that shows the total number of episodes a series has, called episode_count. This variable will be one of the independent variable in our analysis.
+A new variable is created that shows the total number of episodes a series has, called `episode_count`. This variable will be one of the independent variable in our analysis.
 
 ```{r variable engineering, echo=FALSE,warning=FALSE, message=FALSE}
 merged_data <- merged_data %>%
@@ -384,10 +387,10 @@ merged_data <- merged_data %>%
 
 ### Removing outliers 
 
-Using the Interquartile Range (IQR) method, we detect outliers in the variables considered for analysis by calculating the spread of the data.The IQR measures the spread of the middle 50% data, making the data robust for analysis by handling the skewed data.This is the last step in preparing the data for analysis.
+Since our dataset is heavily skewed, the Interquartile Range (IQR) method, was used to detect outliers in the variables considered for analysis by calculating the spread of the data.The IQR measures the spread of the middle 50% data, making the data robust for analysis by handling the skewed data.This is the last step in the data preparation process.
 
 
-```{r}
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
 remove_outliers_iqr <- function(column) {
   Q1 <- quantile(column, 0.25)  # Calculate the 25th percentile
   Q3 <- quantile(column, 0.75)  # Calculate the 75th percentile
@@ -406,5 +409,102 @@ cleaned_data <- merged_data[
 ]
 
 ```
+
+
+#### Plot 3: Correlation Heatmap
+
+We plot the correlation heatmap to understand the correlation between the numeric variables and understand any potential multicollinearity issues.
+
+```{r heatmap,echo=FALSE,warning=FALSE, message=FALSE}
+
+install.packages("ggcorrplot")
+library(ggcorrplot)
+
+# Select numeric columns for correlation matrix
+numeric_columns <- cleaned_data %>%
+  select(total_years, episode_count, numVotes, averageRating)
+
+# Compute correlation matrix
+corr_matrix <- cor(numeric_columns, use = "complete.obs")
+
+# Plot the heatmap using ggcorrplot
+ggcorrplot(corr_matrix, 
+           method = "circle", 
+           lab = TRUE, 
+           title = "Correlation Heatmap")
+
+```
+
+
+##### Key insights and implications for the regression model:
+
+###### Multicollinearity 
+
+As we intuitively understand, moderate correlation between `total_years` and `episode_count` (0.46) led us to run two different models : model_1 with total_years & model_2 with episode_count as independent variable,while keeping `numVotes` as a control variable in both models.
+
+### Density plots 
+
+After removing the outliers density plots are plotted to check the distribution of data and identifying whether the variables follow a normal distribution or are skewed and the skewed variables are log transformed fro regression. 
+
+
+#### Plot 4: Density plot for total_years
+
+```{r density plot total_years, echo=FALSE,warning=FALSE, message=FALSE}
+# Density plot for total_years
+ggplot(cleaned_data, aes(x = total_years)) +
+  geom_density(fill = "skyblue", alpha = 0.5) +
+  labs(
+    title = "Density Plot of Total Years of TV Series",
+    x = "Total Years",
+    y = "Density"
+  ) +
+  theme_minimal()
+```
+
+
+#### Plot 5: Density plot for episode_count
+
+```{r density plot episode_count,echo=FALSE,warning=FALSE, message=FALSE}
+# Density plot for episode_count
+ggplot(cleaned_data, aes(x = episode_count)) +
+  geom_density(fill = "lightgreen", alpha = 0.5) +
+  labs(
+    title = "Density Plot of Total Episodes of TV Series",
+    x = "Total Episodes",
+    y = "Density"
+  ) +
+  theme_minimal()
+```
+
+
+#### Plot 6: Density plot for averageRating
+
+```{r density plot averageRating, echo=FALSE,warning=FALSE, message=FALSE}
+# Density plot for averageRating
+ggplot(cleaned_data, aes(x = averageRating)) +
+  geom_density(fill = "salmon", alpha = 0.5) +
+  labs(
+    title = "Density Plot of Average Rating",
+    x = "Average Rating",
+    y = "Density"
+  ) +
+  theme_minimal()
+```
+
+
+#### Plot 7: Density plot for numVotes
+
+```{r density plot numVotes,echo=FALSE,warning=FALSE, message=FALSE}
+# Density plot for numVotes
+ggplot(cleaned_data, aes(x = numVotes)) +
+  geom_density(fill = "orange", alpha = 0.5) +
+  labs(
+    title = "Density Plot of Number of Votes",
+    x = "Number of Votes",
+    y = "Density"
+  ) +
+  theme_minimal()
+```
+
 
 
