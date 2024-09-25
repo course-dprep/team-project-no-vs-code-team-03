@@ -46,8 +46,8 @@ The dataset used in the project contains information about TV series and episode
 
 
 
-
 ## Description of Variables
+
 
 #### title.episode.tsv.gz
 
@@ -67,6 +67,7 @@ variables_episode <- data.frame(
 knitr::kable(variables_episode,col.names = c("Variables","Description","Class"))
 ```
 
+
 #### title.basics.tsv.gz
 
 ```{r variables-basics,echo=FALSE}
@@ -84,6 +85,7 @@ variables_basics <- data.frame(
 knitr::kable(variables_basics, col.names = c("Variables", "Description","Class"))
 
 ```
+
 
 #### title.ratings.tsv.gz
 
@@ -106,7 +108,7 @@ knitr::kable(variables_ratings, col.names = c("Variables", "Description", "Class
 
 ### Loading the Datasets
 
-Programmatically loading the following datasets from IMDb:
+Programmatically load the following datasets from IMDb:
 
 - **title.basics.tsv.gz**: Contains information about movie and TV series titles, their start year, genres, etc.
 
@@ -133,6 +135,7 @@ title_episode <- datasets[[2]]
 title_ratings <- datasets[[3]]
 
 ```
+
 
 ### Initial Data Exploration
 
@@ -181,6 +184,7 @@ title_episode_summary <- title_episode %>%
 
 ```
 
+
 ##### Summary statistics : title_ratings
 
 ```{r specific-summary-stat-2, echo=FALSE, warning=FALSE, message=FALSE}
@@ -195,6 +199,7 @@ title_ratings_summary <- title_ratings %>%
   print()
 
 ```
+
 
 ##### Summary statistics : title_basics
 
@@ -232,13 +237,12 @@ tv_series_ratings_with_parent <- tv_series_ratings %>%
 
 ```
 
+
 ### Visualizations
 
 #### TV Series Length vs Average Rating
 
-To understand the relationship between the length of TV series and average customer ratings, we will create visualizations..This help us explore trends and patterns in the data.
-
-The length of the TV series will be determined based on the number of episodes or the number of years the series was aired.
+The below plots help understand the relationship between the length of TV series and average customer ratings.Visualizations as part of our initial exploration of the data, which helps us explore trends and patterns in the data.The length of the TV series will be determined based on the number of episodes or the number of years the series was aired.
 
 
 #### Plot 1: Total Episodes vs. Average Rating
@@ -274,7 +278,7 @@ library(ggplot2)
 ggplot(total_episodes_sorted, aes(x = total_episodes, y = averageRating_series_wise)) +
   geom_jitter(na.rm = TRUE, alpha = 0.3, size = 1, width = 0.1) +  # Add jitter
   labs(
-    title = "Relationship between Total Episodes and Average Customer Ratings",
+    title = "Total number of Episodes vs Average Customer Ratings",
     x = "Total number of Episodes",
     y = "Average customer Rating"
   ) +
@@ -282,12 +286,19 @@ ggplot(total_episodes_sorted, aes(x = total_episodes, y = averageRating_series_w
 ```
 
 
-##### **Inference :**
+##### Key insights :
 
+- There is a  large concentration of TV shows with fewer than 2,500 episodes, with customer ratings distributed widely between 2.5 and 10.
+
+- Series with a very high number of episodes (10,000+) seem to maintain consistent ratings but are generally few in number.
+
+
+##### Inference :
+
+- There seems to be no clear linear relationship, however series that have been running for a long time, seems to  maintain consistent ratings, possibly indicating, that long running series might have a loyal fan base warranting further analysis.
 
 
 #### Plot 2: Total number of years the series was aired vs. Average Rating
-
 
 ```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -307,9 +318,9 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
   geom_jitter(alpha = 0.2, size = 0.7, width = 0.1, height = 0.1) +  # Further reduce point size and opacity
   geom_smooth(method = "lm", color = "red", se = FALSE) +  # Add a linear trend line
   labs(
-    x = "Length of TV Series (years)",
+    x = "Number of years",
     y = "Average Rating",
-    title = "Length of TV Series vs. Average Rating"
+    title = "Number of years the TV Series aired vs. Average Rating"
   ) +
   theme_minimal(base_size = 15) +  # Increase text size for better readability
   theme(
@@ -319,7 +330,16 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
 ```
 
 
-##### **Inference :**
+##### Key insights : 
+
+- Most shows are concentrated within a duration of less than 30 years.
+
+- The red line indicates the overall average ratings across all series, it seems to remain fairly constant regardless of the no of years the show was aired.
+
+
+##### Inference :
+
+The stability in ratings for shows that have been running for a longer time, indicates that longevity may not necessarily result in a decline in viewer satisfaction. Further analysis could explain. There is no clear upward or downward trend.The plot also indicates that there might be other factors other than length of the series,might be driving customer ratings, which justifies further regression analysis.
 
 
 ## Data Preparation
@@ -333,6 +353,7 @@ summary(title_basics_no_NAs)
 ```
 
 ### Remove NAs from title_episode dataset and show the new summary statistics
+
 ```{r, echo=FALSE}
 title_episode_no_NAs <- drop_na(title_episode)
 View(title_episode_no_NAs)
@@ -340,6 +361,7 @@ summary(title_episode_no_NAs)
 ```
 
 ### Remove NAs from title_ratings dataset and show the new summary statistics
+
 ```{r, echo=FALSE}
 title_ratings_no_NAs <- drop_na(title_ratings)
 View(title_ratings_no_NAs)
@@ -347,14 +369,16 @@ summary(title_ratings_no_NAs)
 ```
 
 ### Merge the three datsets together
+
 ```{r, echo=FALSE}
 merged_data <- title_basics_no_NAs %>%
   inner_join(title_ratings_no_NAs, by = "tconst") %>%
   inner_join(title_episode_no_NAs, by = c("tconst" = "parentTconst"))
 ```
 
-### Create new variabel: series_length
+### Create new variable: series_length
 A new variable is created that shows how many years a series has run, called series_length. This variable will be the independent variable in our analysis, and is created by deducting the first year that the series ran from the last year. 
+
 ```{r, echo=FALSE}
 merged_data <- merged_data %>%
   mutate(series_lengths = endYear - startYear)
