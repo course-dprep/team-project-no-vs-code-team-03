@@ -288,7 +288,40 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
 
 ## Preparation
 
-### Remove NAs from title_basics dataset and show the new summary statistics
+### Let's count the amount of NA's per dataset 
+
+```{r}
+#Amount of NA's of title_basics
+Sum_NA_title_basics <-sum(is.na(title_basics))
+
+#Amount of NA's of title_episode
+Sum_NA_title_episode <- sum(is.na(title_episode))
+
+#Amount of NA's of title_ratings
+Sum_NA_title_ratings <- sum(is.na(title_ratings))
+
+#We can see that the title_ratings dataset has no NA's. 
+```
+
+### Motivation for dropping NA's
+
+#### Motivation for title_basics:
+
+After examining the title_basics dataset, we noticed a significant number of missing values (NAs) in the columns "StartYear," "EndYear," "runtimeMinutes," and "genre." Since our project requires calculating the series length (series_length = EndYear - StartYear), it is crucial to remove rows with missing values in the "StartYear" and "EndYear" columns. Retaining rows with NAs in these columns would result in inaccurate calculations.
+
+Additionally, the columns "runtimeMinutes" and "genre" are not necessary for our analysis, so we will drop them.
+
+Regarding the missing values in "EndYear," there is no feasible way to recover this data in our current dataset. Because the "StartYear" and "EndYear" are specific to each TV series, it does not make sense to impute the missing values with estimates or averages, as this would compromise the accuracy of our analysis. Therefore, we will drop all rows where either "StartYear" or "EndYear" is missing to ensure the integrity of our data.
+
+#### Motivation for title_episode:
+
+In this dataset, we observe missing values (NAs) in the columns "seasonNumber" and "episodeNumber." Since this information is specific to each TV series, we cannot impute these missing values using data from other TV shows, as doing so would introduce inaccuracies. Additionally, the missing values in these columns are missing at random. Therefore, it is important to drop rows with missing values in these columns.
+
+#### Motivation for title_ratings:
+
+This dataset does not contain NA's. 
+
+### Now let's remove NAs from title_basics dataset and show the new summary statistics
 ```{r, echo=FALSE}
 title_basics_no_NAs <- drop_na(title_basics)
 View(title_basics_no_NAs)
@@ -302,26 +335,43 @@ View(title_episode_no_NAs)
 summary(title_episode_no_NAs) 
 ```
 
-### Remove NAs from title_ratings dataset and show the new summary statistics
-```{r, echo=FALSE}
-title_ratings_no_NAs <- drop_na(title_ratings)
-View(title_ratings_no_NAs)
-summary(title_ratings_no_NAs) 
-```
 
 ### Merge the three datsets together
 ```{r, echo=FALSE}
 merged_data <- title_basics_no_NAs %>%
-  inner_join(title_ratings_no_NAs, by = "tconst") %>%
+  inner_join(title_ratings, by = "tconst") %>%
   inner_join(title_episode_no_NAs, by = c("tconst" = "parentTconst"))
 ```
 
-### Create new variabel: series_length
+### Create new variable: series_length
 A new variable is created that shows how many years a series has run, called series_length. This variable will be the independent variable in our analysis, and is created by deducting the first year that the series ran from the last year. 
 ```{r, echo=FALSE}
 merged_data <- merged_data %>%
   mutate(series_lengths = endYear - startYear)
 ```
 
+### Removing outliers 
+
+```{r}
+remove_outliers_iqr <- function(column) {
+  Q1 <- quantile(column, 0.25)
+  Q3 <- quantile(column, 0.75)
+  IQR_value <- IQR(column)
+  lower_bound <- Q1 - 1.5 * IQR_value
+  upper_bound <- Q3 + 1.5 * IQR_value
+  column >= lower_bound & column <= upper_bound
+}
+
+# Columns to check for outliers
+columns_to_check <- c("series_lengths", "averageRating", "numVotes")
+
+# Apply outlier removal and combine results
+cleaned_data <- merged_data[
+  rowSums(sapply(merged_data[columns_to_check], remove_outliers_iqr)) == length(columns_to_check), 
+]
+
+# View cleaned data
+View(cleaned_data)
+```
 
 
