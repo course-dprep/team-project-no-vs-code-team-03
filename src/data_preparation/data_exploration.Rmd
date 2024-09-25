@@ -353,30 +353,52 @@ merged_data <- title_basics_no_NAs %>%
 ```
 
 
-### Creating a new variable: series_length
+### Engineering for new variables: 
 
-A new variable is created that shows how many years a series has run, called series_length. This variable will be the independent variable in our analysis, and is created by deducting the first year that the series ran from the last year. 
+#### total_years
 
-```{r, echo=FALSE}
+A new variable is created that shows how many years a series has run, called total_years. This variable will be one of the independent variable in our analysis, and is created by deducting the first year that the series ran from the last year. 
+
+
+#### episode_count
+
+A new variable is created that shows the total number of episodes a series has, called episode_count. This variable will be one of the independent variable in our analysis.
+
+```{r variable engineering, echo=FALSE,warning=FALSE, message=FALSE}
 merged_data <- merged_data %>%
-  mutate(series_lengths = endYear - startYear)
+  mutate(total_years = endYear - startYear)
+
+
+# Calculate the total number of episodes for each series
+episode_count <- title_episode_no_NAs %>%
+  group_by(parentTconst) %>%
+  summarise(episode_count = n(), .groups = 'drop')  # Count the number of episodes per series
+
+
+# Merge the episode count back into the merged_data
+merged_data <- merged_data %>%
+  left_join(episode_count, by = c("tconst" = "parentTconst"))
+
 ```
 
 
 ### Removing outliers 
 
+Using the Interquartile Range (IQR) method, we detect outliers in the variables considered for analysis by calculating the spread of the data.The IQR measures the spread of the middle 50% data, making the data robust for analysis by handling the skewed data.This is the last step in preparing the data for analysis.
+
+
 ```{r}
 remove_outliers_iqr <- function(column) {
-  Q1 <- quantile(column, 0.25)
-  Q3 <- quantile(column, 0.75)
-  IQR_value <- IQR(column)
-  lower_bound <- Q1 - 1.5 * IQR_value
-  upper_bound <- Q3 + 1.5 * IQR_value
-  column >= lower_bound & column <= upper_bound
+  Q1 <- quantile(column, 0.25)  # Calculate the 25th percentile
+  Q3 <- quantile(column, 0.75)  # Calculate the 75th percentile
+  IQR_value <- IQR(column)  # Calculate the IQR (Q3 - Q1)
+  lower_bound <- Q1 - 1.5 * IQR_value  # Lower bound for outliers
+  upper_bound <- Q3 + 1.5 * IQR_value  # Upper bound for outliers
+  column >= lower_bound & column <= upper_bound # Returns TRUE for values within bounds
 }
 
 # Columns to check for outliers
-columns_to_check <- c("series_lengths", "averageRating", "numVotes")
+columns_to_check <- c("total_years", "episode_count", "numVotes", "averageRating")
 
 # Apply outlier removal and combine results
 cleaned_data <- merged_data[
