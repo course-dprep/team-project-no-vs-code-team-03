@@ -5,4 +5,7 @@
 
 # Ignore large datasets and output files
 data/
+!data/.gitkeep
+
 gen/output/
+!gen/output/.gitkeep
