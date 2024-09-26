@@ -442,6 +442,7 @@ ggcorrplot(corr_matrix,
 
 As we intuitively understand, moderate correlation between `total_years` and `episode_count` (0.46) led us to run two different models : model_1 with total_years & model_2 with episode_count as independent variable,while keeping `numVotes` as a control variable in both models.
 
+
 ### Density plots 
 
 After removing the outliers density plots are plotted to check the distribution of data and identifying whether the variables follow a normal distribution or are skewed and the skewed variables are log transformed fro regression. 
@@ -461,6 +462,7 @@ ggplot(cleaned_data, aes(x = total_years)) +
   theme_minimal()
 ```
 
+##### Inference : The spikes in the density plot of total_years indicate that there are certain natural clusters. eg: series lasting 1, 5, or 10 years.Transforming this variable might distort these natural groupings.No log transformation is applied.
 
 #### Plot 5: Density plot for episode_count
 
@@ -475,6 +477,8 @@ ggplot(cleaned_data, aes(x = episode_count)) +
   ) +
   theme_minimal()
 ```
+
+##### Inference : There is a long tail, hence `episode_count` is log transformed to stabilize variance in the regression model.
 
 
 #### Plot 6: Density plot for averageRating
@@ -491,6 +495,8 @@ ggplot(cleaned_data, aes(x = averageRating)) +
   theme_minimal()
 ```
 
+##### Inference : No log transformation required since the skeweness is not as extreme as the other variables.
+
 
 #### Plot 7: Density plot for numVotes
 
@@ -506,5 +512,5 @@ ggplot(cleaned_data, aes(x = numVotes)) +
   theme_minimal()
 ```
 
-
+##### Inference : The density plot shows that the data is extremely skewed and hence a log transformation of `numVotes` is used in the regression analysis to avoid issues of heteroscedasticity.
 
