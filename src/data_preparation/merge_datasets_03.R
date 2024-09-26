@@ -21,3 +21,4 @@ write.csv(merged_data, file = "gen/output/merged_data.csv", row.names = FALSE)
 
 # Confirmation message
 message("Merged datasets and saved the output.")
+

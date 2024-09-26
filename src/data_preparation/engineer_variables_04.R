@@ -26,3 +26,4 @@ write.csv(merged_data, file = "gen/output/engineered_data.csv", row.names = FALS
 
 # Confirmation message
 message("Engineered variables added and saved to the output.")
+
