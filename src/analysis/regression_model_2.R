@@ -21,3 +21,20 @@ summary(model2)
 capture.output(summary(model2), file = "gen/output/regression_model_2_summary.txt")
 
 message("Model 2: Regression with episode_count completed and summary saved.")
+
+
+# Generating html output 
+
+library(stargazer)
+
+# Generate the regression summary for both models
+
+stargazer(model1, model2, 
+          title = "Effect of TV Series Length on Ratings",
+          dep.var.labels = "Customer Ratings (log-transformed)",
+          covariate.labels = c("Years", "Episodes", "Control: numVotes"),
+          type = "html", 
+          out = "../gen/output/regression_summary.html")
+
+# Confirmation message to indicate that the regression results were saved
+message("Regression summaries saved to 'gen/output/regression_summary.html'.")
