@@ -1,6 +1,7 @@
 
 # Regression Model 2: Using episode_count
 library(dplyr)
+install.packages("kableExtra")
 
 # Load the cleaned dataset
 cleaned_data <- read.csv("gen/output/cleaned_data.csv")
@@ -25,16 +26,26 @@ message("Model 2: Regression with episode_count completed and summary saved.")
 
 # Generating html output 
 
-library(stargazer)
+# load libraries
+library(knitr)
+library(kableExtra)
 
-# Generate the regression summary for both models
+# Save model summaries as HTML tables
+html_model1 <- kable(summary(model1)$coefficients, format = "html") %>% 
+  kable_styling()
 
-stargazer(model1, model2, 
-          title = "Effect of TV Series Length on Ratings",
-          dep.var.labels = "Customer Ratings (log-transformed)",
-          covariate.labels = c("Years", "Episodes", "Control: numVotes"),
-          type = "html", 
-          out = "../gen/output/regression_summary.html")
+html_model2 <- kable(summary(model2)$coefficients, format = "html") %>% 
+  kable_styling()
 
-# Confirmation message to indicate that the regression results were saved
-message("Regression summaries saved to 'gen/output/regression_summary.html'.")
+# Save to output folder
+writeLines(html_model1, "gen/output/regression_model_1_summary.html")
+writeLines(html_model2, "gen/output/regression_model_2_summary.html")
+
+# Confirmation message
+message("Regression summaries saved to gen/output folder as HTML files.")
+
+
+
+
+
+
