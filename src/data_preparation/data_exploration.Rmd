@@ -14,10 +14,14 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message= FALSE)
 
 The following libraries are required for this analysis: 
 
--**readr**: For reading data files.
--**tidyverse**: For data manipulation and analysis.
--**dplyr**: For data wrangling and manipulation.
--**ggplot2**: For data visualization.
+- **readr**: For reading data files.
+
+- **tidyverse**: For data manipulation and analysis.
+
+- **dplyr**: For data wrangling and manipulation.
+
+- **ggplot2**: For data visualization.
+
 
 ```{r install packages,include=FALSE}
 library(readr)
@@ -34,12 +38,16 @@ This report provides the initial data exploration of the data sets. Our goal is 
 
 The dataset used in the project contains information about TV series and episodes from IMD Since we are interested in understanding the relationship between the length of the TV series and it's average customer ratings, we focus on the three datasets listed and described below.
 
--**title.episode.tsv.gz**: Contains information about individual episodes of TV series.
--**title.basics.tsv.gz**: Contains information about TV series titles,the start year,genres,etc.
--**title.ratings.tsv.gz**: Contains user ratings for titles.
+- **title.episode.tsv.gz**: Contains information about individual episodes of TV series.
+
+- **title.basics.tsv.gz**: Contains information about TV series titles,the start year,genres,etc.
+
+- **title.ratings.tsv.gz**: Contains user ratings for titles.
+
 
 
 ## Description of Variables
+
 
 #### title.episode.tsv.gz
 
@@ -59,6 +67,7 @@ variables_episode <- data.frame(
 knitr::kable(variables_episode,col.names = c("Variables","Description","Class"))
 ```
 
+
 #### title.basics.tsv.gz
 
 ```{r variables-basics,echo=FALSE}
@@ -76,6 +85,7 @@ variables_basics <- data.frame(
 knitr::kable(variables_basics, col.names = c("Variables", "Description","Class"))
 
 ```
+
 
 #### title.ratings.tsv.gz
 
@@ -98,11 +108,14 @@ knitr::kable(variables_ratings, col.names = c("Variables", "Description", "Class
 
 ### Loading the Datasets
 
-We will programmatically load the following datasets from IMDb:
+Programmatically load the following datasets from IMDb:
 
 - **title.basics.tsv.gz**: Contains information about movie and TV series titles, their start year, genres, etc.
+
 - **title.episode.tsv.gz**: Contains information about individual episodes of TV series.
+
 - **title.ratings.tsv.gz**: Contains user ratings for titles.
+
 
 ```{r load-datasets, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -123,22 +136,39 @@ title_ratings <- datasets[[3]]
 
 ```
 
+
 ### Initial Data Exploration
 
 #### Summary Statistics 
+
 ##### Get a quick overview of the data by using the code summary()
 
-Let's take a look at the basic summary statistics for each dataset.
+###### Summary statistics: title_basics
+
 
 ```{r summary-stats, echo=FALSE, warning=FALSE, message=FALSE}
 # Summary statistics for each dataset
 summary(title_basics)
+```
+
+
+###### Summary statistics: title_episode
+
+```{r}
 summary(title_episode)
+```
+
+
+###### Summary statistics: title_ratings
+
+```{r}
 summary(title_ratings)
 ```
 
+
 #### Specific summary statistics
-##### Summary statistics of title_episode
+
+###### Summary statistics : title_episode
 
 ```{r specific-summary-stats, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -154,7 +184,8 @@ title_episode_summary <- title_episode %>%
 
 ```
 
-##### Summary statistics of title_ratings
+
+##### Summary statistics : title_ratings
 
 ```{r specific-summary-stat-2, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -169,7 +200,8 @@ title_ratings_summary <- title_ratings %>%
 
 ```
 
-##### Summary statistics of title_basics
+
+##### Summary statistics : title_basics
 
 ```{r specific-summary-stat-3, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -195,26 +227,25 @@ tv_series <- title_basics %>%
 
 tv_series_ratings <- tv_series %>%
   inner_join(title_ratings, by = "tconst")
-print(nrow(tv_series_ratings))
+
 
 # Merging with title_episode using tconst to add parentTconst to tv_series_ratings
 
 tv_series_ratings_with_parent <- tv_series_ratings %>%
   left_join(title_episode %>% 
               select(tconst,parentTconst), by= "tconst")
-head(tv_series_ratings_with_parent)
-View(tv_series_ratings_with_parent)
+
 ```
+
 
 ### Visualizations
 
 #### TV Series Length vs Average Rating
 
-We will also create some visualizations to better understand the datasets.
+The below plots help understand the relationship between the length of TV series and average customer ratings.Visualizations as part of our initial exploration of the data, which helps us explore trends and patterns in the data.The length of the TV series will be determined based on the number of episodes or the number of years the series was aired.
 
-We plot for Series Length vs Average Rating. To Compute Series Length we calculate the length of each TV series based on the number of episodes and the number of years the series was telecast-ed.
 
-####  Plotting TV Series Length (total episodes) vs Average Ratings.
+#### Plot 1: Total Episodes vs. Average Rating
 
 ```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -247,14 +278,27 @@ library(ggplot2)
 ggplot(total_episodes_sorted, aes(x = total_episodes, y = averageRating_series_wise)) +
   geom_jitter(na.rm = TRUE, alpha = 0.3, size = 1, width = 0.1) +  # Add jitter
   labs(
-    title = "Relationship between Total Episodes and Average Customer Ratings",
+    title = "Total number of Episodes vs Average Customer Ratings",
     x = "Total number of Episodes",
     y = "Average customer Rating"
   ) +
   theme_minimal()
 ```
 
-#### Plotting TV Series Length (total years run) vs Average Ratings.
+
+##### Key insights :
+
+- There is a  large concentration of TV shows with fewer than 2,500 episodes, with customer ratings distributed widely between 2.5 and 10.
+
+- Series with a very high number of episodes (10,000+) seem to maintain consistent ratings but are generally few in number.
+
+
+##### Inference :
+
+- There seems to be no clear linear relationship, however series that have been running for a long time, seems to  maintain consistent ratings, possibly indicating, that long running series might have a loyal fan base warranting further analysis.
+
+
+#### Plot 2: Total number of years the series was aired vs. Average Rating
 
 ```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -274,9 +318,9 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
   geom_jitter(alpha = 0.2, size = 0.7, width = 0.1, height = 0.1) +  # Further reduce point size and opacity
   geom_smooth(method = "lm", color = "red", se = FALSE) +  # Add a linear trend line
   labs(
-    x = "Length of TV Series (years)",
+    x = "Number of years",
     y = "Average Rating",
-    title = "Length of TV Series vs. Average Rating"
+    title = "Number of years the TV Series aired vs. Average Rating"
   ) +
   theme_minimal(base_size = 15) +  # Increase text size for better readability
   theme(
@@ -286,7 +330,21 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
 ```
 
 
-## Preparation
+##### Key insights : 
+
+- Most shows are concentrated within a duration of less than 30 years.
+
+- The red line indicates the overall average ratings across all series, it seems to remain fairly constant regardless of the no of years the show was aired.
+
+
+##### Inference :
+
+The stability in ratings for shows that have been running for a longer time, indicates that longevity may not necessarily result in a decline in viewer satisfaction. Further analysis could explain. There is no clear upward or downward trend.The plot also indicates that there might be other factors other than length of the series,might be driving customer ratings, which justifies further regression analysis.
+
+
+## Data Preparation
+
+### Remove NAs from title_basics dataset and show the new summary statistics
 
 ### Let's count the amount of NA's per dataset 
 
@@ -322,6 +380,7 @@ In this dataset, we observe missing values (NAs) in the columns "seasonNumber" a
 This dataset does not contain NA's. 
 
 ### Now let's remove NAs from title_basics dataset and show the new summary statistics
+
 ```{r, echo=FALSE}
 title_basics_no_NAs <- drop_na(title_basics)
 View(title_basics_no_NAs)
@@ -329,14 +388,23 @@ summary(title_basics_no_NAs)
 ```
 
 ### Remove NAs from title_episode dataset and show the new summary statistics
+
 ```{r, echo=FALSE}
 title_episode_no_NAs <- drop_na(title_episode)
 View(title_episode_no_NAs)
 summary(title_episode_no_NAs) 
 ```
 
+### Remove NAs from title_ratings dataset and show the new summary statistics
+
+```{r, echo=FALSE}
+title_ratings_no_NAs <- drop_na(title_ratings)
+View(title_ratings_no_NAs)
+summary(title_ratings_no_NAs) 
+```
 
 ### Merge the three datsets together
+
 ```{r, echo=FALSE}
 merged_data <- title_basics_no_NAs %>%
   inner_join(title_ratings, by = "tconst") %>%
@@ -345,6 +413,7 @@ merged_data <- title_basics_no_NAs %>%
 
 ### Create new variable: series_length
 A new variable is created that shows how many years a series has run, called series_length. This variable will be the independent variable in our analysis, and is created by deducting the first year that the series ran from the last year. 
+
 ```{r, echo=FALSE}
 merged_data <- merged_data %>%
   mutate(series_lengths = endYear - startYear)
