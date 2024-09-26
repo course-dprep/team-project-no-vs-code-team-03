@@ -167,6 +167,13 @@ series.</td>
 
 ##### Inference : The scatter plot reveals a relatively uniform spread of average ratings across all series lengths, from shorter series (0–10 years) to longer ones (up to 80 years).
 
+
+
+## Conclusion 
+
+
+
+
 ## Repository Overview
 
 -   README.md
@@ -182,6 +189,15 @@ series.</td>
     install.packages("rmarkdown")
     install.packages("knitr")
     install.packages("ggcorrplot")
+
+
+## Running Instructions
+
+##### Run the code using make
+
+ 
+
+
 
 ## Authors
 
