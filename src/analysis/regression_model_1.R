@@ -3,7 +3,7 @@
 library(dplyr)
 
 # Load the cleaned dataset
-cleaned_data <- read.csv("gen/output/cleaned_data.csv")
+cleaned_data <- read_csv("gen/output/cleaned_data.csv")
 
 
 # Log transform numVotes (control variable)
