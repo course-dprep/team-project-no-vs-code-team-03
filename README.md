@@ -172,8 +172,6 @@ series.</td>
 ## Conclusion 
 
 
-
-
 ## Repository Overview
 
 -   README.md
@@ -194,9 +192,6 @@ series.</td>
 ## Running Instructions
 
 ##### Run the code using make
-
- 
-
 
 
 ## Authors

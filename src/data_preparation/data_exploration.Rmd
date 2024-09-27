@@ -1,5 +1,6 @@
 ---
-title: "Data Exploration and preparation"
+title: "Data Exploration and Preparation"
+
 author: "team 03"
 date: "2024-09-19"
 output: html_document
@@ -289,6 +290,8 @@ ggplot(total_episodes_sorted, aes(x = total_episodes, y = averageRating_series_w
 ```
 
 
+#### Plotting TV Series Length (total years run) vs Average Ratings.
+
 ##### Key insights :
 
 - There is a  large concentration of TV shows with fewer than 2,500 episodes, with customer ratings distributed widely between 2.5 and 10.
@@ -302,6 +305,7 @@ ggplot(total_episodes_sorted, aes(x = total_episodes, y = averageRating_series_w
 
 
 #### Plot 2: Total number of years the series was aired vs. Average Rating
+
 
 ```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -331,6 +335,13 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
     axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels
   )
 ```
+
+
+## Data Preparation
+
+#### Counting the number of missing values (NA) per dataset
+
+To estimate amount of missing data.
 
 
 ##### Key insights : 
@@ -383,12 +394,12 @@ In this dataset, we observe missing values (NAs) in the columns "seasonNumber" a
 
 #### title_ratings:
 
-This dataset does not contain NA's. 
+This dataset does not contain missing values(NA) 
 
 
 ### Revised summary statistics after dropping the missing values : title_basics 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 title_basics_no_NAs <- drop_na(title_basics)
 View(title_basics_no_NAs)
 summary(title_basics_no_NAs)
@@ -403,6 +414,9 @@ View(title_episode_no_NAs)
 summary(title_episode_no_NAs) 
 ```
 
+
+
+### Merging the datsets
 
 ### Revised summary statistics after dropping the missing values : title_ratings
 
@@ -435,7 +449,8 @@ A new variable is created that shows the total number of episodes a series has, 
 
 ```{r variable engineering, echo=FALSE,warning=FALSE, message=FALSE}
 merged_data <- merged_data %>%
-  mutate(series_lengths = endYear - startYear)
+  mutate(total_years = endYear - startYear)
+
 
 # Calculate the total number of episodes for each series
 episode_count <- title_episode_no_NAs %>%
@@ -446,8 +461,6 @@ episode_count <- title_episode_no_NAs %>%
 # Merge the episode count back into the merged_data
 merged_data <- merged_data %>%
   left_join(episode_count, by = c("tconst" = "parentTconst"))
-
-
 ```
 
 
@@ -455,7 +468,7 @@ merged_data <- merged_data %>%
 
 Since our dataset is heavily skewed, the Interquartile Range (IQR) method, was used to detect outliers in the variables considered for analysis by calculating the spread of the data.The IQR measures the spread of the middle 50% data, making the data robust for analysis by handling the skewed data.This is the last step in the data preparation process.
 
-```{r,echo=FALSE,warning=FALSE, message=FALSE}
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
 
 remove_outliers_iqr <- function(column) {
   Q1 <- quantile(column, 0.25)  # Calculate the 25th percentile
@@ -548,6 +561,74 @@ ggplot(cleaned_data, aes(x = episode_count)) +
 ```
 
 
+#### Plot 3: Correlation Heatmap
+
+We plot the correlation heatmap to understand the correlation between the numeric variables and understand any potential multicollinearity issues.
+
+```{r heatmap,echo=FALSE,warning=FALSE, message=FALSE}
+
+install.packages("ggcorrplot")
+library(ggcorrplot)
+
+# Select numeric columns for correlation matrix
+numeric_columns <- cleaned_data %>%
+  select(total_years, episode_count, numVotes, averageRating)
+
+# Compute correlation matrix
+corr_matrix <- cor(numeric_columns, use = "complete.obs")
+
+# Plot the heatmap using ggcorrplot
+ggcorrplot(corr_matrix, 
+           method = "circle", 
+           lab = TRUE, 
+           title = "Correlation Heatmap")
+
+```
+
+
+##### Key insights and implications for the regression model:
+
+###### Multicollinearity 
+
+As we intuitively understand, moderate correlation between `total_years` and `episode_count` (0.46) led us to run two different models : model_1 with total_years & model_2 with episode_count as independent variable,while keeping `numVotes` as a control variable in both models.
+
+
+### Density plots 
+
+After removing the outliers density plots are plotted to check the distribution of data and identifying whether the variables follow a normal distribution or are skewed and the skewed variables are log transformed fro regression. 
+
+
+#### Plot 4: Density plot for total_years
+
+```{r density plot total_years, echo=FALSE,warning=FALSE, message=FALSE}
+# Density plot for total_years
+ggplot(cleaned_data, aes(x = total_years)) +
+  geom_density(fill = "skyblue", alpha = 0.5) +
+  labs(
+    title = "Density Plot of Total Years of TV Series",
+    x = "Total Years",
+    y = "Density"
+  ) +
+  theme_minimal()
+```
+
+##### Inference : The spikes in the density plot of total_years indicate that there are certain natural clusters. eg: series lasting 1, 5, or 10 years.Transforming this variable might distort these natural groupings.No log transformation is applied.
+
+#### Plot 5: Density plot for episode_count
+
+```{r density plot episode_count,echo=FALSE,warning=FALSE, message=FALSE}
+# Density plot for episode_count
+ggplot(cleaned_data, aes(x = episode_count)) +
+  geom_density(fill = "lightgreen", alpha = 0.5) +
+  labs(
+    title = "Density Plot of Total Episodes of TV Series",
+    x = "Total Episodes",
+    y = "Density"
+  ) +
+  theme_minimal()
+```
+
+
 ##### Inference : There is a long tail, hence `episode_count` is log transformed to stabilize variance in the regression model.
 
 
@@ -564,9 +645,6 @@ ggplot(cleaned_data, aes(x = averageRating)) +
   ) +
   theme_minimal()
 
-```
-
-
 ##### Inference : No log transformation required since the skeweness is not as extreme as the other variables.
 
 
@@ -582,9 +660,6 @@ ggplot(cleaned_data, aes(x = numVotes)) +
     y = "Density"
   ) +
   theme_minimal()
-
-```
-
 
 ##### Inference : The density plot shows that the data is extremely skewed and hence a log transformation of `numVotes` is used in the regression analysis to avoid issues of heteroscedasticity.
 
