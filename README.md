@@ -155,17 +155,24 @@ series.</td>
 
 ### 2.1.2 Intial data exploration
 
-#### Plotting Relationship Between TV Series Length(total episodes) and Average Ratings
+
 
 ![](README_files/figure-markdown_strict/setup-1.png)
 
-##### Inference : The graph demonstrates a significant spread of ratings across all episode counts, without any clear pattern or trend.Observations with a low number of episodes are densely populated and exhibit a wide range of ratings, spanning nearly the entire rating scale.Observations with a low number of episodes are densely populated and exhibit a wide range of ratings, spanning nearly the entire rating scale. As the number of episodes increases beyond 5,000, the density of observations decreases.
+##### Inference : The graph demonstrates a significant spread of ratings across all episode counts, without any clear pattern or trend.Observations with a low number of episodes are densely populated and exhibit a wide range of ratings, spanning nearly the entire rating scale.As the number of episodes increases beyond 5,000, the density of observations decreases.
 
-#### Plotting Relationship Between TV Series Length(in years) and Average Ratings
+
 
 ![](README_files/figure-markdown_strict/plot_setup-1.png)
 
 ##### Inference : The scatter plot reveals a relatively uniform spread of average ratings across all series lengths, from shorter series (0–10 years) to longer ones (up to 80 years).
+
+
+
+## Conclusion 
+
+
+
 
 ## Repository Overview
 
@@ -181,6 +188,16 @@ series.</td>
     install.packages("ggplot2")
     install.packages("rmarkdown")
     install.packages("knitr")
+    install.packages("ggcorrplot")
+
+
+## Running Instructions
+
+##### Run the code using make
+
+ 
+
+
 
 ## Authors
 
