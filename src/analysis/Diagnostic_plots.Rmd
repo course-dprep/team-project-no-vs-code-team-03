@@ -1,0 +1,99 @@
+---
+title: "Plots for regression analysis"
+
+author: "team 03"
+date: "2024-09-27"
+output: html_document
+---
+
+## Assumptions of Linear Regression
+
+The assumptions of the linear regression models by generating diagnostic plots.
+
+```{r setup, include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+library(ggplot2)
+library(car)
+```
+
+### Model 1: total_years
+
+```{r model1, include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+model1 <- lm(averageRating ~ total_years + log_numVotes, data = cleaned_data)
+summary(model1)
+```
+
+
+#### Residuals vs. Fitted Plot
+
+```{r residuals plot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+
+plot(model1, which = 1)
+
+```
+
+
+#### Q-Q Plot for normality check
+
+```{r qqplot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+plot(model1, which = 2)
+
+```
+
+
+#### Scale-Location Plot for homoscedasticity check
+
+```{r scale-loc plot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+plot(model1, which = 3)
+```
+
+
+#### Residuals vs. Leverage Plot to detect influential points
+
+```{r residual leverage,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+plot(model1, which = 5)
+```
+
+
+
+
+### Model 2: log_episode_count
+
+```{r model2, include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+model2 <- lm(averageRating ~ log_episode_count + log_numVotes, data = cleaned_data)
+summary(model2)
+```
+
+
+#### Residuals vs. Fitted Plot
+
+```{r residuals plot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+
+plot(model2, which = 1)
+
+```
+
+
+#### Q-Q Plot for normality check
+
+```{r qqplot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+plot(model2, which = 2)
+
+```
+
+
+#### Scale-Location Plot for homoscedasticity check
+
+```{r scale-loc plot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+plot(model2, which = 3)
+```
+
+
+#### Residuals vs. Leverage Plot to detect influential points
+
+```{r leverage,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+plot(model2, which = 5)
+```
+
+
+
+
