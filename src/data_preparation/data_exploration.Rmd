@@ -290,8 +290,6 @@ ggplot(total_episodes_sorted, aes(x = total_episodes, y = averageRating_series_w
 ```
 
 
-#### Plotting TV Series Length (total years run) vs Average Ratings.
-
 ##### Key insights :
 
 - There is a  large concentration of TV shows with fewer than 2,500 episodes, with customer ratings distributed widely between 2.5 and 10.
@@ -335,13 +333,6 @@ ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
     axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels
   )
 ```
-
-
-## Data Preparation
-
-#### Counting the number of missing values (NA) per dataset
-
-To estimate amount of missing data.
 
 
 ##### Key insights : 
@@ -644,6 +635,7 @@ ggplot(cleaned_data, aes(x = averageRating)) +
     y = "Density"
   ) +
   theme_minimal()
+````
 
 ##### Inference : No log transformation required since the skeweness is not as extreme as the other variables.
 
@@ -660,6 +652,7 @@ ggplot(cleaned_data, aes(x = numVotes)) +
     y = "Density"
   ) +
   theme_minimal()
+````
 
 ##### Inference : The density plot shows that the data is extremely skewed and hence a log transformation of `numVotes` is used in the regression analysis to avoid issues of heteroscedasticity.
 
