@@ -190,15 +190,15 @@ Sum_NA_title_ratings <- sum(is.na(title_ratings))
 # The title_ratings dataset has no NA's
 
 
-#----Now lets try and delete the NA's in all three datasets for the branch---#
+#----Now lets try and delete the NA's in the datasets---#
 library(tidyr)
-#remove Na's from title_basics
+#remove NA's from title_basics
 title_basics_no_NAs <- drop_na(title_basics)
 View(title_basics_no_NAs)
 summary(title_basics_no_NAs)
 
 
-#remove Na's from title_episode
+#remove NA's from title_episode
 title_episode_no_NAs <- drop_na(title_episode)
 View(title_episode_no_NAs)
 summary(title_episode_no_NAs) 
@@ -214,7 +214,7 @@ merged_data <- title_basics_no_NAs %>%
 
 #---Create new variable years of tvseries as that is our X variable---#
 
-#Nieuwe column YearEnd-YearStart to look how long the series are..
+#New column YearEnd-YearStart to look how long the series are..
 merged_data <- merged_data %>%
   mutate(series_lengths = endYear-startYear)
 
