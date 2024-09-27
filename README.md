@@ -193,7 +193,6 @@ series.</td>
 
 ##### Run the code using make
 
- 
 
 ## Authors
 
