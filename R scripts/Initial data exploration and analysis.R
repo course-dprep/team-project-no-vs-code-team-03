@@ -191,7 +191,6 @@ Sum_NA_title_ratings <- sum(is.na(title_ratings))
 
 
 #----Now lets try and delete the NA's in the datasets---#
-library(tidyr)
 #remove NA's from title_basics
 title_basics_no_NAs <- drop_na(title_basics)
 View(title_basics_no_NAs)
