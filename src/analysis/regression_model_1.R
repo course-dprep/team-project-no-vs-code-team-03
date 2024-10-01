@@ -25,7 +25,6 @@ summary(model1)
 # Save the model summary to a text file
 capture.output(summary(model1), file = "gen/output/regression_model_1_summary.txt")
 
-message("Model 1: Regression with total_years completed and summary saved.")
 
 
 
