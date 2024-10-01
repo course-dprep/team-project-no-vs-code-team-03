@@ -500,7 +500,7 @@ corr_matrix <- cor(numeric_columns, use = "complete.obs")
 ggcorrplot(corr_matrix, 
            method = "circle", 
            lab = TRUE, 
-           title = "Correlation Heatmap")}
+           title = "Correlation Heatmap")
 
 ```
 
@@ -514,7 +514,7 @@ As we intuitively understand, moderate correlation between `total_years` and `ep
 
 ### Density plots 
 
-After removing the outliers density plots are plotted to check the distribution of data and identifying whether the variables follow a normal distribution or are skewed and the skewed variables are log transformed fro regression. 
+After removing the outliers density plots are plotted to check the distribution of data and identifying whether the variables follow a normal distribution or are skewed and the skewed variables are log transformed for regression. 
 
 
 #### Plot 4: Density plot for total_years
@@ -586,7 +586,7 @@ As we intuitively understand, moderate correlation between `total_years` and `ep
 
 ### Density plots 
 
-After removing the outliers density plots are plotted to check the distribution of data and identifying whether the variables follow a normal distribution or are skewed and the skewed variables are log transformed fro regression. 
+After removing the outliers density plots are plotted to check the distribution of data and identifying whether the variables follow a normal distribution or are skewed and the skewed variables are log transformed for regression. 
 
 
 #### Plot 4: Density plot for total_years
@@ -637,7 +637,7 @@ ggplot(cleaned_data, aes(x = averageRating)) +
   theme_minimal()
 ````
 
-##### Inference : No log transformation required since the skeweness is not as extreme as the other variables.
+##### Inference : Log transformation required since the skeweness is extreme and the log transformation improved the homoscedasticity conditions.
 
 
 #### Plot 7: Density plot for numVotes

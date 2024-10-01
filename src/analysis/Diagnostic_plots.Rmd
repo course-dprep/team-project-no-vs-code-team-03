@@ -8,17 +8,19 @@ output: html_document
 
 ## Assumptions of Linear Regression
 
-The assumptions of the linear regression models by generating diagnostic plots.
+The assumptions of the linear regression models are checked by generating diagnostic plots.The residual plots were first run with only log transformations for `numVotes` in model1 and log transformations for `episode_count` and `numVotes` in model2. However, later the `averageRating` was also log transformed to stabilize variance.
+
 
 ```{r setup, include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
 library(ggplot2)
 library(car)
 ```
 
+
 ### Model 1: total_years
 
 ```{r model1, include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
-model1 <- lm(averageRating ~ total_years + log_numVotes, data = cleaned_data)
+model1 <- lm(log_averageRating ~ total_years + log_numVotes, data = cleaned_data)
 summary(model1)
 ```
 
@@ -32,12 +34,20 @@ plot(model1, which = 1)
 ```
 
 
+# Inference: 
+Residuals vs Fitted plot helps to visually assess whether the assumptions of homoscedasticity hold for model1. The residuals represent the difference between the observed values of `averageRating` (log-transformed) and the fitted values from the model.The residuals appear to be mostly scattered without a visible trend, suggesting that the assumption of linearity has been met.There is clustering visible on the right side, but the spread is less pronounced compared to before log transformation, indicating a positive impact on stabilizing variance.The reduction indicates that the issue of heteroscedasticity has largely improved.
+
+
 #### Q-Q Plot for normality check
 
 ```{r qqplot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
 plot(model1, which = 2)
 
 ```
+
+
+# Inference :
+The Q-Q plot assesses whether the residuals from the regression model follow a normal distribution. Most residuals are generally aligned along the diagonal, indicating that the model captures a reasonable level of normality for the residuals. However, there are noticeable deviations at both extremes of the distribution. This suggests that there may be some non-normality in the extreme values.Given the slight deviation we continue to proceed with the current model since we have already log transformed the variables.
 
 
 #### Scale-Location Plot for homoscedasticity check
@@ -47,6 +57,10 @@ plot(model1, which = 3)
 ```
 
 
+# Inference:
+The scale-location plot provides a visual assessment of the homoscedasticity of residuals.There appears to be increasing variance in the residuals as the fitted values increase. This is a potential limitation, as non-constant variance may lead to unreliable standard errors, which could affect the interpretation of the results.Nevertheless, for the purposes of this analysis, we have decided to proceed with the current model without making further adjustments.But we acknowledge this as a limitation. Future analyses may consider transformations or alternative regression techniques to address this issue and improve model assumptions. 
+
+
 #### Residuals vs. Leverage Plot to detect influential points
 
 ```{r residual leverage,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
@@ -54,12 +68,14 @@ plot(model1, which = 5)
 ```
 
 
+# Inference :
 
+Influential points remain even after the IQR-based outlier removal, this suggests that the dataset still has some influential observations that could be affecting the model's stability and predictions. This is a limitation of the current model, but we decide to overlook it and proceed with our analysis.Note,that these influential points may limit the robustness and reliability of the model's outcomes. 
 
 ### Model 2: log_episode_count
 
 ```{r model2, include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
-model2 <- lm(averageRating ~ log_episode_count + log_numVotes, data = cleaned_data)
+model2 <- lm(log_averageRating ~ log_episode_count + log_numVotes, data = cleaned_data)
 summary(model2)
 ```
 

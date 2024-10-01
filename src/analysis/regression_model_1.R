@@ -10,8 +10,13 @@ cleaned_data <- read.csv("gen/output/cleaned_data.csv")
 cleaned_data <- cleaned_data %>%
   mutate(log_numVotes = log(numVotes + 1))  # Add 1 to avoid log(0)
 
+# Log transform averageRating (dependant variable)
+cleaned_data <- cleaned_data %>%
+  mutate(log_averageRating = log(averageRating + 1))  # Add 1 to avoid log(0)
+
+
 # Run regression
-model1 <- lm(averageRating ~ total_years + log_numVotes, data = cleaned_data)
+model1 <- lm(log_averageRating ~ total_years + log_numVotes, data = cleaned_data)
 
 
 # Summary of the model

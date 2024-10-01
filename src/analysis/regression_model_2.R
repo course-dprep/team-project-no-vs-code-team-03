@@ -7,13 +7,18 @@ install.packages("kableExtra")
 cleaned_data <- read.csv("gen/output/cleaned_data.csv")
 
 
-# Log transform episode_count and numVotes
+# Log transform `episode_count` and `numVotes`
 cleaned_data <- cleaned_data %>%
   mutate(log_episode_count = log(episode_count + 1),  # Add 1 to avoid log(0)
          log_numVotes = log(numVotes + 1))
 
+# Log transform `averageRating` (dependant variable)
+cleaned_data <- cleaned_data %>%
+  mutate(log_averageRating = log(averageRating + 1))  # Add 1 to avoid log(0)
+
 # Run regression
-model2 <- lm(averageRating ~ log_episode_count + log_numVotes, data = cleaned_data)
+model2 <- lm(log_averageRating ~ log_episode_count + log_numVotes, data = cleaned_data)
+
 
 # Summary of the model
 summary(model2)
