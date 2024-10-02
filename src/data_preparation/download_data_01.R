@@ -1,3 +1,16 @@
+###################
+###################
+###DOWNLOAD DATA###
+###################
+###################
+
+# --- Creating directories --- #
+dir.create('../../data')
+dir.create('../../gen')
+dir.create('../../gen/temp')
+dir.create('../../gen/output')
+
+# --- Download Data --- #
 # URLs to the IMDb datasets
 urls <- c(
   "https://datasets.imdbws.com/title.basics.tsv.gz",
@@ -12,6 +25,5 @@ output_files <- c(
   "data/title_ratings.tsv.gz"
 )
 
-# Download the datasets
+# --- Save Data --- #
 mapply(download.file, urls, output_files)
-

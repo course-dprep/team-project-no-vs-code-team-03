@@ -1,17 +1,22 @@
-### Removing outliers 
+###################
+###################
+#REMOVING OUTLIERS#
+###################
+###################
 
-# Load required packages
+# --- Loading libraries and dataset --- #
 library(dplyr)
+library(tidyverse)
 
-# Load the engineered dataset
+engineered_data <- read_csv("gen/output/engineered_data.csv")
 
-engineered_data <- read.csv("gen/output/engineered_data.csv")
+stopifnot(sum(is.na(engineered_data$total_years))==0)
 
+# --- Function for Removing Outliers --- #
 # Define a function to remove outliers using the IQR method
-
 remove_outliers_iqr <- function(column) {
-  Q1 <- quantile(column, 0.25)  # Calculate the 25th percentile
-  Q3 <- quantile(column, 0.75)  # Calculate the 75th percentile
+  Q1 <- quantile(column, 0.25, na.rm=TRUE)  # Calculate the 25th percentile
+  Q3 <- quantile(column, 0.75, na.rm=TRUE)  # Calculate the 75th percentile
   IQR_value <- IQR(column)  # Calculate the IQR (Q3 - Q1)
   lower_bound <- Q1 - 1.5 * IQR_value  # Lower bound for outliers
   upper_bound <- Q3 + 1.5 * IQR_value  # Upper bound for outliers
@@ -22,13 +27,10 @@ remove_outliers_iqr <- function(column) {
 columns_to_check <- c("total_years", "episode_count", "numVotes", "averageRating")
 
 # Apply the IQR method and retain only the non-outliers
-
 cleaned_data <- engineered_data[
   rowSums(sapply(engineered_data[columns_to_check], remove_outliers_iqr)) == length(columns_to_check), 
 ]
 
-# Save the cleaned dataset with outliers removed
+Makefile_Rscript
+# --- Save Data --- #
 write.csv(cleaned_data, file = "gen/output/cleaned_data.csv", row.names = FALSE)
-
-
-

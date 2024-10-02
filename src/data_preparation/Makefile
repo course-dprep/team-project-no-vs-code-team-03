@@ -3,7 +3,7 @@ TEMP = ../../gen/data_preparation/temp
 OUTPUT = ../../gen/data_preparation/output
 
 # Output
-
+All: title_basics.tsv.gz title_episodes.tsv.gz title_ratings.tsv.gz title_basics_no_NAs.csv title_episode_no_NAs.csv merged_data.csv engineered_data.csv cleaned_data.csv
 
 # Download data
 $(DATA)/title_basics.tsv.gz $(DATA)/title_episodes.tsv.gz $(DATA)/title_ratings.tsv.gz : download_data_01.R
