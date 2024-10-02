@@ -20,6 +20,5 @@ file.copy("data/title_ratings.tsv.gz", "gen/output/title_ratings.tsv.gz")
 write.csv(title_basics_no_NAs, file = "gen/output/title_basics_no_NAs.csv", row.names = FALSE)
 write.csv(title_episode_no_NAs, file = "gen/output/title_episode_no_NAs.csv", row.names = FALSE)
 
-# Confirmation message
-message("Dropped missing values")
+
 
