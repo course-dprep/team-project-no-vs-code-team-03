@@ -19,6 +19,5 @@ merged_data <- title_basics_no_NAs %>%
 # Save the merged dataset
 write.csv(merged_data, file = "gen/output/merged_data.csv", row.names = FALSE)
 
-# Confirmation message
-message("Merged datasets and saved the output.")
+
 

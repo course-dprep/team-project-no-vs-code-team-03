@@ -15,5 +15,3 @@ output_files <- c(
 # Download the datasets
 mapply(download.file, urls, output_files)
 
-# Confirmation message
-message("Downloaded IMDb datasets and saved to the 'data' folder.")

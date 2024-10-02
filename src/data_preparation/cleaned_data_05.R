@@ -30,6 +30,5 @@ cleaned_data <- engineered_data[
 # Save the cleaned dataset with outliers removed
 write.csv(cleaned_data, file = "gen/output/cleaned_data.csv", row.names = FALSE)
 
-# Confirmation message
-message("Removed outliers and saved the cleaned dataset.")
+
 

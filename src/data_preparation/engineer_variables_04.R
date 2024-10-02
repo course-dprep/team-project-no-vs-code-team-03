@@ -24,6 +24,4 @@ merged_data <- merged_data %>%
 write.csv(merged_data, file = "gen/output/engineered_data.csv", row.names = FALSE)
 
 
-# Confirmation message
-message("Engineered variables added and saved to the output.")
 
