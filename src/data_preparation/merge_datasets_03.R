@@ -21,3 +21,4 @@ View(merged_data)
 
 # --- Save Data --- #
 write.csv(merged_data, file = "gen/output/merged_data.csv", row.names = FALSE)
+
