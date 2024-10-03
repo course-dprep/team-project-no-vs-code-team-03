@@ -1,4 +1,4 @@
-## 1.1 Research Motivation
+## 1. Research Motivation
 
 The television industry has transformed exceptionally in the past decade
 with the advent of streaming platforms like Netflix, HBO, Amazon Prime,
@@ -37,26 +37,29 @@ engagement, satisfaction, and perceived value.Students can replicate our
 study in different contexts (eg: TV series in different languages) to
 test the variability of our findings.
 
-## 1.1.2 Analysis plan
+## 2. Analysis plan
 
-The first step in our analysis plan was data exploration. This step
-involves computing summary statistics and visualizations, so we can get
-an idea about the structure of our dataset. After exploring the data,
-the next step was data preparation. In the second step, we have handled
-missing observations, transformed variables where necessary, and ensured
-that our dataset is ready for analysis. After exploring and preparing
-the data, we have performed a regression analysis to quantify the
-relationship between TV series length and average customer ratings. We
-have added control variables to ensure our model is not biased. A linear
-regression is conducted to assess the relationship. After conducting a
-linear regression, we have used a t-test to test the alternative
-hypothesis: There is a positive/negative relationship between the length
-of a TV series and the rating for the series. Finally we have summarized
-the key findings.
+The first step in the analysis plan is data exploration. This step
+involves computing summary statistics and visualizations, to obtain 
+an idea about the structure of our dataset. 
+Post this,data preparation is started.
+The missing observations are handled, new variables are engineered wherever
+necessary, this ensures that, the dataset is ready for analysis. 
+Due to high multicollineraity between the  two independent variables 
+total years the series was aired and total episodes the series has,
+two linear regression models are devised.
+Model 1 with total years as the independent 
+variable and model 2 with total episodes as the independent variable. 
+The average rating received by the series is the independent variable 
+upon which the regression is performed.The number of votes is used 
+as a proxy for popularity of the TV series and is used as the control variable.
+The assumptions of linear regression are tested and results are documented.
+The key findings from the regression are summarized in the conclusion.
 
-## 2. Data preparation & analysis
 
-### 2.1.1 Composition of the datasets and description of the variables
+## 3. Data preparation & analysis
+
+### 3.1. Composition of the datasets and description of the variables
 
 ### title.episode.tsv.gz
 
@@ -153,7 +156,7 @@ series.</td>
 </tbody>
 </table>
 
-### 2.1.2 Intial data exploration
+### 3.2. Intial data exploration
 
 
 
@@ -169,14 +172,16 @@ series.</td>
 
 
 
-## Conclusion 
+## 4. Conclusion
+
+The analysis findings suggest that both `total_years` and `episode_count` have statistical significance but small negative effects on the average ratings. As the length of a TV series, both in terms of number of episodes or the number of years it has aired—increases, there is a slight decline in viewer ratings. The control variable, `numVotes`,showed a small negative impact, indicating that higher popularity might lead to more critical reviews.The analysis also suggests that while the length of a series does have an impact on ratings, it is likely not the only or even the primary factor affecting viewer satisfaction. While longer series may offer many benefits, including deep character development, it may also risk losing viewers' interest over time.Further research could include exploring additional variables,to better understand the multifaceted nature of viewer satisfaction.
 
 
-## Repository Overview
+## 5. Repository Overview
 
 -   README.md
 
-## Dependencies
+## 6. Dependencies
 
 #### For R make sure the following packages are installed
 
@@ -189,12 +194,12 @@ series.</td>
     install.packages("ggcorrplot")
 
 
-## Running Instructions
+## 7. Running Instructions
 
 ##### Run the code using make
 
 
-## Authors
+## 8. Authors
 
 -   Gulsen Yiğit, email: <g.yigit@tilburguniversity.edu>
 -   Manju Ganesan Suresh, email:
