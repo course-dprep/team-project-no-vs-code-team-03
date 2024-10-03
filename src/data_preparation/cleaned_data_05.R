@@ -31,6 +31,7 @@ cleaned_data <- engineered_data[
   rowSums(sapply(engineered_data[columns_to_check], remove_outliers_iqr)) == length(columns_to_check), 
 ]
 
-Makefile_Rscript
+# Makefile_Rscript
 # --- Save Data --- #
 write.csv(cleaned_data, file = "gen/output/cleaned_data.csv", row.names = FALSE)
+
