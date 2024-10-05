@@ -15,8 +15,8 @@ $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.t
 	mkdir -p $(DATA)
 	R --vanilla < src/data_preparation/download_data_01.R
 
-# 2: Drop Missing Values and Filter TV Episodes
-$(TEMP)/title_basics_filtered.csv $(TEMP)/title_episode_filtered.csv $(TEMP)/title_ratings.tsv.gz: src/data_preparation/drop_missing_values_02.R $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz
+# 2: Impute,drop, Missing Values and Filter TV Episodes
+$(TEMP)/title_basics_filtered.csv $(TEMP)/title_episode_filtered.csv : src/data_preparation/drop_missing_values_02.R $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz
 	mkdir -p $(TEMP)
 	R --vanilla < src/data_preparation/drop_missing_values_02.R
 
@@ -36,11 +36,12 @@ $(OUTPUT)/cleaned_data.csv : src/data_preparation/cleaned_data_05.R $(TEMP)/engi
 	R --vanilla < src/data_preparation/cleaned_data_05.R
 	
 # 6: Generate R Markdown Report
-$(PAPER)/data_exploration.html : $(PAPER)/data_exploration.Rmd $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz $(TEMP)/title_basics_filtered.csv $(TEMP)/title_episode_filtered.csv
+$(PAPER)/data_exploration.html : $(PAPER)/data_exploration.Rmd $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz \
+    $(TEMP)/title_basics_filtered.csv $(TEMP)/title_episode_filtered.csv $(TEMP)/merged_data.csv $(TEMP)/engineered_data.csv $(OUTPUT)/cleaned_data.csv
 	mkdir -p $(PAPER)
 	Rscript -e "rmarkdown::render('$(PAPER)/data_exploration.Rmd', output_format = 'html_document', output_file = 'data_exploration.html', output_dir = '$(PAPER)')"
 
-.PHONY: clean
+.PHONY: clean 
 
 # Clean up intermediate files (only keep the final cleaned data)
 clean:
