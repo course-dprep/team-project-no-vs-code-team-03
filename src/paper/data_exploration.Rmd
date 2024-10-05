@@ -215,8 +215,7 @@ title_basics_summary <- title_basics %>%
 
 #### Visualization : raw data
 
-##### Plot : 1. Distribution of Ratings for TV Series
-
+##### Plot : 1. Distribution of Ratings for TV Series (raw data)
 
 ```{r ratings distribution raw data,echo=FALSE,warning=FALSE, message=FALSE}
 # Visualize the distribution of average ratings using raw data
@@ -245,7 +244,7 @@ ggplot(tv_series_raw, aes(x = averageRating)) +
 ## Data Preparation
 
 
-### Filtering only TV episodes from titleType, as the RQ is limited only to TV series and dropping missing observations to obtain filtered data. 
+### Filtering only TV episodes from titleType, as the RQ is limited only to TV series and dropping and imputing missing observations to obtain filtered data. 
 
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE}
@@ -258,16 +257,12 @@ title_ratings <- read_delim(gzfile('data/title_ratings.tsv.gz'), delim = "\t", n
 
 ```
 
-
 ### Motivation for dropping missing values (NA)
 
 #### title_basics:
 
-After examining the title_basics dataset, we noticed a significant number of missing values (NAs) in the columns "StartYear," "EndYear," "runtimeMinutes," and "genre." Since our project requires calculating the series length (series_length = EndYear - StartYear), it is crucial to remove rows with missing values in the "StartYear" and "EndYear" columns. Retaining rows with NAs in these columns would result in inaccurate calculations.
-
-Additionally, the columns "runtimeMinutes" and "genre" are not necessary for our analysis, so we will drop them.
-
-Regarding the missing values in "EndYear," there is no feasible way to recover this data in our current dataset. Because the "StartYear" and "EndYear" are specific to each TV series, it does not make sense to impute the missing values with estimates or averages, as this would compromise the accuracy of our analysis. Therefore, we will drop all rows where either "StartYear" or "EndYear" is missing to ensure the integrity of our data.
+After examining the title_basics dataset, it was noticed that a  significant number of missing values (NAs) occur in the columns "StartYear," "EndYear," "runtimeMinutes," and "genre." Since our project requires calculating the series length (series_length = EndYear - StartYear), it is crucial to impute rows with missing values in the "StartYear" and "EndYear" columns. But imputing for `startYear` is inherently misleading, hence imputation is done only for the `endYear`. A group imputation startegy is used to impute values for missing `endYear`.The statYear is group into bins in 15 year intervals which captures temporal trends while reducing variance. The median value of the `endYear` for each group of `startYear` is used to impute the missing `endYear` values.Since, `startYear` gives information about when the show began, it is assumed that shows starting around the same period are likely to end  around the same time.
+Additionally, the columns "runtimeMinutes" and "genre" are not necessary for our analysis, so it is dropped.
 
 
 #### title_episode:
