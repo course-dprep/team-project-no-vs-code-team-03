@@ -8,7 +8,7 @@
 library(dplyr)
 library(tidyverse)
 
-merged_data <- read_csv('gen/output/merged_data.csv')
+merged_data <- read_csv('gen/temp/merged_data.csv')
 
 # --- Create New Variable --- #
 # Transform endYear to numeric
@@ -29,5 +29,5 @@ merged_data <- merged_data %>%
   left_join(episode_count, by = c("tconst" = "parentTconst"))
 
 # --- Save Data --- #
-write.csv(merged_data, file = "gen/output/engineered_data.csv", row.names = FALSE)
+write.csv(merged_data, file = "gen/temp/engineered_data.csv", row.names = FALSE)
 

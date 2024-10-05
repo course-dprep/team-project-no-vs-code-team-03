@@ -124,30 +124,19 @@ Programmatically load the following datasets from IMDb:
 
 
 ```{r load-datasets, echo=FALSE, warning=FALSE, message=FALSE}
+# Load raw datasets for initial exploration
 
-# URLs to the IMDb datasets
-urls <- c(
-  "https://datasets.imdbws.com/title.basics.tsv.gz",
-  "https://datasets.imdbws.com/title.episode.tsv.gz",
-  "https://datasets.imdbws.com/title.ratings.tsv.gz"
-)
+title_basics <- read_delim(gzfile('data/title_basics.tsv.gz'), delim = "\t", na = "\\N")
+title_episode <- read_delim(gzfile('data/title_episode.tsv.gz'), delim = "\t", na = "\\N")
+title_ratings <- read_delim(gzfile('data/title_ratings.tsv.gz'), delim = "\t", na = "\\N")
 
-# Load the datasets
-datasets <- lapply(urls, read_delim, delim = '\t', na = '\\N')
-
-# Access individual datasets
-title_basics <- datasets[[1]]
-title_episode <- datasets[[2]]
-title_ratings <- datasets[[3]]
 
 ```
 
 
 ### Initial Data Exploration
 
-#### Summary Statistics 
-
-##### Get a quick overview of the data by using the code summary()
+#### Summary Statistics of raw data
 
 ###### Summary statistics: title_basics
 
@@ -172,7 +161,7 @@ summary(title_ratings)
 ```
 
 
-#### Specific summary statistics
+#### Specific summary statistics of raw data
 
 ###### Summary statistics : title_episode
 
@@ -223,149 +212,50 @@ title_basics_summary <- title_basics %>%
 
 ```
 
-```{r merging, echo=FALSE, warning=FALSE, message=FALSE}
-# filtering TV series alone using titleType(tvEpisode) from title_basics
 
-tv_series <- title_basics %>%
-  filter(titleType == "tvEpisode")
+#### Visualization : raw data
 
-# Merged with ratings using tconst
+##### Plot : 1. Distribution of Ratings for TV Series
 
-tv_series_ratings <- tv_series %>%
+
+```{r ratings distribution raw data,echo=FALSE,warning=FALSE, message=FALSE}
+# Visualize the distribution of average ratings using raw data
+tv_series_raw <- title_basics %>%
+  filter(titleType == "tvSeries") %>%
   inner_join(title_ratings, by = "tconst")
 
-
-# Merging with title_episode using tconst to add parentTconst to tv_series_ratings
-
-tv_series_ratings_with_parent <- tv_series_ratings %>%
-  left_join(title_episode %>% 
-              select(tconst,parentTconst), by= "tconst")
-
-```
-
-
-### Visualizations
-
-#### TV Series Length vs Average Rating
-
-The below plots help understand the relationship between the length of TV series and average customer ratings.Visualizations as part of our initial exploration of the data, which helps us explore trends and patterns in the data.The length of the TV series will be determined based on the number of episodes or the number of years the series was aired.
-
-
-#### Plot 1: Total Episodes vs. Average Rating
-
-```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE}
-
-# Compute the number of episodes for each series
-
-total_episodes <- title_episode %>%
-  group_by(parentTconst) %>%
-  summarize(total_episodes = n(), .groups = 'drop')  # Count episodes
-
-# Compute and sort the number of episodes for each series
-total_episodes_sorted <- title_episode %>%
-  group_by(parentTconst) %>%
-  summarize(total_episodes = n(), .groups = 'drop') %>%
-  arrange(desc(total_episodes))
-
-# Select and rename the columns from tv_series_ratings_with_parent
-ratings_to_merge <- tv_series_ratings_with_parent[, c("parentTconst", "averageRating")]
-names(ratings_to_merge)[names(ratings_to_merge) == "averageRating"] <- "averageRating_series_wise"
-
-# Merge the two data frames
-total_episodes_sorted <- merge(total_episodes_sorted, 
-                               ratings_to_merge, 
-                               by = "parentTconst", 
-                               all.x = TRUE)
-
-# scatter plot 
-library(ggplot2)
-
-
-ggplot(total_episodes_sorted, aes(x = total_episodes, y = averageRating_series_wise)) +
-  geom_jitter(na.rm = TRUE, alpha = 0.3, size = 1, width = 0.1) +  # Add jitter
+ggplot(tv_series_raw, aes(x = averageRating)) +
+  geom_histogram(binwidth = 0.5, fill = "lightblue", color = "black", alpha = 0.7) +
   labs(
-    title = "Total number of Episodes vs Average Customer Ratings",
-    x = "Total number of Episodes",
-    y = "Average customer Rating"
+    title = "Distribution of Average Ratings (Raw Data)",
+    x = "Average Rating",
+    y = "Frequency"
   ) +
   theme_minimal()
+
 ```
 
-
-##### Key insights :
-
-- There is a  large concentration of TV shows with fewer than 2,500 episodes, with customer ratings distributed widely between 2.5 and 10.
-
-- Series with a very high number of episodes (10,000+) seem to maintain consistent ratings but are generally few in number.
+#### Inference: 
 
 
-##### Inference :
-
-- There seems to be no clear linear relationship, however series that have been running for a long time, seems to  maintain consistent ratings, possibly indicating, that long running series might have a loyal fan base warranting further analysis.
 
 
-#### Plot 2: Total number of years the series was aired vs. Average Rating
-
-
-```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE}
-
-# Convert endYear to character if it is numeric
-tv_series_ratings_with_parent <- tv_series_ratings_with_parent %>%
-  mutate(
-    endYear = as.character(endYear),  
-    endYear = na_if(endYear, '\\N'),  
-    endYear = as.numeric(endYear),    
-    startYear = as.numeric(startYear),
-    length = ifelse(is.na(endYear), 2024 - startYear, endYear - startYear) # Calculate length
-  )
-
-# Scatter plot for Length of TV Series (years) vs Average Ratings
-
-ggplot(tv_series_ratings_with_parent, aes(x = length, y = averageRating)) +
-  geom_jitter(alpha = 0.2, size = 0.7, width = 0.1, height = 0.1) +  # Further reduce point size and opacity
-  geom_smooth(method = "lm", color = "red", se = FALSE) +  # Add a linear trend line
-  labs(
-    x = "Number of years",
-    y = "Average Rating",
-    title = "Number of years the TV Series aired vs. Average Rating"
-  ) +
-  theme_minimal(base_size = 15) +  # Increase text size for better readability
-  theme(
-    plot.title = element_text(hjust = 0.5, face = "bold"),  # Center the title and make it bold
-    axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels
-  )
-```
-
-
-##### Key insights : 
-
-- Most shows are concentrated within a duration of less than 30 years.
-
-- The red line indicates the overall average ratings across all series, it seems to remain fairly constant regardless of the no of years the show was aired.
-
-
-##### Inference :
-
-The stability in ratings for shows that have been running for a longer time, indicates that longevity may not necessarily result in a decline in viewer satisfaction. Further analysis could explain. There is no clear upward or downward trend.The plot also indicates that there might be other factors other than length of the series,might be driving customer ratings, which justifies further regression analysis.
 
 
 ## Data Preparation
 
-#### Counting the number of missing values (NA) per dataset
 
-##### To estimate amount of missing data.
+### Filtering only TV episodes from titleType, as the RQ is limited only to TV series and dropping missing observations to obtain filtered data. 
 
-```{r counting_NA, echo=FALSE, warning=FALSE, message=FALSE}
-#Amount of NA's of title_basics
-Sum_NA_title_basics <-sum(is.na(title_basics))
 
-#Amount of NA's of title_episode
-Sum_NA_title_episode <- sum(is.na(title_episode))
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
 
-#Amount of NA's of title_ratings
-Sum_NA_title_ratings <- sum(is.na(title_ratings))
+# Load filtered datasets for further analysis
 
-#We can see that the title_ratings dataset has no NA's. 
+title_basics_filtered <- read_csv("gen/temp/title_basics_filtered.csv")
+title_episode_filtered <- read_csv("gen/temp/title_episode_filtered.csv")
+title_ratings <- read_delim(gzfile('data/title_ratings.tsv.gz'), delim = "\t", na = "\\N")
+
 ```
 
 
@@ -390,42 +280,121 @@ In this dataset, we observe missing values (NAs) in the columns "seasonNumber" a
 This dataset does not contain missing values(NA) 
 
 
-### Revised summary statistics after dropping the missing values : title_basics 
+### Revised summary statistics of filtered data : title_basics 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-title_basics_no_NAs <- drop_na(title_basics)
-View(title_basics_no_NAs)
-summary(title_basics_no_NAs)
+summary(title_basics_filtered)
 ```
 
 
-### Revised summary statistics after dropping the missing values : title_episode 
+### Revised summary statistics of filtered data  : title_episode 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-title_episode_no_NAs <- drop_na(title_episode)
-View(title_episode_no_NAs)
-summary(title_episode_no_NAs) 
+summary(title_episode_filtered) 
 ```
+
+
+### Visualizations
+
+#### TV Series Length vs Average Rating
+
+The below plots help understand the relationship between the length of TV series and average customer ratings.Visualizations as part of our initial exploration of the data, which helps us explore trends and patterns in the data.The length of the TV series will be determined based on the number of episodes or the number of years the series was aired.
+
+
+#### Plot 2: Count of Episodes vs. Average Rating (Filtered data)
+
+
+```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE}
+
+# Compute the number of episodes for each series in filtered data
+count_episodes_filtered <- title_episode_filtered %>%
+  group_by(parentTconst) %>%
+  summarise(count_episodes = n(), .groups = 'drop')  # Count episodes
+
+
+# Merge total episodes with ratings in filtered data
+filtered_episodes_ratings <- count_episodes_filtered %>%
+  inner_join(title_basics_filtered[, c("tconst", "averageRating")], by = c("parentTconst" = "tconst"))
+
+# Scatter plot for the number of episodes vs average rating (Filtered Data)
+library(ggplot2)
+
+ggplot(filtered_episodes_ratings, aes(x = count_episodes, y = averageRating)) +
+  geom_jitter(alpha = 0.3, size = 1, width = 0.1, height = 0.1, color = "blue") +  
+  
+  labs(
+    title = "Total Number of Episodes vs Average Customer Ratings (Filtered Data)",
+    x = "Total Number of Episodes",
+    y = "Average Customer Rating"
+  ) +
+  theme_minimal()
+
+```
+
+##### Key insights :
+
+
+
+
+##### Inference :
+
+
+
+
+#### Plot 3: Total number of years the series was aired vs. Average Rating (Filtered data)
+
+
+```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE}
+
+# Convert endYear to character if it is numeric, calculate the series length in filtered data
+
+tv_series_ratings_filtered <- title_basics_filtered %>%
+  left_join(title_episode_filtered %>% select(tconst, parentTconst), by = c("tconst" = "parentTconst")) %>%
+  mutate(
+    endYear = as.character(endYear),  
+    endYear = na_if(endYear, '\\N'),  
+    endYear = as.numeric(endYear),    
+    startYear = as.numeric(startYear),
+    length = ifelse(is.na(endYear), 2024 - startYear, endYear - startYear) 
+  )
+
+# Scatter plot for Length of TV Series (years) vs Average Ratings (Filtered Data)
+ggplot(tv_series_ratings_filtered, aes(x = length, y = averageRating)) +
+  geom_jitter(alpha = 0.3, size = 1, width = 0.1, height = 0.1, color = "darkgreen") +  # Adjust jitter for filtered data
+  geom_smooth(method = "lm", color = "red", se = FALSE) +  # Add a linear trend line
+  labs(
+    x = "Number of Years Aired",
+    y = "Average Rating",
+    title = "Number of Years Aired vs Average Rating (Filtered Data)"
+  ) +
+  theme_minimal(base_size = 15) +  # Increase text size for better readability
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),  # Center the title and make it bold
+    axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels for better clarity
+  )
+
+```
+
+
+##### Key insights : 
+
+
+
+
+##### Inference :
 
 
 
 ### Merging the datsets
 
-### Revised summary statistics after dropping the missing values : title_ratings
-
-```{r, echo=FALSE,warning=FALSE, message=FALSE}
-title_ratings_no_NAs <- drop_na(title_ratings)
-View(title_ratings_no_NAs)
-summary(title_ratings_no_NAs) 
-```
+After filtering and cleaning the datasets, we combine them to analyze the relationship between TV series length (number of episodes and total year aired) and customer ratings. We merge title_basics, title_episode, and title_ratings using `tconst` as the key identifier.
 
 
-### Merging the datsets
+```{r,merging-filtered-data, echo=FALSE, warning=FALSE, message=FALSE}
+# Load merged data
 
-```{r, echo=FALSE,warning=FALSE, message=FALSE}
-merged_data <- title_basics_no_NAs %>%
-  inner_join(title_ratings, by = "tconst") %>%
-  inner_join(title_episode_no_NAs, by = c("tconst" = "parentTconst"))
+merged_data <- read_csv("gen/temp/merged_data.csv")
+
 ```
 
 
@@ -441,19 +410,10 @@ A new variable is created that shows how many years a series has run, called `to
 A new variable is created that shows the total number of episodes a series has, called `episode_count`. This variable will be one of the independent variable in our analysis.
 
 ```{r variable engineering, echo=FALSE,warning=FALSE, message=FALSE}
-merged_data <- merged_data %>%
-  mutate(total_years = endYear - startYear)
+# Load engineered data
 
+engineered_data <- read_csv("gen/temp/engineered_data.csv")
 
-# Calculate the total number of episodes for each series
-episode_count <- title_episode_no_NAs %>%
-  group_by(parentTconst) %>%
-  summarise(episode_count = n(), .groups = 'drop')  # Count the number of episodes per series
-
-
-# Merge the episode count back into the merged_data
-merged_data <- merged_data %>%
-  left_join(episode_count, by = c("tconst" = "parentTconst"))
 ```
 
 
@@ -462,23 +422,10 @@ merged_data <- merged_data %>%
 Since our dataset is heavily skewed, the Interquartile Range (IQR) method, was used to detect outliers in the variables considered for analysis by calculating the spread of the data.The IQR measures the spread of the middle 50% data, making the data robust for analysis by handling the skewed data.This is the last step in the data preparation process.
 
 ```{r, echo=FALSE,warning=FALSE, message=FALSE}
+# Load cleaned data
 
-remove_outliers_iqr <- function(column) {
-  Q1 <- quantile(column, 0.25)  # Calculate the 25th percentile
-  Q3 <- quantile(column, 0.75)  # Calculate the 75th percentile
-  IQR_value <- IQR(column)  # Calculate the IQR (Q3 - Q1)
-  lower_bound <- Q1 - 1.5 * IQR_value  # Lower bound for outliers
-  upper_bound <- Q3 + 1.5 * IQR_value  # Upper bound for outliers
-  column >= lower_bound & column <= upper_bound # Returns TRUE for values within bounds
-}
+cleaned_data <- read_csv("gen/output/cleaned_data.csv")
 
-# Columns to check for outliers
-columns_to_check <- c("total_years", "episode_count", "numVotes", "averageRating")
-
-# Apply outlier removal and combine results
-cleaned_data <- merged_data[
-  rowSums(sapply(merged_data[columns_to_check], remove_outliers_iqr)) == length(columns_to_check), 
-]
 ```
 
 
