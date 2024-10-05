@@ -165,8 +165,9 @@ summary(title_ratings)
 
 ###### Summary statistics : title_episode
 
-```{r specific-summary-stats, echo=FALSE, warning=FALSE, message=FALSE}
 
+```{r specific-summary-stats, echo=FALSE, warning=FALSE, message=FALSE}
+library(knitr)
 title_episode_summary <- title_episode %>%
   summarise(num_rows=n(),
             num_cols=ncol(.),
@@ -174,9 +175,8 @@ title_episode_summary <- title_episode %>%
             missing_values_parentTconst=sum(is.na(parentTconst)),
             missing_values_seasonNumber=sum(is.na(seasonNumber)),
             missing_values_episodeNumber=sum(is.na(episodeNumber)) 
-  )%>%
-  print()
-
+  )
+kable(title_episode_summary)
 ```
 
 
@@ -190,8 +190,8 @@ title_ratings_summary <- title_ratings %>%
             missing_values_tconst = sum(is.na(tconst)),
             missing_values_averageRating = sum(is.na(averageRating)),
             missing_values_numVotes = sum(is.na(numVotes))
-  ) %>%
-  print()
+  ) 
+kable(title_ratings_summary)
 
 ```
 
@@ -207,8 +207,8 @@ title_basics_summary <- title_basics %>%
             missing_values_titleType = sum(is.na(titleType)),
             missing_values_startYear= sum(is.na(startYear)),
             missing_values_endYear= sum(is.na(endYear))
-  )%>%
-  print()
+  )
+kable(title_basics_summary)
 
 ```
 
@@ -224,7 +224,7 @@ tv_series_raw <- title_basics %>%
   inner_join(title_ratings, by = "tconst")
 
 ggplot(tv_series_raw, aes(x = averageRating)) +
-  geom_histogram(binwidth = 0.5, fill = "lightblue", color = "black", alpha = 0.7) +
+  geom_histogram(binwidth = 0.5, fill = "lightgreen", color = "black", alpha = 0.7) +
   labs(
     title = "Distribution of Average Ratings (Raw Data)",
     x = "Average Rating",
@@ -235,10 +235,7 @@ ggplot(tv_series_raw, aes(x = averageRating)) +
 ```
 
 #### Inference: 
-
-
-
-
+The histogram is slightly skewed towards the right indicating that most of the ratings fall between the range of 5 to 8.The histogram represent all types of `titleType` like shorts,videos,tvEpisodes,tvseries,documentary etc. 
 
 
 ## Data Preparation
@@ -289,6 +286,44 @@ summary(title_episode_filtered)
 ```
 
 
+### Merging the datsets
+
+After filtering and cleaning the datasets, we combine them to analyze the relationship between TV series length (number of episodes and total years aired) and customer ratings. We merge title_basics, title_episode, and title_ratings using `tconst` as the key identifier.
+
+
+```{r,merging-filtered-data, echo=FALSE, warning=FALSE, message=FALSE}
+# Load merged data
+merged_data <- read_csv("gen/temp/merged_data.csv")
+```
+
+
+### Engineering for new variables: 
+
+#### total_years
+
+A new variable is created that shows how many years a series has run, called `total_years`. This variable will be one of the independent variable in our analysis, and is created by deducting the first year that the series ran from the last year. 
+
+
+#### episode_count
+
+A new variable is created that shows the total number of episodes a series has, called `episode_count`. This variable will be one of the independent variable in our analysis.
+
+```{r variable engineering, echo=FALSE,warning=FALSE, message=FALSE}
+# Load engineered data
+engineered_data <- read_csv("gen/temp/engineered_data.csv")
+```
+
+
+### Removing outliers 
+
+Since our dataset is heavily skewed, the Interquartile Range (IQR) method, was used to detect outliers in the variables considered for analysis by calculating the spread of the data.The IQR measures the spread of the middle 50% data, making the data robust for analysis by handling the skewed data.This is the last step in the data preparation process.
+
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
+# Load cleaned data
+cleaned_data <- read_csv("gen/output/cleaned_data.csv")
+```
+
+
 ### Visualizations
 
 #### TV Series Length vs Average Rating
@@ -296,29 +331,17 @@ summary(title_episode_filtered)
 The below plots help understand the relationship between the length of TV series and average customer ratings.Visualizations as part of our initial exploration of the data, which helps us explore trends and patterns in the data.The length of the TV series will be determined based on the number of episodes or the number of years the series was aired.
 
 
-#### Plot 2: Count of Episodes vs. Average Rating (Filtered data)
-
+#### Plot 2: Count of Episodes vs. Average Rating (cleaned data)
 
 ```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE}
-
-# Compute the number of episodes for each series in filtered data
-count_episodes_filtered <- title_episode_filtered %>%
-  group_by(parentTconst) %>%
-  summarise(count_episodes = n(), .groups = 'drop')  # Count episodes
-
-
-# Merge total episodes with ratings in filtered data
-filtered_episodes_ratings <- count_episodes_filtered %>%
-  inner_join(title_basics_filtered[, c("tconst", "averageRating")], by = c("parentTconst" = "tconst"))
-
-# Scatter plot for the number of episodes vs average rating (Filtered Data)
+# Scatter plot for count of episodes vs average rating (cleaned data)
 library(ggplot2)
 
-ggplot(filtered_episodes_ratings, aes(x = count_episodes, y = averageRating)) +
+ggplot(cleaned_data, aes(x = episode_count, y = averageRating)) +
   geom_jitter(alpha = 0.3, size = 1, width = 0.1, height = 0.1, color = "blue") +  
   
   labs(
-    title = "Total Number of Episodes vs Average Customer Ratings (Filtered Data)",
+    title = "Count of Episodes vs Average Ratings (Cleaned data)",
     x = "Total Number of Episodes",
     y = "Average Customer Rating"
   ) +
@@ -336,38 +359,25 @@ ggplot(filtered_episodes_ratings, aes(x = count_episodes, y = averageRating)) +
 
 
 
-#### Plot 3: Total number of years the series was aired vs. Average Rating (Filtered data)
+#### Plot 3: Total years the series was aired vs. Average Rating (cleaned data)
 
 
 ```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE}
 
-# Convert endYear to character if it is numeric, calculate the series length in filtered data
-
-tv_series_ratings_filtered <- title_basics_filtered %>%
-  left_join(title_episode_filtered %>% select(tconst, parentTconst), by = c("tconst" = "parentTconst")) %>%
-  mutate(
-    endYear = as.character(endYear),  
-    endYear = na_if(endYear, '\\N'),  
-    endYear = as.numeric(endYear),    
-    startYear = as.numeric(startYear),
-    length = ifelse(is.na(endYear), 2024 - startYear, endYear - startYear) 
-  )
-
 # Scatter plot for Length of TV Series (years) vs Average Ratings (Filtered Data)
-ggplot(tv_series_ratings_filtered, aes(x = length, y = averageRating)) +
-  geom_jitter(alpha = 0.3, size = 1, width = 0.1, height = 0.1, color = "darkgreen") +  # Adjust jitter for filtered data
-  geom_smooth(method = "lm", color = "red", se = FALSE) +  # Add a linear trend line
+ggplot(cleaned_data, aes(x = total_years, y = averageRating)) +
+  geom_jitter(alpha = 0.3, size = 1, width = 0.1, height = 0.1, color = "darkgreen") +  
+  geom_smooth(method = "lm", color = "red", se = FALSE) +  
   labs(
     x = "Number of Years Aired",
     y = "Average Rating",
-    title = "Number of Years Aired vs Average Rating (Filtered Data)"
+    title = "Number of Years Aired vs Average Rating (cleaned data)"
   ) +
-  theme_minimal(base_size = 15) +  # Increase text size for better readability
+  theme_minimal(base_size = 15) +  
   theme(
-    plot.title = element_text(hjust = 0.5, face = "bold"),  # Center the title and make it bold
-    axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels for better clarity
+    plot.title = element_text(hjust = 0.5, face = "bold"),  
+    axis.text.x = element_text(angle = 45, hjust = 1)  
   )
-
 ```
 
 
@@ -380,48 +390,6 @@ ggplot(tv_series_ratings_filtered, aes(x = length, y = averageRating)) +
 
 
 
-### Merging the datsets
-
-After filtering and cleaning the datasets, we combine them to analyze the relationship between TV series length (number of episodes and total years aired) and customer ratings. We merge title_basics, title_episode, and title_ratings using `tconst` as the key identifier.
-
-
-```{r,merging-filtered-data, echo=FALSE, warning=FALSE, message=FALSE}
-# Load merged data
-
-merged_data <- read_csv("gen/temp/merged_data.csv")
-
-```
-
-
-### Engineering for new variables: 
-
-#### total_years
-
-A new variable is created that shows how many years a series has run, called `total_years`. This variable will be one of the independent variable in our analysis, and is created by deducting the first year that the series ran from the last year. 
-
-
-#### episode_count
-
-A new variable is created that shows the total number of episodes a series has, called `episode_count`. This variable will be one of the independent variable in our analysis.
-
-```{r variable engineering, echo=FALSE,warning=FALSE, message=FALSE}
-# Load engineered data
-
-engineered_data <- read_csv("gen/temp/engineered_data.csv")
-
-```
-
-
-### Removing outliers 
-
-Since our dataset is heavily skewed, the Interquartile Range (IQR) method, was used to detect outliers in the variables considered for analysis by calculating the spread of the data.The IQR measures the spread of the middle 50% data, making the data robust for analysis by handling the skewed data.This is the last step in the data preparation process.
-
-```{r, echo=FALSE,warning=FALSE, message=FALSE}
-# Load cleaned data
-
-cleaned_data <- read_csv("gen/output/cleaned_data.csv")
-
-```
 
 
 #### Plot 3: Correlation Heatmap
@@ -477,7 +445,8 @@ ggplot(cleaned_data, aes(x = total_years)) +
 ```
 
 
-##### Inference : The spikes in the density plot of total_years indicate that there are certain natural clusters. eg: series lasting 1, 5, or 10 years.Transforming this variable might distort these natural groupings.No log transformation is applied.
+##### Inference : 
+The spikes in the density plot of total_years indicate that there are certain natural clusters. eg: series lasting 1, 5, or 10 years.Transforming this variable might distort these natural groupings.No log transformation is applied.
 
 
 #### Plot 5: Density plot for episode_count
@@ -495,7 +464,8 @@ ggplot(cleaned_data, aes(x = episode_count)) +
 ```
 
 
-##### Inference : There is a long tail, hence `episode_count` is log transformed to stabilize variance in the regression model.
+##### Inference : 
+There is a long tail, hence `episode_count` is log transformed to stabilize variance in the regression model.
 
 
 #### Plot 6: Density plot for averageRating
@@ -512,7 +482,8 @@ ggplot(cleaned_data, aes(x = averageRating)) +
   theme_minimal()
 ````
 
-##### Inference : Log transformation required since the skeweness is extreme and the log transformation improved the homoscedasticity conditions.
+##### Inference : 
+Log transformation required since the skeweness is extreme and the log transformation improved the homoscedasticity conditions.
 
 
 #### Plot 7: Density plot for numVotes
@@ -529,5 +500,6 @@ ggplot(cleaned_data, aes(x = numVotes)) +
   theme_minimal()
 ````
 
-##### Inference : The density plot shows that the data is extremely skewed and hence a log transformation of `numVotes` is used in the regression analysis to avoid issues of heteroscedasticity.
+##### Inference : 
+The density plot shows that the data is extremely skewed and hence a log transformation of `numVotes` is used in the regression analysis to avoid issues of heteroscedasticity.
 

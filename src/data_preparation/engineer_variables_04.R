@@ -10,24 +10,25 @@ library(tidyverse)
 
 merged_data <- read_csv('gen/temp/merged_data.csv')
 
-# --- Create New Variable --- #
-# Transform endYear to numeric
-merged_data$endYear <- as.numeric(merged_data$endYear)
-
+# --- Create New Variables --- #
 
 # total_years and  episode_count
-merged_data <- merged_data %>%
-  mutate(total_years = endYear - startYear)
+engineered_data_01 <- merged_data %>%
+  mutate(
+    endYear = as.numeric(endYear),
+    startYear = as.numeric(startYear),
+    total_years = endYear - startYear
+  )
 
 # Calculate the total number of episodes for each series
 episode_count <- title_episode_filtered %>%
   group_by(parentTconst) %>%
   summarise(episode_count = n(), .groups = 'drop')  # Count the number of episodes per series
 
-# Merge the episode count back into the merged_data
-merged_data <- merged_data %>%
+# Merge the episode count back into the engineered_data
+engineered_data <- engineered_data_01 %>%
   left_join(episode_count, by = c("tconst" = "parentTconst"))
 
 # --- Save Data --- #
-write.csv(merged_data, file = "gen/temp/engineered_data.csv", row.names = FALSE)
+write.csv(engineered_data, file = "gen/temp/engineered_data.csv", row.names = FALSE)
 
