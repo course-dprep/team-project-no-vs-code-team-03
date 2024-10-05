@@ -18,7 +18,7 @@ title_ratings <- read_delim(gzfile("gen/temp/title_ratings.tsv.gz"), delim = "\t
 merged_data <- title_basics_filtered %>%
   inner_join(title_ratings, by = "tconst") %>%
   inner_join(title_episode_filtered, by = c("tconst" = "parentTconst"))
-View(merged_data)
+
 
 # --- Save Data --- #
 write.csv(merged_data, file = "gen/temp/merged_data.csv", row.names = FALSE)

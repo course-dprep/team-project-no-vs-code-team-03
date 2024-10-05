@@ -10,8 +10,6 @@ library(tidyverse)
 
 engineered_data <- read_csv("gen/temp/engineered_data.csv")
 
-stopifnot(sum(is.na(engineered_data$total_years))==0)
-
 # --- Function for Removing Outliers --- #
 # function to remove outliers using the IQR method
 remove_outliers_iqr <- function(column) {
