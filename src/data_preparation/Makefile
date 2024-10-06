@@ -1,6 +1,3 @@
-# Set explicit shell
-SHELL := /bin/bash
-
 # Directory definitions
 ROOT_DIR = ../../
 DATA = $(ROOT_DIR)data
