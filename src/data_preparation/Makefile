@@ -50,7 +50,7 @@ $(OUTPUT)/cleaned_data.csv: $(CLEAN_SCRIPT) $(TEMP)/engineered_data.csv
 $(PAPER)/data_exploration.html: $(PAPER)/data_exploration.Rmd $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz \
     $(TEMP)/title_basics_filtered.csv $(TEMP)/title_episode_filtered.csv $(TEMP)/merged_data.csv $(TEMP)/engineered_data.csv $(OUTPUT)/cleaned_data.csv
 	@mkdir -p $(PAPER)
-	Rscript -e "rmarkdown::render('$(PAPER)/data_exploration.Rmd', output_format = 'html_document', output_file = 'data_exploration.html', output_dir = '$(PAPER)')"
+	Rscript src/paper/report-data_exploration.R
 
 .PHONY: all clean 
 
