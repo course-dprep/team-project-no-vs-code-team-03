@@ -1,3 +1,5 @@
+SHELL := /usr/bin/env bash
+
 # Directory definitions
 ROOT_DIR = ../../
 OUTPUT = $(ROOT_DIR)gen/output
@@ -23,7 +25,7 @@ $(PAPER)/Analysis_Conclusion.html: $(PAPER)/Analysis_Conclusion.Rmd $(OUTPUT)/re
 	Rscript -e "rmarkdown::render('$(PAPER)/Analysis_Conclusion.Rmd', output_format = 'html_document', output_file = 'Analysis_Conclusion.html', output_dir = '$(PAPER)')"
 
 
-.PHONY: clean
+.PHONY: all clean
 
 # Clean up intermediate files (only keep the final HTML reports)
 clean:

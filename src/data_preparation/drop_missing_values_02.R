@@ -8,6 +8,7 @@
 
 library(dplyr)
 library(tidyverse)
+install.packages("here")
 library(here)
 
 title_basics <- read_delim(gzfile('data/title_basics.tsv.gz'), delim = "\t", na = "\\N")
