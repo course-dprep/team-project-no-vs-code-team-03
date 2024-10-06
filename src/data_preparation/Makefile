@@ -52,7 +52,7 @@ $(PAPER)/data_exploration.html: $(PAPER)/data_exploration.Rmd $(DATA)/title_basi
 	@mkdir -p $(PAPER)
 	Rscript -e "rmarkdown::render('$(PAPER)/data_exploration.Rmd', output_format = 'html_document', output_file = 'data_exploration.html', output_dir = '$(PAPER)')"
 
-.PHONY: clean 
+.PHONY: all clean 
 
 # Clean up intermediate files (only keep the final cleaned data)
 clean:
