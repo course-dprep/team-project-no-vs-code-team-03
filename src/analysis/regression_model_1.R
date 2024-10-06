@@ -17,16 +17,20 @@ cleaned_data_model_01 <- cleaned_data %>%
 # Run regression
 model1 <- lm(log_averageRating ~ total_years + log_numVotes, data = cleaned_data_model_01)
 
+
 # Summary of the model
-summary(model1)
+summary_model1 <- summary(model1)
 
-# Generate HTML summary
+# Generate HTML summary 
+html_model1 <- paste(
+  "<html><body><h2>Regression Model 1 Summary</h2>",
+  "<pre>",
+  capture.output(summary_model1$coefficients),
+  "</pre></body></html>",
+  sep = "\n"
+)
 
-html_model1 <- kable(summary(model1)$coefficients, format = "html") %>% 
-  kable_styling()
-save_kable(html_model1, "gen/output/regression_model_1_summary.html")
-
-
-
+# Save the HTML to a file
+writeLines(html_model1, "gen/output/regression_model_1_summary.html")
 
 
