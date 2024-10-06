@@ -1,6 +1,8 @@
 # Regression Model 1: Using total_years
 library(dplyr)
 library(readr)
+library(kableExtra)
+library(knitr)
 
 # Load the cleaned dataset
 cleaned_data <- read_csv("gen/output/cleaned_data.csv")
@@ -22,11 +24,10 @@ summary(model1)
 saveRDS(model1, "gen/output/model1.rds")
 
 # Generate HTML summary
-library(knitr)
-library(kableExtra)
+
 html_model1 <- kable(summary(model1)$coefficients, format = "html") %>% 
   kable_styling()
-writeLines(html_model1, "gen/output/regression_model_1_summary.html")
+save_kable(html_model1, "gen/output/regression_model_1_summary.html")
 
 
 

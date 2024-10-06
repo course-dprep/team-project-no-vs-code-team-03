@@ -1,6 +1,5 @@
 # Regression Model 2: Using episode_count
 library(dplyr)
-install.packages("kableExtra")
 library(knitr)
 library(kableExtra)
 
@@ -25,11 +24,9 @@ summary(model2)
 saveRDS(model2, "gen/output/model2.rds")
 
 # Generate HTML summary
-library(knitr)
-library(kableExtra)
 html_model2 <- kable(summary(model2)$coefficients, format = "html") %>% 
   kable_styling()
-writeLines(html_model2, "gen/output/regression_model_2_summary.html")
+save_kable(html_model2, "gen/output/regression_model_2_summary.html")
 
 
 

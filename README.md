@@ -193,7 +193,7 @@ The analysis findings suggest that both `total_years` and `episode_count` have s
     install.packages("knitr")
     install.packages("ggcorrplot")
     install.packages("here")
-
+    install.packages("kableExtra")
 
 ## 7. Running Instructions
 
