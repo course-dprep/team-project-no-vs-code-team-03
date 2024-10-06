@@ -21,18 +21,15 @@ model2 <- lm(log_averageRating ~ log_episode_count + log_numVotes, data = cleane
 # Summary of the model
 summary(model2)
 
-# Generating html output 
+# Save the model object for later use in RMarkdown
+saveRDS(model2, "gen/output/model2.rds")
 
-html_model1 <- kable(summary(model1)$coefficients, format = "html") %>% 
-  kable_styling()
-
+# Generate HTML summary
+library(knitr)
+library(kableExtra)
 html_model2 <- kable(summary(model2)$coefficients, format = "html") %>% 
   kable_styling()
-
-# Save to output folder
-writeLines(html_model1, "gen/output/regression_model_1_summary.html")
 writeLines(html_model2, "gen/output/regression_model_2_summary.html")
-
 
 
 
