@@ -9,6 +9,7 @@ library(dplyr)
 library(tidyverse)
 
 merged_data <- read_csv('gen/temp/merged_data.csv')
+title_episode_filtered <- read_csv("gen/temp/title_episode_filtered.csv")
 
 # --- Create New Variables --- #
 
