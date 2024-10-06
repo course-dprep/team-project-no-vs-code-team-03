@@ -23,10 +23,12 @@ summary_model1 <- summary(model1)
 
 # Generate HTML summary 
 html_model1 <- paste(
-  "<html><body><h2>Regression Model 1 Summary</h2>",
+  "<html><body>",
+  "<h2>Regression Model 1 Summary</h2>",
   "<pre>",
   capture.output(summary_model1$coefficients),
-  "</pre></body></html>",
+  "</pre>",
+  "</body></html>",
   sep = "\n"
 )
 
