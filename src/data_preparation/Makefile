@@ -18,14 +18,8 @@ all: $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_rati
      $(TEMP)/title_basics_filtered.csv $(TEMP)/title_episode_filtered.csv $(TEMP)/merged_data.csv \
      $(TEMP)/engineered_data.csv $(OUTPUT)/cleaned_data.csv $(PAPER)/data_exploration.html
 
-# create Directory
-directories:
-	@mkdir -p $(DATA) $(TEMP) $(OUTPUT) $(PAPER)
-
-
 # 1: Download Data
 $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz: $(DOWNLOAD_SCRIPT)
-directories
 	@mkdir -p $(DATA)
 	R --vanilla < $(DOWNLOAD_SCRIPT)
 
