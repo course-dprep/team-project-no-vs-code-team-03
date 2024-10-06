@@ -192,6 +192,7 @@ The analysis findings suggest that both `total_years` and `episode_count` have s
     install.packages("rmarkdown")
     install.packages("knitr")
     install.packages("ggcorrplot")
+    install.packages("here")
 
 
 ## 7. Running Instructions
