@@ -20,9 +20,6 @@ model1 <- lm(log_averageRating ~ total_years + log_numVotes, data = cleaned_data
 # Summary of the model
 summary(model1)
 
-# Save the model object for later use in RMarkdown
-saveRDS(model1, "gen/output/model1.rds")
-
 # Generate HTML summary
 
 html_model1 <- kable(summary(model1)$coefficients, format = "html") %>% 
