@@ -1,40 +1,28 @@
-
 # Regression Model 2: Using episode_count
 library(dplyr)
 install.packages("kableExtra")
+library(knitr)
+library(kableExtra)
 
 # Load the cleaned dataset
 cleaned_data <- read.csv("gen/output/cleaned_data.csv")
 
-
-# Log transform `episode_count` and `numVotes`
-cleaned_data <- cleaned_data %>%
-  mutate(log_episode_count = log(episode_count + 1),  # Add 1 to avoid log(0)
-         log_numVotes = log(numVotes + 1))
-
-# Log transform `averageRating` (dependant variable)
-cleaned_data <- cleaned_data %>%
-  mutate(log_averageRating = log(averageRating + 1))  # Add 1 to avoid log(0)
+# Log transform `episode_count`,`numVotes` and `averageRating`
+cleaned_data_model_02 <- cleaned_data %>%
+  mutate(
+    log_episode_count = log(episode_count + 1),  
+    log_averageRating = log(averageRating + 1),
+    log_numVotes = log(numVotes + 1)
+      )
 
 # Run regression
-model2 <- lm(log_averageRating ~ log_episode_count + log_numVotes, data = cleaned_data)
-
+model2 <- lm(log_averageRating ~ log_episode_count + log_numVotes, data = cleaned_data_model_02)
 
 # Summary of the model
 summary(model2)
 
-# Save the model summary to a text file
-capture.output(summary(model2), file = "gen/output/regression_model_2_summary.txt")
-
-
-
 # Generating html output 
 
-# load libraries
-library(knitr)
-library(kableExtra)
-
-# Save model summaries as HTML tables
 html_model1 <- kable(summary(model1)$coefficients, format = "html") %>% 
   kable_styling()
 
