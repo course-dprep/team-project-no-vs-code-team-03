@@ -5,10 +5,10 @@
 ###################
 
 # --- Creating directories --- #
-dir.create('../../data')
-dir.create('../../gen')
-dir.create('../../gen/temp')
-dir.create('../../gen/output')
+dir.create('data')
+dir.create('gen')
+dir.create('gen/temp')
+dir.create('gen/output')
 
 # --- Download Data --- #
 # URLs to the IMDb datasets

@@ -8,7 +8,7 @@
 library(dplyr)
 library(tidyverse)
 
-engineered_data <- read_csv("gen/output/engineered_data.csv")
+engineered_data <- read_csv("gen/temp/engineered_data.csv")
 
 stopifnot(sum(is.na(engineered_data$total_years))==0)
 
