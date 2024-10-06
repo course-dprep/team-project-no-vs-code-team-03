@@ -9,11 +9,11 @@ OUTPUT = $(ROOT_DIR)gen/output
 PAPER = $(ROOT_DIR)src/paper
 
 # Scripts
-DOWNLOAD_SCRIPT = src/data_preparation/download_data_01.R
-DROP_SCRIPT = src/data_preparation/drop_missing_values_02.R
-MERGE_SCRIPT = src/data_preparation/merge_datasets_03.R
-ENGINEER_SCRIPT = src/data_preparation/engineer_variables_04.R
-CLEAN_SCRIPT = src/data_preparation/cleaned_data_05.R
+DOWNLOAD_SCRIPT = $(ROOT_DIR)src/data_preparation/download_data_01.R
+DROP_SCRIPT = $(ROOT_DIR)src/data_preparation/drop_missing_values_02.R
+MERGE_SCRIPT = $(ROOT_DIR)src/data_preparation/merge_datasets_03.R
+ENGINEER_SCRIPT = $(ROOT_DIR)src/data_preparation/engineer_variables_04.R
+CLEAN_SCRIPT = $(ROOT_DIR)src/data_preparation/cleaned_data_05.R
 
 
 # All output targets
@@ -24,27 +24,27 @@ all: $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_rati
 # 1: Download Data
 $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz: $(DOWNLOAD_SCRIPT)
 	@mkdir -p $(DATA)
-	R --vanilla < $(DOWNLOAD_SCRIPT)
+	R --vanilla < "$(DOWNLOAD_SCRIPT)"
 
 # 2: Impute, Drop Missing Values, and Filter TV Series
 $(TEMP)/title_basics_filtered.csv $(TEMP)/title_episode_filtered.csv: $(DROP_SCRIPT) $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz
 	@mkdir -p $(TEMP)
-	R --vanilla < $(DROP_SCRIPT)
+	R --vanilla < "$(DROP_SCRIPT)"
 	
 # 3: Merge Datasets
 $(TEMP)/merged_data.csv: $(MERGE_SCRIPT) $(TEMP)/title_basics_filtered.csv $(TEMP)/title_episode_filtered.csv
 	@mkdir -p $(TEMP)
-	R --vanilla < $(MERGE_SCRIPT)	
+	R --vanilla < "$(MERGE_SCRIPT)"	
 
 # 4: Engineer Variables
 $(TEMP)/engineered_data.csv: $(ENGINEER_SCRIPT) $(TEMP)/merged_data.csv
 	@mkdir -p $(TEMP)
-	R --vanilla < $(ENGINEER_SCRIPT)
+	R --vanilla < "$(ENGINEER_SCRIPT)"
 	
 # 5: Clean the Data
 $(OUTPUT)/cleaned_data.csv: $(CLEAN_SCRIPT) $(TEMP)/engineered_data.csv
 	@mkdir -p $(OUTPUT)
-	R --vanilla < $(CLEAN_SCRIPT)
+	R --vanilla < "$(CLEAN_SCRIPT)"
 	
 # 6: Generate R Markdown Report
 $(PAPER)/data_exploration.html: $(PAPER)/data_exploration.Rmd $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz \
