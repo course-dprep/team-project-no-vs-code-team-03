@@ -1,3 +1,6 @@
+# Set explicit shell
+SHELL := /bin/bash
+
 # Directory definitions
 ROOT_DIR = ../../
 DATA = $(ROOT_DIR)data
@@ -6,10 +9,9 @@ OUTPUT = $(ROOT_DIR)gen/output
 PAPER = $(ROOT_DIR)src/paper
 
 # All output targets
-All: $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz \
+all: $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz \
      $(TEMP)/title_basics_filtered.csv $(TEMP)/title_episode_filtered.csv $(TEMP)/merged_data.csv \
      $(TEMP)/engineered_data.csv $(OUTPUT)/cleaned_data.csv $(PAPER)/data_exploration.html
-
 
 # 1: Download Data
 $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz : src/data_preparation/download_data_01.R

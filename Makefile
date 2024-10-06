@@ -1,3 +1,6 @@
+# Set explicit shell
+SHELL := /bin/bash
+
 # Directory definitions
 DATA_PREPARATION_DIR = src/data_preparation
 ANALYSIS_DIR = src/analysis

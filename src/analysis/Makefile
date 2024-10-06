@@ -1,3 +1,6 @@
+# Set explicit shell
+SHELL := /bin/bash
+
 # Directory definitions
 ROOT_DIR = ../../
 OUTPUT = $(ROOT_DIR)gen/output
@@ -5,7 +8,7 @@ ANALYSIS = $(ROOT_DIR)src/analysis
 PAPER = $(ROOT_DIR)src/paper
 
 # All output targets
-All: $(OUTPUT)/regression_model_1_summary.html $(OUTPUT)/regression_model_2_summary.html $(PAPER)/Analysis_Conclusion.html
+all: $(OUTPUT)/regression_model_1_summary.html $(OUTPUT)/regression_model_2_summary.html $(PAPER)/Analysis_Conclusion.html
 
 # 1: Run Regression Model 1
 $(OUTPUT)/regression_model_1_summary.html : $(ANALYSIS)/regression_model_1.R $(OUTPUT)/cleaned_data.csv
