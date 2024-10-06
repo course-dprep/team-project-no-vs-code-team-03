@@ -51,7 +51,8 @@ $(PAPER)/data_exploration.html: $(PAPER)/data_exploration.Rmd $(DATA)/title_basi
     $(TEMP)/title_basics_filtered.csv $(TEMP)/title_episode_filtered.csv $(TEMP)/merged_data.csv $(TEMP)/engineered_data.csv $(OUTPUT)/cleaned_data.csv
 	@mkdir -p $(PAPER)
 	Rscript src/paper/report-data_exploration.R
-
+	@echo "Report generation complete"
+	
 .PHONY: all clean 
 
 # Clean up intermediate files (only keep the final cleaned data)
