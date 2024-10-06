@@ -1,5 +1,6 @@
 # Regression Model 1: Using total_years
 library(dplyr)
+library(readr)
 
 # Load the cleaned dataset
 cleaned_data <- read_csv("gen/output/cleaned_data.csv")

@@ -11,6 +11,7 @@ REGRESSION_1_SCRIPT = $(ANALYSIS)/regression_model_1.R
 REGRESSION_2_SCRIPT = $(ANALYSIS)/regression_model_2.R
 GENERATE_REPORT_SCRIPT = $(PAPER)/report-analysis_conclusion.R
 
+
 # All output targets
 all: $(OUTPUT)/regression_model_1_summary.html $(OUTPUT)/regression_model_2_summary.html $(PAPER)/Analysis_Conclusion.html
 
