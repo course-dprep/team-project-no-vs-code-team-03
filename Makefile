@@ -2,9 +2,9 @@ SHELL := /bin/bash
 
 # Directory definitions
 SRC = src
-DATA_PREP = "$(SRC)/data_preparation"
-ANALYSIS = "$(SRC)/analysis"
-PAPER = "$(SRC)/paper"
+DATA_PREP =	$(SRC)/data_preparation
+ANALYSIS =	$(SRC)/analysis
+PAPER =	$(SRC)/paper
 
 # sequence
 all: data_preparation analysis paper
