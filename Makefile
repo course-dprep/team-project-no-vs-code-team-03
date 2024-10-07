@@ -1,33 +1,32 @@
-
 SHELL := /bin/bash
 
 # Directory definitions
 SRC = src
-DATA_PREP = $(SRC)/data_preparation
-ANALYSIS = $(SRC)/analysis
-PAPER = $(SRC)/paper
+DATA_PREP = "$(SRC)/data_preparation"
+ANALYSIS = "$(SRC)/analysis"
+PAPER = "$(SRC)/paper"
 
 # sequence
 all: data_preparation analysis paper
 
 # Run the makefile in src/data_preparation
 data_preparation:
-	@$(MAKE) -C src/data_preparation
+	@$(MAKE) -C "$(DATA_PREP)"
 
 # Run the makefile in src/analysis 
 analysis: data_preparation
-	@$(MAKE) -C src/analysis
+	@$(MAKE) -C "$(ANALYSIS)"
 
 # Run the makefile in src/paper 
 paper: analysis
-	@$(MAKE) -C src/paper
+	@$(MAKE) -C "$(PAPER)"
 
 .PHONY: all data_preparation analysis paper clean
 
 # Clean all 
 clean:
-	@$(MAKE) -C $(DATA_PREP) clean
-	@$(MAKE) -C $(ANALYSIS) clean
-	@$(MAKE) -C $(PAPER) clean
+	@$(MAKE) -C "$(DATA_PREP)" clean
+	@$(MAKE) -C "$(ANALYSIS)" clean
+	@$(MAKE) -C "$(PAPER)" clean
 
 
