@@ -1,5 +1,5 @@
 
-SHELL := /usr/bin/env bash
+SHELL := /bin/bash
 
 # Directory definitions
 SRC = src
@@ -12,15 +12,15 @@ all: data_preparation analysis paper
 
 # Run the makefile in src/data_preparation
 data_preparation:
-	@$(MAKE) -C $(DATA_PREP)
+	@$(MAKE) -C src/data_preparation
 
 # Run the makefile in src/analysis 
 analysis: data_preparation
-	@$(MAKE) -C $(ANALYSIS)
+	@$(MAKE) -C src/analysis
 
 # Run the makefile in src/paper 
 paper: analysis
-	@$(MAKE) -C $(PAPER)
+	@$(MAKE) -C src/paper
 
 .PHONY: all data_preparation analysis paper clean
 
