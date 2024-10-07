@@ -19,13 +19,14 @@ model2 <- lm(log_averageRating ~ log_episode_count + log_numVotes, data = cleane
 
 # Summary of the model
 summary_model2 <- summary(model2)
+print(summary_model2)
 
 # Generate HTML summary 
 html_model2 <- paste(
   "<html><body>",
   "<h2>Regression Model 2 Summary</h2>",
   "<pre>",
-  capture.output(summary_model2$coefficients),
+  paste(capture.output(summary_model2$coefficients), collapse = "\n"),
   "</pre>",
   "</body></html>",
   sep = "\n"
