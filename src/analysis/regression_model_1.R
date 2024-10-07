@@ -17,6 +17,9 @@ cleaned_data_model_01 <- cleaned_data %>%
 # Run regression
 model1 <- lm(log_averageRating ~ total_years + log_numVotes, data = cleaned_data_model_01)
 
+# Save the model as an RDS file for using in rmd
+saveRDS(model1, "../../gen/output/model1.rds")
+
 # Summary of the model
 summary_model1 <- summary(model1)
 print(summary_model1)

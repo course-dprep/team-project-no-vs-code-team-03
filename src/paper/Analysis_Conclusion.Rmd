@@ -20,8 +20,8 @@ library(dplyr)
 
 ```{r,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
 # Load the regression models
-model1 <- readRDS("gen/output/model1.rds")
-model2 <- readRDS("gen/output/model2.rds")
+model1 <- readRDS("../../gen/output/model1.rds")
+model2 <- readRDS("../../gen/output/model2.rds")
 ```
 
 
@@ -29,7 +29,7 @@ model2 <- readRDS("gen/output/model2.rds")
 
 #### Residuals vs. Fitted Plot
 
-```{r residuals plot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+```{r residuals plot,include=TRUE,warning=FALSE,echo=FALSE,message=FALSE}
 plot(model1, which = 1)
 ```
 
@@ -40,7 +40,7 @@ Residuals vs Fitted plot helps to visually assess whether the assumptions of hom
 
 #### Q-Q Plot for normality check
 
-```{r qqplot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+```{r qqplot,include=TRUE,warning=FALSE,echo=FALSE,message=FALSE}
 plot(model1, which = 2)
 
 ```
@@ -52,7 +52,7 @@ The Q-Q plot assesses whether the residuals from the regression model follow a n
 
 #### Scale-Location Plot for homoscedasticity check
 
-```{r scale-loc plot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+```{r scale-loc plot,include=TRUE,warning=FALSE,echo=FALSE,message=FALSE}
 plot(model1, which = 3)
 ```
 
@@ -63,7 +63,7 @@ The scale-location plot provides a visual assessment of the homoscedasticity of 
 
 #### Residuals vs. Leverage Plot to detect influential points
 
-```{r residual leverage,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+```{r residual leverage,include=TRUE,warning=FALSE,echo=FALSE,message=FALSE}
 plot(model1, which = 5)
 ```
 
@@ -77,7 +77,7 @@ Influential points with high leverage remain even after the IQR-based outlier re
 
 #### Residuals vs. Fitted Plot
 
-```{r residuals plot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+```{r residuals plot,include=TRUE,warning=FALSE,echo=FALSE,message=FALSE}
 
 plot(model2, which = 1)
 
@@ -90,7 +90,7 @@ The residuals are mostly scattered around the zero line, without a visible trend
 
 #### Q-Q Plot for normality check
 
-```{r qqplot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+```{r qqplot,include=TRUE,warning=FALSE,echo=FALSE,message=FALSE}
 plot(model2, which = 2)
 
 ```
@@ -102,7 +102,7 @@ The deviations at the tails imply that the model does not fully satisfy the norm
 
 #### Scale-Location Plot for homoscedasticity check
 
-```{r scale-loc plot,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+```{r scale-loc plot,include=TRUE,warning=FALSE,echo=FALSE,message=FALSE}
 plot(model2, which = 3)
 ```
 
@@ -114,7 +114,7 @@ There is a discernible spread in the residuals and a pattern exists implying the
 
 #### Residuals vs. Leverage Plot to detect influential points
 
-```{r leverage,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
+```{r leverage,include=TRUE,warning=FALSE,echo=FALSE,message=FALSE}
 plot(model2, which = 5)
 
 ```
@@ -161,7 +161,7 @@ A R2 value of 0.0144 indicates that the model has a low explanatory power and on
 ### Model 2 : `episode_count`
 #### Summary:
 
-```{r summary-model1,warning=FALSE,echo=FALSE,message=FALSE}
+```{r summary-model2,warning=FALSE,echo=FALSE,message=FALSE}
 summary(model2)
 ```
 

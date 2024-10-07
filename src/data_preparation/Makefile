@@ -49,13 +49,7 @@ $(OUTPUT)/cleaned_data.csv: $(CLEAN_SCRIPT) $(TEMP)/engineered_data.csv
 	@mkdir -p $(OUTPUT)
 	Rscript --vanilla "$(CLEAN_SCRIPT)"
 	
-# 6: Generate R Markdown Report
-$(PAPER)/data_exploration.html: $(PAPER)/data_exploration.Rmd $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz \
-    $(TEMP)/title_basics_filtered.csv $(TEMP)/title_episode_filtered.csv $(TEMP)/merged_data.csv $(TEMP)/engineered_data.csv $(OUTPUT)/cleaned_data.csv
-	@mkdir -p $(PAPER)
-	Rscript --vanilla "$(REPORT_SCRIPT)"
-	
-	
+
 .PHONY: all clean 
 
 # Clean up intermediate files (only keep the final cleaned data)

@@ -34,6 +34,7 @@ library(ggplot2)
 library(ggcorrplot)
 library(knitr)
 library(kableExtra)
+library(here)
 ```
 
 ## Introduction
@@ -126,9 +127,9 @@ Programmatically load the following datasets from IMDb:
 ```{r load-datasets, echo=FALSE, warning=FALSE, message=FALSE}
 # Load raw datasets for initial exploration
 
-title_basics <- read_delim(gzfile('data/title_basics.tsv.gz'), delim = "\t", na = "\\N")
-title_episode <- read_delim(gzfile('data/title_episode.tsv.gz'), delim = "\t", na = "\\N")
-title_ratings <- read_delim(gzfile('data/title_ratings.tsv.gz'), delim = "\t", na = "\\N")
+title_basics <- read_delim(gzfile('../../data/title_basics.tsv.gz'), delim = "\t", na = "\\N")
+title_episode <- read_delim(gzfile('../../data/title_episode.tsv.gz'), delim = "\t", na = "\\N")
+title_ratings <- read_delim(gzfile('../../data/title_ratings.tsv.gz'), delim = "\t", na = "\\N")
 
 
 ```
@@ -248,9 +249,9 @@ As the Research Question is limited only to TV series other `titleType` are drop
 
 # Load filtered datasets for further analysis
 
-title_basics_filtered <- read_csv("gen/temp/title_basics_filtered.csv")
-title_episode_filtered <- read_csv("gen/temp/title_episode_filtered.csv")
-title_ratings <- read_delim(gzfile('data/title_ratings.tsv.gz'), delim = "\t", na = "\\N")
+title_basics_filtered <- read_csv("../../gen/temp/title_basics_filtered.csv")
+title_episode_filtered <- read_csv("../../gen/temp/title_episode_filtered.csv")
+title_ratings <- read_delim(gzfile('../../data/title_ratings.tsv.gz'), delim = "\t", na = "\\N")
 
 ```
 
@@ -293,7 +294,7 @@ After filtering and cleaning the datasets, we combine them to analyze the relati
 
 ```{r,merging-filtered-data, echo=FALSE, warning=FALSE, message=FALSE}
 # Load merged data
-merged_data <- read_csv("gen/temp/merged_data.csv")
+merged_data <- read_csv("../../gen/temp/merged_data.csv")
 ```
 
 
@@ -310,7 +311,7 @@ A new variable is created that shows the total number of episodes a series has, 
 
 ```{r variable engineering, echo=FALSE,warning=FALSE, message=FALSE}
 # Load engineered data
-engineered_data <- read_csv("gen/temp/engineered_data.csv")
+engineered_data <- read_csv("../../gen/temp/engineered_data.csv")
 ```
 
 
@@ -320,7 +321,7 @@ Since our dataset is heavily skewed, the Interquartile Range (IQR) method, was u
 
 ```{r, echo=FALSE,warning=FALSE, message=FALSE}
 # Load cleaned data
-cleaned_data <- read_csv("gen/output/cleaned_data.csv")
+cleaned_data <- read_csv("../../gen/output/cleaned_data.csv")
 ```
 
 

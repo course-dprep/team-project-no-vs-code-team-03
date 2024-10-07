@@ -21,6 +21,11 @@ model2 <- lm(log_averageRating ~ log_episode_count + log_numVotes, data = cleane
 summary_model2 <- summary(model2)
 print(summary_model2)
 
+
+# Save the model as an RDS file
+saveRDS(model2, "gen/output/model2.rds")
+
+
 # Generate HTML summary 
 html_model2 <- paste(
   "<html><body>",

@@ -28,7 +28,7 @@ $(OUTPUT)/regression_model_2_summary.html: $(REGRESSION_SCRIPT_2) $(OUTPUT)/clea
 
 .PHONY: all clean
 
-# Clean up intermediate files (keep the cleaned data and final regression summaries)
+# Clean 
 clean:
 	rm -f $(OUTPUT)/regression_model_1_summary.html $(OUTPUT)/regression_model_2_summary.html
 
