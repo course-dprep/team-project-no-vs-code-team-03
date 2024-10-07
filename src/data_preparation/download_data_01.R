@@ -15,9 +15,9 @@ urls <- c(
 
 # Paths to save the datasets in the data folder
 output_files <- c(
-  "data/title_basics.tsv.gz",
-  "data/title_episode.tsv.gz",
-  "data/title_ratings.tsv.gz"
+  "../../data/title_basics.tsv.gz",
+  "../../data/title_episode.tsv.gz",
+  "../../data/title_ratings.tsv.gz"
 )
 
 # --- Save Data --- #
