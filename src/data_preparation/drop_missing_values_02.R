@@ -28,7 +28,7 @@ title_ratings <- read_delim(gzfile('../../data/title_ratings.tsv.gz'), delim = '
 # 1: Filter only TV series and remove rows with missing startYear
 
 title_basics_filtered <- title_basics %>%
-  filter(titleType == "tvSeries" & !is.na(startYear))
+  dplyr::filter(titleType == "tvSeries" & !is.na(startYear))
 
 # 2. Impute missing endYear values using a rolling window of 15 years
 # Adding a new column to group by 15-year intervals for median calculation
@@ -49,7 +49,7 @@ title_basics_filtered <- title_basics_filtered %>%
 
 # Dropping missing values in title_episode
 title_episode_filtered <- title_episode %>%
-  filter(!is.na(seasonNumber) & !is.na(episodeNumber))
+  dplyr::filter(!is.na(seasonNumber) & !is.na(episodeNumber))
 
 
 # --- Save Data --- #
