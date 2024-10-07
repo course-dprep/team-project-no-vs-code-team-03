@@ -1,24 +1,33 @@
+
 SHELL := /usr/bin/env bash
 
 # Directory definitions
-DATA_PREPARATION_DIR = src/data_preparation
-ANALYSIS_DIR = src/analysis
+SRC = src
+DATA_PREP = $(SRC)/data_preparation
+ANALYSIS = $(SRC)/analysis
+PAPER = $(SRC)/paper
 
-# Targets
-.PHONY: all data-preparation analysis clean
+# sequence
+all: data_preparation analysis paper
 
-# Run the entire workflow
-all: data-preparation analysis
+# Run the makefile in src/data_preparation
+data_preparation:
+	@$(MAKE) -C $(DATA_PREP)
 
-# 1: Run Data Preparation Makefile
-data-preparation:
-	$(MAKE) -C $(DATA_PREPARATION_DIR)
+# Run the makefile in src/analysis 
+analysis: data_preparation
+	@$(MAKE) -C $(ANALYSIS)
 
-# 2: Run Analysis Makefile
-analysis: data-preparation
-	$(MAKE) -C $(ANALYSIS_DIR)
+# Run the makefile in src/paper 
+paper: analysis
+	@$(MAKE) -C $(PAPER)
 
-# Clean up all generated files
+.PHONY: all data_preparation analysis paper clean
+
+# Clean all 
 clean:
-	$(MAKE) -C $(DATA_PREPARATION_DIR) clean
-	$(MAKE) -C $(ANALYSIS_DIR) clean
+	@$(MAKE) -C $(DATA_PREP) clean
+	@$(MAKE) -C $(ANALYSIS) clean
+	@$(MAKE) -C $(PAPER) clean
+
+

@@ -25,7 +25,6 @@ $(OUTPUT)/regression_model_2_summary.html: $(REGRESSION_SCRIPT_2) $(OUTPUT)/clea
 	@mkdir -p $(OUTPUT)
 	Rscript --vanilla "$(REGRESSION_SCRIPT_2)"
 
-
 .PHONY: all clean
 
 # Clean 
