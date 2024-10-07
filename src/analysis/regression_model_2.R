@@ -23,7 +23,7 @@ print(summary_model2)
 
 
 # Save the model as an RDS file
-saveRDS(model2, "gen/output/model2.rds")
+saveRDS(model2, "../../gen/output/model2.rds")
 
 
 # Generate HTML summary 
