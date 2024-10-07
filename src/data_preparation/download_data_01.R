@@ -4,12 +4,7 @@
 ###################
 ###################
 
-# --- Creating directories --- #
-dir.create('data')
-dir.create('gen')
-dir.create('gen/temp')
-dir.create('gen/output')
-
+# INPUT
 # --- Download Data --- #
 # URLs to the IMDb datasets
 urls <- c(

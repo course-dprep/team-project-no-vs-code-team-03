@@ -8,7 +8,7 @@
 library(dplyr)
 library(tidyverse)
 
-engineered_data <- read_csv("gen/temp/engineered_data.csv")
+engineered_data <- read_csv("../../gen/temp/engineered_data.csv")
 
 # --- Function for Removing Outliers --- #
 # function to remove outliers using the IQR method
@@ -31,5 +31,5 @@ cleaned_data <- engineered_data[
 
 
 # --- Save Data --- #
-write.csv(cleaned_data, file = "gen/output/cleaned_data.csv", row.names = FALSE)
+write.csv(cleaned_data, file = "../../gen/output/cleaned_data.csv", row.names = FALSE)
 

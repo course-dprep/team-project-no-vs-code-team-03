@@ -10,6 +10,8 @@ library(dplyr)
 library(tidyverse)
 library(here)
 
+# INPUT
+
 title_basics <- read_delim(gzfile('data/title_basics.tsv.gz'), delim = "\t", na = "\\N")
 title_episode <- read_delim(gzfile('data/title_episode.tsv.gz'), delim = '\t', na = "\\N")
 title_ratings <- read_delim(gzfile('data/title_ratings.tsv.gz'), delim = '\t', na = "\\N")
@@ -23,7 +25,7 @@ title_ratings <- read_delim(gzfile('data/title_ratings.tsv.gz'), delim = '\t', n
 # dropping missing seasonNumber, episodeNumber in title_episode
 # no missing values in title_ratings
 
-# 1: Filter only TV episodes and remove rows with missing startYear
+# 1: Filter only TV series and remove rows with missing startYear
 
 title_basics_filtered <- title_basics %>%
   filter(titleType == "tvSeries" & !is.na(startYear))
@@ -51,9 +53,9 @@ title_episode_filtered <- title_episode %>%
 
 
 # --- Save Data --- #
-write.csv(title_basics_filtered, file = "gen/temp/title_basics_filtered.csv", row.names = FALSE)
-write.csv(title_episode_filtered, file = "gen/temp/title_episode_filtered.csv", row.names = FALSE)
-file.copy("data/title_ratings.tsv.gz", "gen/temp/title_ratings.tsv.gz",overwrite = TRUE)  # Copying the title_ratings file (as it has no missing values)
+write.csv(title_basics_filtered, file = "../../gen/temp/title_basics_filtered.csv", row.names = FALSE)
+write.csv(title_episode_filtered, file = "../../gen/temp/title_episode_filtered.csv", row.names = FALSE)
+file.copy("../../data/title_ratings.tsv.gz", "../../gen/temp/title_ratings.tsv.gz",overwrite = TRUE)  # Copying the title_ratings file (as it has no missing values)
 
 
 

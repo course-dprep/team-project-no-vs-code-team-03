@@ -8,8 +8,8 @@
 library(dplyr)
 library(tidyverse)
 
-merged_data <- read_csv('gen/temp/merged_data.csv')
-title_episode_filtered <- read_csv("gen/temp/title_episode_filtered.csv")
+merged_data <- read_csv('../../gen/temp/merged_data.csv')
+title_episode_filtered <- read_csv("../../gen/temp/title_episode_filtered.csv")
 
 # --- Create New Variables --- #
 
@@ -31,5 +31,5 @@ engineered_data <- engineered_data_01 %>%
   left_join(episode_count, by = c("tconst" = "parentTconst"))
 
 # --- Save Data --- #
-write.csv(engineered_data, file = "gen/temp/engineered_data.csv", row.names = FALSE)
+write.csv(engineered_data, file = "../../gen/temp/engineered_data.csv", row.names = FALSE)
 
