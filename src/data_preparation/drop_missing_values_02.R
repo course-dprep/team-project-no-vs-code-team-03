@@ -12,9 +12,9 @@ library(here)
 
 # INPUT
 
-title_basics <- read_delim(gzfile('data/title_basics.tsv.gz'), delim = "\t", na = "\\N")
-title_episode <- read_delim(gzfile('data/title_episode.tsv.gz'), delim = '\t', na = "\\N")
-title_ratings <- read_delim(gzfile('data/title_ratings.tsv.gz'), delim = '\t', na = "\\N")
+title_basics <- read_delim(gzfile('../../data/title_basics.tsv.gz'), delim = "\t", na = "\\N")
+title_episode <- read_delim(gzfile('../../data/title_episode.tsv.gz'), delim = '\t', na = "\\N")
+title_ratings <- read_delim(gzfile('../../data/title_ratings.tsv.gz'), delim = '\t', na = "\\N")
 
 
 # --- Dropping NAs --- #
