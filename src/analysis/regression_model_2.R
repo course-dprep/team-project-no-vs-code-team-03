@@ -1,10 +1,10 @@
 # Regression Model 2: Using episode_count
 library(dplyr)
-library(knitr)
+library(readr)
 library(kableExtra)
 
 # Load the cleaned dataset
-cleaned_data <- read.csv("gen/output/cleaned_data.csv")
+cleaned_data <- read_csv("../../gen/output/cleaned_data.csv") 
 
 # Log transform `episode_count`,`numVotes` and `averageRating`
 cleaned_data_model_02 <- cleaned_data %>%
@@ -12,7 +12,7 @@ cleaned_data_model_02 <- cleaned_data %>%
     log_episode_count = log(episode_count + 1),  
     log_averageRating = log(averageRating + 1),
     log_numVotes = log(numVotes + 1)
-      )
+  )
 
 # Run regression
 model2 <- lm(log_averageRating ~ log_episode_count + log_numVotes, data = cleaned_data_model_02)
@@ -32,7 +32,7 @@ html_model2 <- paste(
 )
 
 # Save the HTML to a file
-writeLines(html_model2, "gen/output/regression_model_2_summary.html")
+writeLines(html_model2, "../../gen/output/regression_model_2_summary.html")
 
 
 

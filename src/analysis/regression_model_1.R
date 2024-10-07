@@ -5,18 +5,17 @@ library(kableExtra)
 library(knitr)
 
 # Load the cleaned dataset
-cleaned_data <- read_csv("gen/output/cleaned_data.csv")
+cleaned_data <- read_csv("../../gen/output/cleaned_data.csv")  # Updated path to align with Makefile
 
-# Log transform numVotes (control variable) and averageRating (dependant variable)
+# Log transform numVotes (control variable) and averageRating (dependent variable)
 cleaned_data_model_01 <- cleaned_data %>%
   mutate(
     log_numVotes = log(numVotes + 1), 
     log_averageRating = log(averageRating + 1)
-      )
+  )
 
 # Run regression
 model1 <- lm(log_averageRating ~ total_years + log_numVotes, data = cleaned_data_model_01)
-
 
 # Summary of the model
 summary_model1 <- summary(model1)
@@ -33,6 +32,5 @@ html_model1 <- paste(
 )
 
 # Save the HTML to a file
-writeLines(html_model1, "gen/output/regression_model_1_summary.html")
-
+writeLines(html_model1, "../../gen/output/regression_model_1_summary.html")
 
