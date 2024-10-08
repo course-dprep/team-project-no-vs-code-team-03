@@ -21,7 +21,7 @@ REPORT_SCRIPT = $(PAPER)/report-data_exploration.R
 # All output targets
 all: $(DATA)/title_basics.tsv.gz $(DATA)/title_episode.tsv.gz $(DATA)/title_ratings.tsv.gz \
      $(TEMP)/title_basics_filtered.csv $(TEMP)/title_episode_filtered.csv $(TEMP)/merged_data.csv \
-     $(TEMP)/engineered_data.csv $(OUTPUT)/cleaned_data.csv $(PAPER)/data_exploration.html
+     $(TEMP)/engineered_data.csv $(OUTPUT)/cleaned_data.csv 
 
 
 # 1: Download Data
