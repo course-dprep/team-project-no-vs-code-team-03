@@ -10,6 +10,10 @@ output: html_document
 
 The assumptions of the linear regression models are checked by generating diagnostic plots.The residual plots were first run with only log transformations for `numVotes` in model1 and log transformations for `episode_count` and `numVotes` in model2. However, later the `averageRating` was also log transformed to stabilize variance.
 
+```{r}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message= FALSE,fig.width = 8,fig.height = 6,fig.align = 'center',dpi=300,dev='png',fig.retina = 2)
+```
+
 
 ```{r setup, include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
 library(ggplot2)
