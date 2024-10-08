@@ -471,7 +471,7 @@ There is a long tail, hence `episode_count` is log transformed to stabilize vari
 
 #### Plot 6: Density plot for averageRating
 
-```{r density plot averageRating, echo=FALSE,warning=FALSE, message=FALSE}
+````{r density plot averageRating, echo=FALSE,warning=FALSE, message=FALSE}
 # Density plot for averageRating
 ggplot(cleaned_data, aes(x = averageRating)) +
   geom_density(fill = "salmon", alpha = 0.5) +
@@ -481,7 +481,7 @@ ggplot(cleaned_data, aes(x = averageRating)) +
     y = "Density"
   ) +
   theme_minimal()
-````
+```
 
 ##### Inference : 
 Log transformation required since the skeweness is extreme and the log transformation improved the homoscedasticity conditions.
