@@ -41,17 +41,14 @@ test the variability of our findings.
 
 The first step in the analysis plan is data exploration. This step
 involves computing summary statistics and visualizations, to obtain 
-an idea about the structure of our dataset. 
-Post this,data preparation is started.
-The missing observations are handled, new variables are engineered wherever
+an idea about the structure of the dataset.Post this,data preparation is done.
+The missing observations are imputed or dropped, new variables are engineered wherever
 necessary, this ensures that, the dataset is ready for analysis. 
-Due to high multicollineraity between the  two independent variables 
-total years the series was aired and total episodes the series has,
-two linear regression models are devised.
-Model 1 with total years as the independent 
-variable and model 2 with total episodes as the independent variable. 
-The average rating received by the series is the independent variable 
-upon which the regression is performed.The number of votes is used 
+Due to low correlation between the  two independent variables 
+total years the series airs and total episodes the series has,
+a multiple linear regression model is devised.
+The average rating received by the series is the dependent variable 
+upon which the regression is performed.The The number of votes is used 
 as a proxy for popularity of the TV series and is used as the control variable.
 The assumptions of linear regression are tested and results are documented.
 The key findings from the regression are summarized in the conclusion.
@@ -162,26 +159,35 @@ series.</td>
 
 ![](README_files/figure-markdown_strict/setup-1.png)
 
-##### Inference : The graph demonstrates a significant spread of ratings across all episode counts, without any clear pattern or trend.Observations with a low number of episodes are densely populated and exhibit a wide range of ratings, spanning nearly the entire rating scale.As the number of episodes increases beyond 5,000, the density of observations decreases.
+##### Inference : 
+The graph demonstrates a significant spread of ratings across all episode counts, without any clear pattern or trend.Observations with a low number of episodes are densely populated and exhibit a wide range of ratings, spanning nearly the entire rating scale.As the number of episodes increases beyond 5,000, the density of observations decreases.
 
 
 
 ![](README_files/figure-markdown_strict/plot_setup-1.png)
 
-##### Inference : The scatter plot reveals a relatively uniform spread of average ratings across all series lengths, from shorter series (0–10 years) to longer ones (up to 80 years).
+##### Inference : 
+The scatter plot reveals a relatively uniform spread of average ratings across all series lengths, from shorter series (0–10 years) to longer ones (up to 80 years).
 
 
 
 ## 4. Conclusion
 
-The analysis findings suggest that both `total_years` and `episode_count` have statistical significance but small negative effects on the average ratings. As the length of a TV series, both in terms of number of episodes or the number of years it has aired—increases, there is a slight decline in viewer ratings. The control variable, `numVotes`,showed a small negative impact, indicating that higher popularity might lead to more critical reviews.The analysis also suggests that while the length of a series does have an impact on ratings, it is likely not the only or even the primary factor affecting viewer satisfaction. While longer series may offer many benefits, including deep character development, it may also risk losing viewers' interest over time.Further research could include exploring additional variables,to better understand the multifaceted nature of viewer satisfaction.
+The analysis findings suggest that both `total_years` and `episode_count` have statistical significance but small effects on the dependent variable `averageRating`. The findings indicate that longer series in terms of episode count are associated with slightly lower ratings. This suggests that viewer engagement might decrease as the number of episodes increases, likely due to viewer fatigue.However, the number of years a series airs has a small but positive impact on ratings. This indicates that series that have longevity in terms of years tend to perform slightly better in terms of ratings, possibly due to a loyal viewer base.The number of votes (as a proxy for popularity) is negatively associated with ratings, suggesting that series with a broader reach may face more critical reviews from a diverse audience, leading to slightly lower average ratings.Despite the statistical significance of these variables, the overall explanatory power of the model is limited, as evidenced by the low R-squared value. This suggests that there maybe other factors that play a more substantial role in determining the success of a TV series.While the length of a series should be a consideration for content creators and producers, it is not the sole determinant of a series' success. Further research should explore additional factors that contribute to viewer satisfaction and engagement to provide a more comprehensive understanding of what drives TV series ratings.
 
 
 ## 5. Repository Overview
 
--   README.md
+```
+├── data ├── gen │ ├── output │ └── temp ├── src │ ├── data_preparation │ ├── analysis │ └── paper ├── .gitignore ├── README.md └── makefile
+
+```
 
 ## 6. Dependencies
+
+### Software
+
+For this research, the downloading of the data, the cleaning of the data and regression was done using R and Rstudio. To automate the workflow a makefile is created.Git bash is used additionally to run the analysis from the terminal.
 
 #### For R make sure the following packages are installed
 
@@ -192,12 +198,22 @@ The analysis findings suggest that both `total_years` and `episode_count` have s
     install.packages("rmarkdown")
     install.packages("knitr")
     install.packages("ggcorrplot")
-
+    install.packages("here")
+    install.packages("kableExtra")
+    install.packages("car")
 
 ## 7. Running Instructions
 
-##### Run the code using make
+Running the makefile in the root directory will run each source code in the right sequence leading eventually to the results of the analysis. 
 
+Step 1: Fork the repository to your GitHub account
+Step 2: Clone the repository to the local computer using Git bash.Choose working directory and use git clone the repository using gitbash 
+
+```markdown
+
+https://github.com/course-dprep/IMDB-Binge-Factor.git
+
+```
 
 ## 8. Authors
 
