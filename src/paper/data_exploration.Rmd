@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message= FALSE,fig.width = 
 ```
 
 
-### Install necessary pacakges for data exploration
+#### 0. Install necessary pacakges for data exploration
 
 The following libraries are required for this analysis: 
 
@@ -37,11 +37,11 @@ library(kableExtra)
 library(here)
 ```
 
-## Introduction
+## 1. Introduction
 
 This report provides the initial data exploration of the data sets. Our goal is to provide the structure of our data set,summarize key variables,and provide some basic exploratory visualizations. The data set contains information about TV series, including customer ratings, number of episodes and series duration.
  
-## Overview of the Dataset and Variables
+### 1.1. Overview of the Dataset and Variables
 
 The dataset used in the project contains information about TV series and episodes from IMD Since we are interested in understanding the relationship between the length of the TV series and it's average customer ratings, we focus on the three datasets listed and described below.
 
@@ -53,10 +53,10 @@ The dataset used in the project contains information about TV series and episode
 
 
 
-## Description of Variables
+## 2. Description of Variables
 
 
-#### title.episode.tsv.gz
+### 2.1. title.episode.tsv.gz
 
 ```{r variables-episode,echo=FALSE}
 variables_episode <- data.frame(
@@ -75,7 +75,7 @@ knitr::kable(variables_episode,col.names = c("Variables","Description","Class"))
 ```
 
 
-#### title.basics.tsv.gz
+### 2.2. title.basics.tsv.gz
 
 ```{r variables-basics,echo=FALSE}
 # Create a data frame for title.basics.tsv.gz
@@ -94,7 +94,7 @@ knitr::kable(variables_basics, col.names = c("Variables", "Description","Class")
 ```
 
 
-#### title.ratings.tsv.gz
+### 2.3. title.ratings.tsv.gz
 
 ```{r variables-ratings, echo=FALSE}
 # Create a data frame for title.ratings.tsv.gz
@@ -113,9 +113,8 @@ knitr::kable(variables_ratings, col.names = c("Variables", "Description", "Class
 ```
 
 
-### Loading the Datasets
+## 3. Datasets Description
 
-Programmatically load the following datasets from IMDb:
 
 - **title.basics.tsv.gz**: Contains information about movie and TV series titles, their start year, genres, etc.
 
@@ -135,11 +134,9 @@ title_ratings <- read_delim(gzfile('../../data/title_ratings.tsv.gz'), delim = "
 ```
 
 
-### Initial Data Exploration
+## 4. Initial Data Exploration: Raw Data
 
-#### Summary Statistics of raw data
-
-###### Summary statistics: title_basics
+#### title_basics
 
 
 ```{r summary-stats, echo=FALSE, warning=FALSE, message=FALSE}
@@ -148,23 +145,22 @@ summary(title_basics)
 ```
 
 
-###### Summary statistics: title_episode
+#### title_episode
 
 ```{r}
 summary(title_episode)
 ```
 
-
-###### Summary statistics: title_ratings
+#### title_ratings
 
 ```{r}
 summary(title_ratings)
 ```
 
 
-#### Specific summary statistics of raw data
+### 4.1. Specific summary statistics of raw data
 
-###### Summary statistics : title_episode
+#### title_episode
 
 
 ```{r specific-summary-stats, echo=FALSE, warning=FALSE, message=FALSE}
@@ -181,7 +177,7 @@ kable(title_episode_summary)
 ```
 
 
-##### Summary statistics : title_ratings
+#### title_ratings
 
 ```{r specific-summary-stat-2, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -197,7 +193,7 @@ kable(title_ratings_summary)
 ```
 
 
-##### Summary statistics : title_basics
+#### title_basics
 
 ```{r specific-summary-stat-3, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -214,9 +210,10 @@ kable(title_basics_summary)
 ```
 
 
-#### Visualization : raw data
+## 5. Visualization : raw data
 
-##### Plot : 1. Distribution of Ratings for TV Series (raw data)
+### Plot : 1. Distribution of Ratings for TV Series (raw data)
+
 
 ```{r ratings distribution raw data,echo=FALSE,warning=FALSE, message=FALSE}
 # Visualize the distribution of average ratings using raw data
@@ -239,9 +236,10 @@ ggplot(tv_series_raw, aes(x = averageRating)) +
 The histogram is slightly skewed towards the right indicating that most of the ratings fall between the range of 5 to 8.The histogram represent all types of `titleType` like shorts,videos,tvEpisodes,tvseries,documentary etc. 
 
 
-## Data Preparation
+## 6. Data Preparation
 
-### Filtering only TV series from titleType
+### 6.1. Filtering only TV series from titleType
+
 As the Research Question is limited only to TV series other `titleType` are dropped. 
 
 
@@ -255,12 +253,11 @@ title_ratings <- read_delim(gzfile('../../data/title_ratings.tsv.gz'), delim = "
 
 ```
 
-### Motivation for dropping missing values (NA)
+### 6.2. Motivation for dropping missing values (NA)
 
 #### title_basics:
 
-After examining the title_basics dataset, it was noticed that a  significant number of missing values (NAs) occur in the columns "StartYear," "EndYear," "runtimeMinutes," and "genre." Since our project requires calculating the series length (series_length = EndYear - StartYear), it is crucial to impute rows with missing values in the "StartYear" and "EndYear" columns. But imputing for `startYear` is inherently misleading, hence imputation is done only for the `endYear`. A group imputation startegy is used to impute values for missing `endYear`.The `startYear` is grouped into bins, each having a 15 year interval.This captures temporal trends while reducing variance. The median value of the `endYear` for each group of `startYear` is used to impute the missing `endYear` values.Since, `startYear` gives information about when the show began, it is assumed that shows starting around the same period are likely to end  around the same time.
-Additionally, the columns "runtimeMinutes" and "genre" are not necessary for our analysis, so it is dropped.
+After examining the title_basics dataset, it was noticed that a  significant number of missing values (NAs) occur in the columns "StartYear," "EndYear," "runtimeMinutes," and "genre." Since our project requires calculating the series length (series_length = EndYear - StartYear), it is crucial to impute rows with missing values in the "StartYear" and "EndYear" columns. But imputing for `startYear` is inherently misleading, hence imputation is done only for the `endYear`. A group imputation startegy is used to impute values for missing `endYear`.The `startYear` is grouped into bins, each having a 15 year interval.This captures temporal trends while reducing variance. The median value of the `endYear` for each group of `startYear` is used to impute the missing `endYear` values.Since, `startYear` gives information about when the show began, it is assumed that shows starting around the same period are likely to end  around the same time.Additionally, the columns "runtimeMinutes" and "genre" are not necessary for our analysis, so it is dropped.
 
 
 #### title_episode:
@@ -273,21 +270,23 @@ In this dataset, we observe missing values (NAs) in the columns "seasonNumber" a
 This dataset does not contain missing values(NA) 
 
 
-### Revised summary statistics of filtered data : title_basics 
+### 6.3. Revised summary statistics : filtered data 
+
+#### title_basics 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 summary(title_basics_filtered)
 ```
 
 
-### Revised summary statistics of filtered data  : title_episode 
+#### title_episode 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 summary(title_episode_filtered) 
 ```
 
 
-### Merging the datsets
+### 6.4. Merging the datsets
 
 After filtering and cleaning the datasets, we combine them to analyze the relationship between TV series length (number of episodes and total years aired) and customer ratings. We merge title_basics, title_episode, and title_ratings using `tconst` as the key identifier.
 
@@ -298,7 +297,7 @@ merged_data <- read_csv("../../gen/temp/merged_data.csv")
 ```
 
 
-### Engineering for new variables: 
+### 6.5. Engineering for new variables: 
 
 #### total_years
 
@@ -315,7 +314,7 @@ engineered_data <- read_csv("../../gen/temp/engineered_data.csv")
 ```
 
 
-### Removing outliers 
+### 6.6. Removing outliers 
 
 Since our dataset is heavily skewed, the Interquartile Range (IQR) method, was used to detect outliers in the variables considered for analysis by calculating the spread of the data.The IQR measures the spread of the middle 50% data, making the data robust for analysis by handling the skewed data.This is the last step in the data preparation process.
 
@@ -325,49 +324,52 @@ cleaned_data <- read_csv("../../gen/output/cleaned_data.csv")
 ```
 
 
-### Visualizations
+## 7. Visualizations
 
-#### TV Series Length vs Average Rating
+### 7.1. Plots for TV Series Length vs Average Rating
 
 The below plots help understand the relationship between the length of TV series and average customer ratings.Visualizations as part of our initial exploration of the data, which helps us explore trends and patterns in the data.The length of the TV series will be determined based on the number of episodes or the number of years the series was aired.
 
 
-#### Plot 2: Count of Episodes vs. Average Rating (cleaned data)
+### Plot 2: Count of Episodes vs. Average Rating (cleaned data)
 
 ```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE}
 # Scatter plot for count of episodes vs average rating (cleaned data)
 library(ggplot2)
 
 ggplot(cleaned_data, aes(x = episode_count, y = averageRating)) +
-  geom_jitter(alpha = 0.3, size = 1, width = 0.1, height = 0.1, color = "blue") +  
+  geom_jitter(alpha = 0.6, size = 1.5, width = 0, height = 0, color = "darkblue") +  
+  geom_smooth(method="lm", color ="red", se=FALSE, size=1)+
   
   labs(
     title = "Count of Episodes vs Average Ratings (Cleaned data)",
     x = "Total Number of Episodes",
     y = "Average Customer Rating"
   ) +
-  theme_minimal()
-
+  theme_minimal(base_size = 15)+
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+        axis.text.x = element_text(angle = 45,hjust = 1)
+        )
 ```
 
-##### Key insights :
+#### Key insights :
 
 
 
 
-##### Inference :
+#### Inference :
 
 
 
 
-#### Plot 3: Total years the series was aired vs. Average Rating (cleaned data)
+### Plot 3: Total years the series was aired vs. Average Rating (cleaned data)
 
 
 ```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE}
 
 # Scatter plot for Length of TV Series (years) vs Average Ratings (Filtered Data)
 ggplot(cleaned_data, aes(x = total_years, y = averageRating)) +
-  geom_jitter(alpha = 0.3, size = 1, width = 0.1, height = 0.1, color = "darkgreen") +  
+  geom_jitter(alpha = 0.5, size = 1, width = 0.2, height = 0, color = "darkgreen") +  
   geom_smooth(method = "lm", color = "red", se = FALSE) +  
   labs(
     x = "Number of Years Aired",
@@ -382,18 +384,23 @@ ggplot(cleaned_data, aes(x = total_years, y = averageRating)) +
 ```
 
 
-##### Key insights : 
+#### Key insights : 
 
 
 
 
-##### Inference :
+#### Inference :
 
 
 
+### 7.2.  Multicollinearity 
+
+### Key insights and implications for the regression model:
+
+As we intuitively understand, moderate correlation between `total_years` and `episode_count` (0.46) led us to run two different models : model_1 with total_years & model_2 with episode_count as independent variable,while keeping `numVotes` as a control variable in both models.
 
 
-#### Plot 3: Correlation Heatmap
+### Plot 4: Correlation Heatmap
 
 We plot the correlation heatmap to understand the correlation between the numeric variables and understand any potential multicollinearity issues.
 
@@ -418,19 +425,12 @@ ggcorrplot(corr_matrix,
 ```
 
 
-##### Key insights and implications for the regression model:
-
-###### Multicollinearity 
-
-As we intuitively understand, moderate correlation between `total_years` and `episode_count` (0.46) led us to run two different models : model_1 with total_years & model_2 with episode_count as independent variable,while keeping `numVotes` as a control variable in both models.
-
-
-### Density plots 
+### 7.3. Density plots 
 
 After removing the outliers density plots are plotted to check the distribution of data and identifying whether the variables follow a normal distribution or are skewed and the skewed variables are log transformed for regression. 
 
 
-#### Plot 4: Density plot for total_years
+### Plot 5: Density plot for total_years
 
 ```{r density plot total_years, echo=FALSE,warning=FALSE, message=FALSE}
 # Density plot for total_years
@@ -446,11 +446,11 @@ ggplot(cleaned_data, aes(x = total_years)) +
 ```
 
 
-##### Inference : 
+#### Inference : 
 The spikes in the density plot of total_years indicate that there are certain natural clusters. eg: series lasting 1, 5, or 10 years.Transforming this variable might distort these natural groupings.No log transformation is applied.
 
 
-#### Plot 5: Density plot for episode_count
+### Plot 6: Density plot for episode_count
 
 ```{r density plot episode_count,echo=FALSE,warning=FALSE, message=FALSE}
 # Density plot for episode_count
@@ -465,13 +465,13 @@ ggplot(cleaned_data, aes(x = episode_count)) +
 ```
 
 
-##### Inference : 
+#### Inference : 
 There is a long tail, hence `episode_count` is log transformed to stabilize variance in the regression model.
 
 
-#### Plot 6: Density plot for averageRating
+### Plot 7: Density plot for averageRating
 
-````{r density plot averageRating, echo=FALSE,warning=FALSE, message=FALSE}
+```{r density plot averageRating, echo=FALSE,warning=FALSE, message=FALSE}
 # Density plot for averageRating
 ggplot(cleaned_data, aes(x = averageRating)) +
   geom_density(fill = "salmon", alpha = 0.5) +
@@ -483,11 +483,11 @@ ggplot(cleaned_data, aes(x = averageRating)) +
   theme_minimal()
 ```
 
-##### Inference : 
+#### Inference : 
 Log transformation required since the skeweness is extreme and the log transformation improved the homoscedasticity conditions.
 
 
-#### Plot 7: Density plot for numVotes
+### Plot 8: Density plot for numVotes
 
 ```{r density plot numVotes,echo=FALSE,warning=FALSE, message=FALSE}
 # Density plot for numVotes
@@ -499,8 +499,8 @@ ggplot(cleaned_data, aes(x = numVotes)) +
     y = "Density"
   ) +
   theme_minimal()
-````
+```
 
-##### Inference : 
+#### Inference : 
 The density plot shows that the data is extremely skewed and hence a log transformation of `numVotes` is used in the regression analysis to avoid issues of heteroscedasticity.
 
