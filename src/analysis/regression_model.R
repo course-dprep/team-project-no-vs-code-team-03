@@ -15,7 +15,7 @@ cleaned_data_model_02 <- cleaned_data %>%
   )
 
 # Run regression
-model <- lm(log_averageRating ~ + total_years + log_episode_count + log_numVote , data = cleaned_data_model_02)
+model <- lm(log_averageRating ~ + total_years + log_episode_count + log_numVotes , data = cleaned_data_model_02)
 
 # Summary of the model
 summary_model <- summary(model)
