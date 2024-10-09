@@ -22,7 +22,7 @@ summary_model <- summary(model)
 print(summary_model)
 
 # Save the model as an RDS file
-saveRDS(model, "../../gen/output/model.rds")
+saveRDS(model,"../../gen/output/model.rds")
 
 # Generate HTML summary 
 html_model <- paste(
