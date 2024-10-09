@@ -21,10 +21,8 @@ model2 <- lm(log_averageRating ~ log_episode_count + log_numVotes, data = cleane
 summary_model2 <- summary(model2)
 print(summary_model2)
 
-
 # Save the model as an RDS file
 saveRDS(model2, "../../gen/output/model2.rds")
-
 
 # Generate HTML summary 
 html_model2 <- paste(
@@ -39,6 +37,33 @@ html_model2 <- paste(
 
 # Save the HTML to a file
 writeLines(html_model2, "../../gen/output/regression_model_2_summary.html")
+
+
+# combined model 
+
+combined_model <- lm(log_averageRating ~ total_years + log_episode_count + log_numVotes, data = cleaned_data_model_02)
+
+# summary of combined_model
+summary_combined_model <- summary(combined_model)
+print(summary_combined_model)
+
+# Save the model as an RDS file
+saveRDS(combined_model, "../../gen/output/combined_model.rds")
+
+# Generate HTML summary 
+html_combined_model <- paste(
+  "<html><body>",
+  "<h2>Regression Combined model Summary</h2>",
+  "<pre>",
+  paste(capture.output(summary_combined_model$coefficients), collapse = "\n"),
+  "</pre>",
+  "</body></html>",
+  sep = "\n"
+)
+
+# Save the HTML to a file
+writeLines(html_combined_model, "../../gen/output/regression_combined_model_summary.html")
+
 
 
 
