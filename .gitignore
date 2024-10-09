@@ -25,4 +25,4 @@ gen/output
 data/*.tsv.gz
 
 README_files/*
-!README_files/figure-markdown_strict/
+!README_files/plots/
