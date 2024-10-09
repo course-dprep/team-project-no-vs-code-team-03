@@ -196,7 +196,7 @@ A 1% increase in the number of votes (`numVotes`) is associated with a 0.01169% 
 
 # 2.3. Combined Model
 
-```{r summary-model2,warning=FALSE,echo=TRUE,message=FALSE}
+```{r summary-combined model,warning=FALSE,echo=TRUE,message=FALSE}
 
 summary(combined_model)
 
