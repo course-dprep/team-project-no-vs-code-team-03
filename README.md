@@ -15,11 +15,9 @@ series allow for complex storytelling and intricate character
 development leading to higher customer engagement and satisfaction
 (Mercader, 2023), others may argue that excessive length could cause
 viewer fatigue and lower customer satisfaction (Mercader, 2023).
-Understanding, how the overall length of a TV series influences the
+Understanding how the overall length of a TV series influences the
 average customer ratings could hold important implications for the
-content producers and streaming platforms. This research may help
-producers decide the optimal length of the TV series to maximize
-customer engagement. Our research aims to indicate the relationship
+content producers and streaming platforms.Our research aims to indicate the relationship
 between the length of the TV series in terms of number of episodes /
 number of years the show is running and the average customer ratings. By
 establishing this relationship, the question for producers as to whether
@@ -29,7 +27,7 @@ maximize the consumer engagement, and therefore minimize viewer fatigue
 which can lead to negative reviews. This led to the formulation of our
 research question: How does the length of a TV series influence its
 average customers ratings? Additionally,academic researchers in media
-and communication studies can use our findings to understand the
+and communication studies can use our findings for further analysis to understand the
 dynamics of viewer engagement.Our research could be of interest to
 psychologists and sociologists studying media consumption
 behavior,providing data on how the length of content affects viewer
@@ -58,7 +56,7 @@ The key findings from the regression are summarized in the conclusion.
 
 ### 3.1. Composition of the datasets and description of the variables
 
-### title.episode.tsv.gz
+#### title.episode.tsv.gz
 
 <table>
 <colgroup>
@@ -100,7 +98,7 @@ series.</td>
 </tbody>
 </table>
 
-### title.basics.tsv.gz
+#### title.basics.tsv.gz
 
 <table>
 <thead>
@@ -124,7 +122,7 @@ series.</td>
 </tbody>
 </table>
 
-### title.ratings.tsv.gz
+#### title.ratings.tsv.gz
 
 <table>
 <colgroup>
@@ -159,14 +157,14 @@ series.</td>
 
 ![](README_files/figure-markdown_strict/setup-1.png)
 
-##### Inference : 
+#### Inference : 
 The graph demonstrates a significant spread of ratings across all episode counts, without any clear pattern or trend.Observations with a low number of episodes are densely populated and exhibit a wide range of ratings, spanning nearly the entire rating scale.As the number of episodes increases beyond 5,000, the density of observations decreases.
 
 
 
 ![](README_files/figure-markdown_strict/plot_setup-1.png)
 
-##### Inference : 
+#### Inference : 
 The scatter plot reveals a relatively uniform spread of average ratings across all series lengths, from shorter series (0–10 years) to longer ones (up to 80 years).
 
 
@@ -197,7 +195,7 @@ The analysis findings suggest that both `total_years` and `episode_count` have s
 
 ### Software
 
-For this research, the downloading of the data, the cleaning of the data and regression was done using R and Rstudio. To automate the workflow a makefile is created.Git bash is used additionally to run the analysis from the terminal.
+For the analysis, downloading the data, cleaning the data and regression was done using R and Rstudio. To automate the workflow a makefile is created.Git bash is used additionally to run the analysis from the terminal.
 
 #### For R make sure the following packages are installed
 
@@ -216,7 +214,9 @@ For this research, the downloading of the data, the cleaning of the data and reg
 
 Running the makefile in the root directory will run each source code in the right sequence leading eventually to the results of the analysis. 
 
-Step 1: Fork the repository to your GitHub account
+Step 1: Fork the repository to your GitHub account  
+
+
 Step 2: Clone the repository to the local computer using Git bash.Choose working directory and use git clone the repository using gitbash 
 
 ```markdown
