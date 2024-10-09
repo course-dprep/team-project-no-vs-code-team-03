@@ -179,7 +179,17 @@ The analysis findings suggest that both `total_years` and `episode_count` have s
 ## 5. Repository Overview
 
 ```
-├── data ├── gen │ ├── output │ └── temp ├── src │ ├── data_preparation │ ├── analysis │ └── paper ├── .gitignore ├── README.md └── makefile
+├── data
+├── gen 
+│ ├── output
+│ └── temp 
+├── src 
+│ ├── data_preparation 
+│ ├── analysis 
+│ └── paper 
+├── .gitignore 
+├── README.md 
+└── makefile
 
 ```
 
