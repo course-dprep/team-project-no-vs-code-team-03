@@ -11,7 +11,7 @@ data/
 # Ignore temporary generated data
 gen/temp/
 
-# Allow output files to be committed
+# Allow output 
 
 gen/output
 !gen/output/*.html
@@ -23,3 +23,6 @@ gen/output
 *.csv
 
 data/*.tsv.gz
+
+README_files/*
+!README_files/figure-markdown_strict/

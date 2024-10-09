@@ -171,7 +171,7 @@ The scatter plot reveals a relatively uniform spread of average ratings across a
 
 ## 4. Conclusion
 
-The analysis findings suggest that both `total_years` and `episode_count` have statistical significance but small effects on the dependent variable `averageRating`. The findings indicate that longer series in terms of episode count are associated with slightly lower ratings. This suggests that viewer engagement might decrease as the number of episodes increases, likely due to viewer fatigue.However, the number of years a series airs has a small but positive impact on ratings. This indicates that series that have longevity in terms of years tend to perform slightly better in terms of ratings, possibly due to a loyal viewer base.The number of votes (as a proxy for popularity) is negatively associated with ratings, suggesting that series with a broader reach may face more critical reviews from a diverse audience, leading to slightly lower average ratings.Despite the statistical significance of these variables, the overall explanatory power of the model is limited, as evidenced by the low R-squared value. This suggests that there maybe other factors that play a more substantial role in determining the success of a TV series.While the length of a series should be a consideration for content creators and producers, it is not the sole determinant of a series' success. Further research should explore additional factors that contribute to viewer satisfaction and engagement to provide a more comprehensive understanding of what drives TV series ratings.
+The analysis findings suggest that both `total_years` and `episode_count` have statistical significance but small effects on the dependent variable `averageRating`. The findings indicate that longer series in terms of episode count are associated with slightly lower ratings. This suggests that viewer engagement might decrease as the number of episodes increases, likely due to viewer fatigue.However, the number of years a series airs has a small but positive impact on ratings. This indicates that series that have longevity in terms of years tend to perform slightly better in terms of ratings, possibly due to a loyal viewer base.The number of votes (as a proxy for popularity) is negatively associated with ratings, suggesting that series with a broader reach may face more critical reviews from a diverse audience, leading to slightly lower average ratings.Despite the statistical significance of these variables, the overall explanatory power of the model is limited, as evidenced by the low R-squared value. This suggests that there maybe other factors that play a more substantial role in determining the success of a TV series.While the length of a series should be a consideration for content creators and producers, it is not the sole determinant of a series' success. Further research should explore additional factors that contribute to viewer satisfaction and engagement to provide a more comprehensive understanding of what drives TV series ratings.The full regression summary output and inference is generated as a html document when the analysis is run and will be available in gen/output/
 
 
 ## 5. Repository Overview
@@ -224,6 +224,16 @@ Step 2: Clone the repository to the local computer using Git bash.Choose working
 https://github.com/course-dprep/IMDB-Binge-Factor.git
 
 ```
+
+Source code can be run separately in the following order:
+
+download_data_01.R
+drop_missing_values_02.R
+merge_datasets_03.R
+engineer_variables_04.R
+cleaned_data_05.R
+regression_model.R
+
 
 ## 8. Authors
 
