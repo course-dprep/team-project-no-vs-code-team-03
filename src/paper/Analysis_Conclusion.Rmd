@@ -22,11 +22,11 @@ library(dplyr)
 
 ### Multiple Linear Regression
 
-Because of low correlation between the two independnat variables, a multiple linear regrssion is run. `log_averageRating` is the dependnat variable, `total_years` and `log_episode_count` are the independant varaibles and `log_numVotes` is used as the control variable.
+Because of low correlation between the two independent variables, a multiple linear regression is run. `log_averageRating` is the dependent variable, `total_years` and `log_episode_count` are the independent variables and `log_numVotes` is used as the control variable.
 
 
 ```{r,include=FALSE,warning=FALSE,echo=FALSE,message=FALSE}
-model <- ("../../gen/output/model.rds")
+model <- readRDS(file = "../../gen/output/model.rds")
 ```
 
 
