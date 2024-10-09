@@ -195,6 +195,7 @@ The analysis findings suggest that both `total_years` and `episode_count` have s
     install.packages("here")
     install.packages("kableExtra")
     install.packages("car")
+    install.packages("tidyverse")
 
 ## 7. Running Instructions
 
