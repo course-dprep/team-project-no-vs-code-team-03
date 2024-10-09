@@ -15,9 +15,9 @@ $(OUTPUT)/data_exploration.html: $(PAPER)/data_exploration.Rmd
 	Rscript -e "knitr::knit2html(input='$(PAPER)/data_exploration.Rmd', output='$(OUTPUT)/data_exploration.html')"
 
 # 2. Generate Analysis & Conclusion Report
-$(PAPER)/analysis_conclusion.html: $(PAPER)/Analysis_Conclusion.Rmd
+$(OUTPUT)/analysis_conclusion.html: $(PAPER)/analysis_conclusion.Rmd
 	@mkdir -p $(OUTPUT)
-	Rscript -e "knitr::knit2html(input='$(PAPER)/Analysis_Conclusion.Rmd', output='$(OUTPUT)/analysis_conclusion.html')"
+	Rscript -e "knitr::knit2html(input='$(PAPER)/analysis_conclusion.Rmd', output='$(OUTPUT)/analysis_conclusion.html')"
 
 .PHONY: all clean
 

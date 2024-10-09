@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message= FALSE,fig.width = 
 ```
 
 
-#### 0. Install necessary pacakges for data exploration
+#### Install necessary pacakges for data exploration
 
 The following libraries are required for this analysis: 
 
@@ -333,20 +333,20 @@ The below plots help understand the relationship between the length of TV series
 
 ### Plot 2: Count of Episodes vs. Average Rating (cleaned data)
 
-```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE,fig.cap=""}
+```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE,fig.cap="",fig.width=10,fig.height=6, dpi=400}
 # Scatter plot for count of episodes vs average rating (cleaned data)
 library(ggplot2)
 
 ggplot(cleaned_data, aes(x = episode_count, y = averageRating)) +
-  geom_jitter(alpha = 0.6, size = 0.6, width = 0.2, height = 0.2, color ="gray40") +  
-  geom_smooth(method="lm", color ="darkred", se=FALSE, size=1)+
+  geom_jitter(alpha = 0.8, size = 2, width = 0.1, height = 0.1, color ="skyblue") +  
+  geom_smooth(method="lm", color ="darkred", se=FALSE, size=1.5)+
   
   labs(
     title = "Count of Episodes vs Average Ratings (Cleaned data)",
     x = "Total Number of Episodes",
     y = "Average Customer Rating"
   ) +
-  theme_minimal(base_size = 15)+
+  theme_minimal(base_size = 16)+
   theme(plot.title = element_text(hjust = 0.5, face = "bold"),
         axis.text.x = element_text(angle = 45,hjust = 1)
         )
@@ -365,18 +365,18 @@ ggplot(cleaned_data, aes(x = episode_count, y = averageRating)) +
 ### Plot 3: Total years the series was aired vs. Average Rating (cleaned data)
 
 
-```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE,fig.cap=""}
+```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE,fig.cap="",fig.width=10,fig.height=6,dpi=400}
 
 # Scatter plot for Length of TV Series (years) vs Average Ratings (Filtered Data)
 ggplot(cleaned_data, aes(x = total_years, y = averageRating)) +
-  geom_jitter(alpha = 0.6, size = 0.6, width = 0.2, height = 0.2, color = "darkgreen") +  
-  geom_smooth(method = "lm", color = "red", se = FALSE) +  
+  geom_jitter(alpha = 0.9, size = 2.5, width = 0.05, height = 0.05, color = "darkgreen") +  
+  geom_smooth(method = "lm", color = "red",size= 1.5, se = FALSE) +  
   labs(
     x = "Number of Years Aired",
     y = "Average Rating",
     title = "Number of Years Aired vs Average Rating (cleaned data)"
   ) +
-  theme_minimal(base_size = 15) +  
+  theme_minimal(base_size = 16) +  
   theme(
     plot.title = element_text(hjust = 0.5, face = "bold"),  
     axis.text.x = element_text(angle = 45, hjust = 1)  
