@@ -194,6 +194,7 @@ The analysis findings suggest that both `total_years` and `episode_count` have s
     install.packages("ggcorrplot")
     install.packages("here")
     install.packages("kableExtra")
+    install.packages("car")
 
 ## 7. Running Instructions
 

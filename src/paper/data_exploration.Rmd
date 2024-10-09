@@ -215,7 +215,7 @@ kable(title_basics_summary)
 ### Plot : 1. Distribution of Ratings for TV Series (raw data)
 
 
-```{r ratings distribution raw data,echo=FALSE,warning=FALSE, message=FALSE}
+```{r ratings distribution raw data,echo=FALSE,warning=FALSE, message=FALSE,fig.cap=NULL}
 # Visualize the distribution of average ratings using raw data
 tv_series_raw <- title_basics %>%
   filter(titleType == "tvSeries") %>%
@@ -333,13 +333,13 @@ The below plots help understand the relationship between the length of TV series
 
 ### Plot 2: Count of Episodes vs. Average Rating (cleaned data)
 
-```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE}
+```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE,fig.cap=NULL}
 # Scatter plot for count of episodes vs average rating (cleaned data)
 library(ggplot2)
 
 ggplot(cleaned_data, aes(x = episode_count, y = averageRating)) +
-  geom_jitter(alpha = 0.6, size = 1.5, width = 0, height = 0, color = "darkblue") +  
-  geom_smooth(method="lm", color ="red", se=FALSE, size=1)+
+  geom_jitter(alpha = 0.3, size = 0.8, width = 0.3, height = 0, color ="deepskyblue") +  
+  geom_smooth(method="lm", color ="darkred", se=FALSE, size=2)+
   
   labs(
     title = "Count of Episodes vs Average Ratings (Cleaned data)",
@@ -365,11 +365,11 @@ ggplot(cleaned_data, aes(x = episode_count, y = averageRating)) +
 ### Plot 3: Total years the series was aired vs. Average Rating (cleaned data)
 
 
-```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE}
+```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE,fig.cap=NULL}
 
 # Scatter plot for Length of TV Series (years) vs Average Ratings (Filtered Data)
 ggplot(cleaned_data, aes(x = total_years, y = averageRating)) +
-  geom_jitter(alpha = 0.5, size = 1, width = 0.2, height = 0, color = "darkgreen") +  
+  geom_jitter(alpha = 0.3, size = 0.8, width = 0.3, height = 0, color = "darkgreen") +  
   geom_smooth(method = "lm", color = "red", se = FALSE) +  
   labs(
     x = "Number of Years Aired",
@@ -404,7 +404,7 @@ As we intuitively understand, moderate correlation between `total_years` and `ep
 
 We plot the correlation heatmap to understand the correlation between the numeric variables and understand any potential multicollinearity issues.
 
-```{r heatmap,echo=FALSE,warning=FALSE, message=FALSE}
+```{r heatmap,echo=FALSE,warning=FALSE, message=FALSE,fig.cap=NULL}
 
 install.packages("ggcorrplot")
 library(ggcorrplot)
@@ -432,7 +432,7 @@ After removing the outliers density plots are plotted to check the distribution 
 
 ### Plot 5: Density plot for total_years
 
-```{r density plot total_years, echo=FALSE,warning=FALSE, message=FALSE}
+```{r density plot total_years, echo=FALSE,warning=FALSE, message=FALSE,fig.cap=NULL}
 # Density plot for total_years
 ggplot(cleaned_data, aes(x = total_years)) +
   geom_density(fill = "skyblue", alpha = 0.5) +
@@ -452,7 +452,7 @@ The spikes in the density plot of total_years indicate that there are certain na
 
 ### Plot 6: Density plot for episode_count
 
-```{r density plot episode_count,echo=FALSE,warning=FALSE, message=FALSE}
+```{r density plot episode_count,echo=FALSE,warning=FALSE, message=FALSE,fig.cap=NULL}
 # Density plot for episode_count
 ggplot(cleaned_data, aes(x = episode_count)) +
   geom_density(fill = "lightgreen", alpha = 0.5) +
@@ -471,7 +471,7 @@ There is a long tail, hence `episode_count` is log transformed to stabilize vari
 
 ### Plot 7: Density plot for averageRating
 
-```{r density plot averageRating, echo=FALSE,warning=FALSE, message=FALSE}
+```{r density plot averageRating, echo=FALSE,warning=FALSE, message=FALSE,fig.cap=NULL}
 # Density plot for averageRating
 ggplot(cleaned_data, aes(x = averageRating)) +
   geom_density(fill = "salmon", alpha = 0.5) +
@@ -489,7 +489,7 @@ Log transformation required since the skeweness is extreme and the log transform
 
 ### Plot 8: Density plot for numVotes
 
-```{r density plot numVotes,echo=FALSE,warning=FALSE, message=FALSE}
+```{r density plot numVotes,echo=FALSE,warning=FALSE, message=FALSE,fig.cap=NULL}
 # Density plot for numVotes
 ggplot(cleaned_data, aes(x = numVotes)) +
   geom_density(fill = "orange", alpha = 0.5) +
