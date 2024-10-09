@@ -35,6 +35,7 @@ library(ggcorrplot)
 library(knitr)
 library(kableExtra)
 library(here)
+library(car)
 ```
 
 ## 1. Introduction
@@ -233,6 +234,7 @@ ggplot(tv_series_raw, aes(x = averageRating)) +
 ```
 
 #### Inference: 
+
 The histogram is slightly skewed towards the right indicating that most of the ratings fall between the range of 5 to 8.The histogram represent all types of `titleType` like shorts,videos,tvEpisodes,tvseries,documentary etc. 
 
 
@@ -257,12 +259,12 @@ title_ratings <- read_delim(gzfile('../../data/title_ratings.tsv.gz'), delim = "
 
 #### title_basics:
 
-After examining the title_basics dataset, it was noticed that a  significant number of missing values (NAs) occur in the columns "StartYear," "EndYear," "runtimeMinutes," and "genre." Since our project requires calculating the series length (series_length = EndYear - StartYear), it is crucial to impute rows with missing values in the "StartYear" and "EndYear" columns. But imputing for `startYear` is inherently misleading, hence imputation is done only for the `endYear`. A group imputation startegy is used to impute values for missing `endYear`.The `startYear` is grouped into bins, each having a 15 year interval.This captures temporal trends while reducing variance. The median value of the `endYear` for each group of `startYear` is used to impute the missing `endYear` values.Since, `startYear` gives information about when the show began, it is assumed that shows starting around the same period are likely to end  around the same time.Additionally, the columns "runtimeMinutes" and "genre" are not necessary for our analysis, so it is dropped.
+After examining the title_basics dataset, it was noticed that a  significant number of missing values (NAs) occur in the columns `startYear`,`endYear`, `runtimeMinutes`, and `genre`. Since our project requires calculating the series length (series_length = `endYear` - `startYear`), it is crucial to impute rows with missing values in the `startYear` and `endYear` columns. But imputing for `startYear` is inherently misleading, hence imputation is done only for the `endYear`. A group imputation strategy is used to impute values for missing `endYear`.The `startYear` is grouped into bins, each having a 15 year interval.This captures temporal trends while reducing variance. The median value of the `endYear` for each group of `startYear` is used to impute the missing `endYear` values.Since, `startYear` gives information about when the show began, it is assumed that shows starting around the same period are likely to end  around the same time.Additionally, the columns `runtimeMinutes` and `genre` are not necessary for our analysis, so it is dropped.
 
 
 #### title_episode:
 
-In this dataset, we observe missing values (NAs) in the columns "seasonNumber" and "episodeNumber." Since this information is specific to each TV series, we cannot impute these missing values using data from other TV shows, as doing so would introduce inaccuracies. Additionally, the missing values in these columns are missing at random. Therefore, it is important to drop rows with missing values in these columns.
+In this dataset, we observe missing values (NAs) in the columns `seasonNumber` and `episodeNumber`.Since this information is specific to each TV series, we do not impute these missing values using data from other TV shows, as doing so would introduce inaccuracies. Additionally, the missing values in these columns are missing at random. Therefore, it is important to drop rows with missing values in these columns.
 
 
 #### title_ratings:
@@ -299,12 +301,12 @@ merged_data <- read_csv("../../gen/temp/merged_data.csv")
 
 ### 6.5. Engineering for new variables: 
 
-#### total_years
+#### `total_years`
 
 A new variable is created that shows how many years a series has run, called `total_years`. This variable will be one of the independent variable in our analysis, and is created by deducting the first year that the series ran from the last year. 
 
 
-#### episode_count
+#### `episode_count`
 
 A new variable is created that shows the total number of episodes a series has, called `episode_count`. This variable will be one of the independent variable in our analysis.
 
@@ -331,7 +333,7 @@ cleaned_data <- read_csv("../../gen/output/cleaned_data.csv")
 The below plots help understand the relationship between the length of TV series and average customer ratings.Visualizations as part of our initial exploration of the data, which helps us explore trends and patterns in the data.The length of the TV series will be determined based on the number of episodes or the number of years the series was aired.
 
 
-### Plot 2: Count of Episodes vs. Average Rating (cleaned data)
+### Plot 2: Count of Episodes vs. Average Ratings (cleaned data)
 
 ```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE,fig.cap="",fig.width=10,fig.height=6, dpi=400}
 # Scatter plot for count of episodes vs average rating (cleaned data)
@@ -354,12 +356,7 @@ ggplot(cleaned_data, aes(x = episode_count, y = averageRating)) +
 
 #### Key insights :
 
-
-
-
-#### Inference :
-
-
+This scatter plot illustrates the relationship between the `episode_count` and `averageRating`.The regression line slopes downwards, indicating a negative relationship between the total number of episodes and average customer ratings.The plot shows a dense concentration of series with fewer than 1,000 episodes.As the number of episodes increases (above 1,000), there are fewer data points.
 
 
 ### Plot 3: Total years the series was aired vs. Average Rating (cleaned data)
@@ -385,20 +382,9 @@ ggplot(cleaned_data, aes(x = total_years, y = averageRating)) +
 
 
 #### Key insights : 
-
-
-
-
-#### Inference :
-
-
+This scatter plot illustrates the relationship between the `total_years` and `averageRating`.The regression line is almost flat, indicating that there is no significant relationship between the two variables.There is a high density of data points from 0 to 10 years, with a wide spread of average ratings.This suggests that number of years aired alone does not impact customer satisfaction, and other factors may be more influential in determining viewer ratings.
 
 ### 7.2.  Multicollinearity 
-
-### Key insights and implications for the regression model:
-
-As we intuitively understand, moderate correlation between `total_years` and `episode_count` (0.46) led us to run two different models : model_1 with total_years & model_2 with episode_count as independent variable,while keeping `numVotes` as a control variable in both models.
-
 
 ### Plot 4: Correlation Heatmap
 
@@ -424,6 +410,11 @@ ggcorrplot(corr_matrix,
 
 ```
 
+### Key insights and implications for the regression model:
+
+There is low correlation between `total_years` and `episode_count` (0.25), this led us to run a combined model: `total_years` & `episode_count` as independent variable,while keeping `numVotes` as a control variable and `averageRating` as the dependent variable.
+
+
 
 ### 7.3. Density plots 
 
@@ -447,7 +438,7 @@ ggplot(cleaned_data, aes(x = total_years)) +
 
 
 #### Inference : 
-The spikes in the density plot of total_years indicate that there are certain natural clusters. eg: series lasting 1, 5, or 10 years.Transforming this variable might distort these natural groupings.No log transformation is applied.
+The spikes in the density plot of total_years indicate that there are certain natural clusters. eg: series lasting between 1 to 10 years.There is no much skewness or a long tail therefore no log transformation is applied.
 
 
 ### Plot 6: Density plot for episode_count
@@ -466,7 +457,8 @@ ggplot(cleaned_data, aes(x = episode_count)) +
 
 
 #### Inference : 
-There is a long tail, hence `episode_count` is log transformed to stabilize variance in the regression model.
+
+The plot is highly skewed to the right side.There is a long tail, hence `episode_count` is log transformed to stabilize variance in the regression model and improve interpretability of the model.
 
 
 ### Plot 7: Density plot for averageRating
@@ -484,7 +476,7 @@ ggplot(cleaned_data, aes(x = averageRating)) +
 ```
 
 #### Inference : 
-Log transformation required since the skeweness is extreme and the log transformation improved the homoscedasticity conditions.
+Log transformation required since the skewness is moderate on the lower end of the average rating and log transformation is applied.
 
 
 ### Plot 8: Density plot for numVotes
@@ -502,5 +494,5 @@ ggplot(cleaned_data, aes(x = numVotes)) +
 ```
 
 #### Inference : 
-The density plot shows that the data is extremely skewed and hence a log transformation of `numVotes` is used in the regression analysis to avoid issues of heteroscedasticity.
+The density plot shows that the data is extremely skewed and hence a log transformation of `numVotes` is used in the regression analysis.The log transformation helps reduce the influence  of outliers in the data. 
 

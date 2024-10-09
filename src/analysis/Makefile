@@ -9,25 +9,20 @@ SRC = $(ROOT_DIR)/src
 ANALYSIS = $(SRC)/analysis
 
 # Scripts
-REGRESSION_SCRIPT_1 = $(ANALYSIS)/regression_model_1.R
-REGRESSION_SCRIPT_2 = $(ANALYSIS)/regression_model_2.R
+REGRESSION_SCRIPT = $(ANALYSIS)/regression_model.R
 
 # All output targets
-all: $(OUTPUT)/regression_model_1_summary.html $(OUTPUT)/regression_model_2_summary.html
+all: $(OUTPUT)/regression_model_summary.html 
 
-# 1: Run Regression Model 1
-$(OUTPUT)/regression_model_1_summary.html: $(REGRESSION_SCRIPT_1) $(OUTPUT)/cleaned_data.csv
-	@mkdir -p $(OUTPUT)
-	Rscript --vanilla "$(REGRESSION_SCRIPT_1)"
 
-# 2: Run Regression Model 2
-$(OUTPUT)/regression_model_2_summary.html: $(REGRESSION_SCRIPT_2) $(OUTPUT)/cleaned_data.csv
+# Run Regression Model 2
+$(OUTPUT)/regression_model_summary.html: $(REGRESSION_SCRIPT) $(OUTPUT)/cleaned_data.csv
 	@mkdir -p $(OUTPUT)
-	Rscript --vanilla "$(REGRESSION_SCRIPT_2)"
+	Rscript --vanilla "$(REGRESSION_SCRIPT)"
 
 .PHONY: all clean
 
 # Clean 
 clean:
-	rm -f $(OUTPUT)/regression_model_1_summary.html $(OUTPUT)/regression_model_2_summary.html
+	rm -f $(OUTPUT)/regression_model_summary.html
 

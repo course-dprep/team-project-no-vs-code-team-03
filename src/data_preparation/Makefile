@@ -15,7 +15,6 @@ DROP_SCRIPT = $(SRC)/data_preparation/drop_missing_values_02.R
 MERGE_SCRIPT = $(SRC)/data_preparation/merge_datasets_03.R
 ENGINEER_SCRIPT = $(SRC)/data_preparation/engineer_variables_04.R
 CLEAN_SCRIPT = $(SRC)/data_preparation/cleaned_data_05.R
-REPORT_SCRIPT = $(PAPER)/report-data_exploration.R
 
 
 # All output targets
