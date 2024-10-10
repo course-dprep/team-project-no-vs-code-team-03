@@ -38,6 +38,10 @@ html_model <- paste(
 # Save the HTML to a file
 writeLines(html_model, "../../gen/output/regression_model_summary.html")
 
+# save the output as a text file to reference in the rmarkdown 
+model_summary_text <- capture.output(summary(model))
+
+writeLines(model_summary_text, con = "../../gen/output/model_summary.txt")
 
 
 

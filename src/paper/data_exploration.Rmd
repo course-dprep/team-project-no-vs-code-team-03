@@ -7,7 +7,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message= FALSE,fig.width = 8,fig.height = 6,fig.align = 'center',dpi=300,dev='png',fig.retina = 2, fig.cap = NULL)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message= FALSE,fig.width = 12,fig.height = 6,fig.align = 'center',dpi=300,dev='png',fig.retina = 2, fig.cap = NULL)
 ```
 
 
@@ -335,12 +335,12 @@ The below plots help understand the relationship between the length of TV series
 
 ### Plot 2: Count of Episodes vs. Average Ratings (cleaned data)
 
-```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE,fig.cap="",fig.width=10,fig.height=6, dpi=400}
+```{r series-length-vs-rating-episodes, echo=FALSE, warning=FALSE, message=FALSE,fig.cap="",fig.width=12,fig.height=6, dpi=300}
 # Scatter plot for count of episodes vs average rating (cleaned data)
 library(ggplot2)
 
 ggplot(cleaned_data, aes(x = episode_count, y = averageRating)) +
-  geom_jitter(alpha = 0.8, size = 2, width = 0.1, height = 0.1, color ="skyblue") +  
+  geom_jitter(alpha = 0.1, size = 1.2, width = 0.5, height = 0.5, color ="skyblue") +  
   geom_smooth(method="lm", color ="darkred", se=FALSE, size=1.5)+
   
   labs(
@@ -362,12 +362,12 @@ This scatter plot illustrates the relationship between the `episode_count` and `
 ### Plot 3: Total years the series was aired vs. Average Rating (cleaned data)
 
 
-```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE,fig.cap="",fig.width=10,fig.height=6,dpi=400}
+```{r total-years-vs-rating, echo=FALSE, warning=FALSE, message=FALSE,fig.cap="",fig.width=12,fig.height=6,dpi=300}
 
 # Scatter plot for Length of TV Series (years) vs Average Ratings (Filtered Data)
 ggplot(cleaned_data, aes(x = total_years, y = averageRating)) +
-  geom_jitter(alpha = 0.9, size = 2.5, width = 0.05, height = 0.05, color = "darkgreen") +  
-  geom_smooth(method = "lm", color = "red",size= 1.5, se = FALSE) +  
+  geom_jitter(alpha = 0.1, size = 1.5, width = 0.1, height = 0.1, color = "darkgreen") +  
+  geom_smooth(method = "lm", color = "red",size= 1.2, se = FALSE) +  
   labs(
     x = "Number of Years Aired",
     y = "Average Rating",
