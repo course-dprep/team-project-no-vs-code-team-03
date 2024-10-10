@@ -46,7 +46,7 @@ Due to low correlation between the  two independent variables
 total years the series airs and total episodes the series has,
 a multiple linear regression model is devised.
 The average rating received by the series is the dependent variable 
-upon which the regression is performed.The The number of votes is used 
+upon which the regression is performed.The number of votes is used 
 as a proxy for popularity of the TV series and is used as the control variable.
 The assumptions of linear regression are tested and results are documented.
 The key findings from the regression are summarized in the conclusion.
@@ -195,7 +195,7 @@ The analysis findings suggest that both `total_years` and `episode_count` have s
 
 ### Software
 
-For the analysis, downloading the data, cleaning the data and regression was done using R and Rstudio. To automate the workflow a makefile is created.Git bash is used additionally to run the analysis from the terminal.
+For the analysis, downloading, cleaning and regression analysis was done using R and Rstudio. To automate the workflow a makefile is created.Git bash is used additionally to run the analysis from the terminal.
 
 #### For R make sure the following packages are installed
 
@@ -217,7 +217,7 @@ Running the makefile in the root directory will run each source code in the righ
 Step 1: Fork the repository to your GitHub account  
 
 
-Step 2: Clone the repository to the local computer using Git bash.Choose working directory and use git clone the repository using gitbash 
+Step 2: Use gitbash to clone the repository to your local computer after choosing a working directory. Use the url below for cloning.
 
 ```markdown
 
