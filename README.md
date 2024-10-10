@@ -227,11 +227,16 @@ https://github.com/course-dprep/IMDB-Binge-Factor.git
 
 Source code can be run separately in the following order:
 
-download_data_01.R
-drop_missing_values_02.R
-merge_datasets_03.R
-engineer_variables_04.R
-cleaned_data_05.R
+download_data_01.R  
+
+drop_missing_values_02.R  
+
+merge_datasets_03.R  
+
+engineer_variables_04.R  
+
+cleaned_data_05.R  
+
 regression_model.R
 
 
